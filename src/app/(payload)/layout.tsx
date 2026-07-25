@@ -1,6 +1,7 @@
 import type { ServerFunctionClient } from "payload";
 import config from "@payload-config";
 import "@payloadcms/next/css";
+import "./admin-custom.scss"; // Pristine Console brand overrides — loads after Payload's css.
 import { RootLayout, handleServerFunctions } from "@payloadcms/next/layouts";
 import React from "react";
 import { importMap } from "./admin/importMap.js";

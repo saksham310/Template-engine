@@ -17,12 +17,21 @@ export type ServiceView = {
   faqs: { q: string; a: string }[];
   testimonial: { quote: string; citation: string };
   macroShot: string;
+  seo: { title: string; description: string };
 };
 
 const MACRO_SHOT =
   "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=1400&q=80";
 const FALLBACK_HERO =
   "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1400&q=80";
+
+/** Category is a relationship: populated → its title; id/blank → "Uncategorized". */
+function categoryTitle(cat: unknown): string {
+  if (cat && typeof cat === "object") {
+    return (cat as { title?: string }).title ?? "Uncategorized";
+  }
+  return typeof cat === "string" && cat ? cat : "Uncategorized";
+}
 
 /** Resolve a hero image: uploaded media url wins, else the imageUrl fallback. */
 function heroImage(hero: Record<string, unknown> | undefined): string {
@@ -39,7 +48,7 @@ function toView(doc: any): ServiceView {
   return {
     slug: doc.slug,
     title,
-    category: doc.category ?? "Residential",
+    category: categoryTitle(doc.category),
     durationLabel: doc.durationLabel ?? "By scope",
     tagline: doc.tagline ?? doc.editorialQuote?.quote ?? "",
     marketing: doc.marketing ?? "",
@@ -64,12 +73,15 @@ function toView(doc: any): ServiceView {
     faqs: Array.isArray(doc.faq)
       ? doc.faq.map((f: any) => ({ q: f.question, a: f.answer }))
       : [],
-    // Editor-controlled from Payload's Editorial Quote group.
     testimonial: {
       quote: doc.editorialQuote?.quote ?? doc.tagline ?? "",
       citation: doc.editorialQuote?.citation ?? "Verified review",
     },
     macroShot: MACRO_SHOT,
+    seo: {
+      title: doc.metaTitle ?? title,
+      description: doc.metaDescription ?? doc.tagline ?? "",
+    },
   };
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -104,17 +116,50 @@ export type ServiceNavGroup = {
   items: { slug: string; title: string }[];
 };
 
-const NAV_ORDER = ["Residential", "Commercial", "Specialized"];
+/** Editor-managed categories, sorted by `order`. */
+export async function getServiceCategories(): Promise<
+  { title: string; slug: string; blurb: string }[]
+> {
+  const payload = await getPayload({ config });
+  const { docs } = await payload.find({
+    collection: "categories",
+    limit: 1000,
+    pagination: false,
+    sort: "order",
+  });
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  return docs.map((d: any) => ({
+    title: d.title,
+    slug: d.slug ?? "",
+    blurb: d.blurb ?? "",
+  }));
+  /* eslint-enable @typescript-eslint/no-explicit-any */
+}
+
+/** Ordered category titles, with any orphaned service categories appended. */
+async function orderedCategoryTitles(
+  services: { category: string }[],
+): Promise<string[]> {
+  const cats = await getServiceCategories();
+  const ordered = cats.map((c) => c.title);
+  const extras = services
+    .map((s) => s.category)
+    .filter((c) => c && !ordered.includes(c));
+  return [...ordered, ...Array.from(new Set(extras))];
+}
 
 /** Grouped nav for the header mega-menu. */
 export async function getServiceNav(): Promise<ServiceNavGroup[]> {
   const list = await getServiceList();
-  return NAV_ORDER.map((category) => ({
-    category,
-    items: list
-      .filter((s) => s.category === category)
-      .map((s) => ({ slug: s.slug, title: s.title })),
-  })).filter((g) => g.items.length > 0);
+  const order = await orderedCategoryTitles(list);
+  return order
+    .map((category) => ({
+      category,
+      items: list
+        .filter((s) => s.category === category)
+        .map((s) => ({ slug: s.slug, title: s.title })),
+    }))
+    .filter((g) => g.items.length > 0);
 }
 
 /** Lightweight list for the /services index, grouped-ready. */
@@ -126,12 +171,13 @@ export async function getServiceList(): Promise<
     collection: "services",
     limit: 1000,
     pagination: false,
+    depth: 1,
   });
   /* eslint-disable @typescript-eslint/no-explicit-any */
   return docs.map((d: any) => ({
     slug: d.slug,
     title: d.title,
-    category: d.category,
+    category: categoryTitle(d.category),
     tagline: d.tagline ?? d.editorialQuote?.quote ?? "",
     durationLabel: d.durationLabel ?? "By scope",
   }));

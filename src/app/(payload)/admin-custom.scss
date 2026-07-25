@@ -1,0 +1,495 @@
+/* ============================================================================
+   PRISTINE CONSOLE — bespoke Payload admin theme.
+   Browser-bundled only (imported in (payload)/layout.tsx, never in the config /
+   component chain that generate:importmap parses — CSS in Node code crashes it).
+   Editorial tokens: Navy #0A192F · Action Blue #0070F3 · Slate borders · sharp
+   2px radius · serif display · mono data. Light theme (pinned in config).
+   ============================================================================ */
+
+// ── Tokens ──────────────────────────────────────────────────────────────────
+$navy:        #0a192f;
+$navy-700:    #12233f;
+$accent:      #0070f3;
+$app-bg:      #f9fafb;
+$slate-200:   #e2e8f0;
+$slate-400:   #94a3b8;
+$serif:       "Playfair Display", Georgia, "Times New Roman", serif;
+$mono:        "Geist Mono", ui-monospace, "SF Mono", "Menlo", monospace;
+
+:root,
+[data-theme="light"] {
+  --style-radius-s: 2px;
+  --style-radius-m: 2px;
+  --style-radius-l: 2px;
+  --theme-bg: #{$app-bg};
+  --theme-border-color: #{$slate-200};
+  --e-navy: #{$navy};
+  --e-accent: #{$accent};
+  --e-serif: #{$serif};
+  --e-mono: #{$mono};
+}
+
+body { background: $app-bg; }
+
+// ── Sidebar: deep navy console rail ──────────────────────────────────────────
+.nav {
+  background: $navy;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+
+  &__link {
+    border-radius: 2px;
+    color: $slate-400;
+    transition: color .15s ease, background-color .15s ease;
+
+    &:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
+
+    &.active,
+    &--active {
+      color: #fff;
+      background: rgba(0, 112, 243, 0.18);
+      box-shadow: inset 2px 0 0 $accent;
+    }
+  }
+
+  &__controls,
+  &__wrap { color: $slate-400; }
+
+  // Nav group labels → serif editorial
+  .nav-group__label,
+  .nav-group__toggle {
+    font-family: $serif;
+    font-size: 13px;
+    letter-spacing: .02em;
+    text-transform: none;
+    color: rgba(148, 163, 184, 0.7);
+  }
+}
+
+// Account / logout controls in the navy rail
+.nav .btn,
+.nav a { color: $slate-400; }
+
+// ── Brand wordmark component (Logo.tsx / Icon.tsx) ───────────────────────────
+.e-wordmark {
+  font-family: $serif;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: .12em;
+  color: $navy;
+  white-space: nowrap;
+
+  .e-dot { color: $accent; }
+}
+.e-icon {
+  font-family: $serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: $navy;
+  .e-dot { color: $accent; }
+}
+
+// In the navy sidebar the wordmark inverts to white
+.nav .e-wordmark { color: #fff; }
+.nav .e-icon { color: #fff; }
+
+// ── Page titles & headers → serif ────────────────────────────────────────────
+.step-nav,
+.doc-header__title,
+.list-header h1,
+.collection-list__page-heading,
+.view-description h1,
+h1.render-title {
+  font-family: $serif;
+  letter-spacing: -.01em;
+}
+
+.app-header,
+.doc-header {
+  background: #fff;
+  border-bottom: 1px solid $slate-200;
+}
+
+// ── Mono for technical data points (IDs, dates, slugs) ───────────────────────
+.cell-slug,
+.cell-id,
+.cell-updatedAt,
+.cell-createdAt,
+.cell-createdAt *,
+.cell-updatedAt *,
+.id-label,
+code,
+.field-type.text #field-slug {
+  font-family: $mono !important;
+  font-size: 12px;
+  letter-spacing: -.01em;
+}
+
+// ── Containers: 1px slate border, no shadow, sharp ───────────────────────────
+.card,
+.table-wrap,
+.collection-list,
+.dashboard__group,
+.doc-fields,
+.tabs-field__content-wrap,
+.group-field__wrap {
+  box-shadow: none !important;
+  border: 1px solid $slate-200;
+  border-radius: 2px;
+}
+
+.table {
+  border: 1px solid $slate-200;
+  th { font-family: $mono; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+}
+
+// ── Inputs: sharp, slate border, accent focus ────────────────────────────────
+.field-type {
+  input, textarea,
+  .rs__control,
+  .code-editor {
+    border-radius: 2px;
+    border: 1px solid $slate-200;
+    background: #fff;
+  }
+
+  input:focus,
+  textarea:focus,
+  .rs__control--is-focused {
+    border-color: $accent !important;
+    box-shadow: 0 0 0 1px $accent !important;
+    outline: none;
+  }
+
+  label { font-size: 12px; letter-spacing: .01em; }
+}
+
+// ── Buttons: high-contrast navy, no shadow, sharp ────────────────────────────
+.btn {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+.btn--style-primary {
+  --bg-color: #{$navy};
+  --hover-bg: #{$navy-700};
+  --color: #fff;
+  --hover-color: #fff;
+}
+.btn--style-secondary {
+  --color: #{$navy};
+  border: 1px solid $navy;
+  &:hover { background: rgba(10, 25, 47, 0.05); }
+}
+
+// ── Tabs (edit surface) ──────────────────────────────────────────────────────
+.tabs-field__tab-button {
+  font-family: $mono;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  border-radius: 0;
+
+  &--active { color: $navy; box-shadow: inset 0 -2px 0 $accent; }
+}
+
+// ── Pills / status badges ────────────────────────────────────────────────────
+.pill { border-radius: 2px; font-family: $mono; font-size: 11px; }
+
+// Links
+a:not(.nav__link):not(.btn):not(.card) { color: $accent; }
+
+/* ============================================================================
+   CUSTOM DASHBOARD — Pristine Console CRM
+   ============================================================================ */
+$tone-blue:   #0070f3;
+$tone-amber:  #d97706;
+$tone-violet: #7c3aed;
+$tone-green:  #16a34a;
+
+.crm {
+  padding: 40px 44px 64px;
+  max-width: 1280px;
+  margin: 0 auto;
+
+  // ── Header ──
+  &__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid $slate-200;
+  }
+  &__eyebrow {
+    font-family: $mono;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .18em;
+    color: $slate-400;
+    margin: 0;
+  }
+  &__title {
+    font-family: $serif;
+    font-size: 34px;
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    color: $navy;
+    margin: 8px 0 0;
+  }
+  &__status {
+    display: flex;
+    align-items: center;
+    font-family: $mono;
+    font-size: 12px;
+    color: rgba(10, 25, 47, 0.6);
+    border: 1px solid $slate-200;
+    padding: 9px 15px;
+    background: #fff;
+    white-space: nowrap;
+  }
+
+  // ── KPI row ──
+  &__kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  &__kpi {
+    border: 1px solid $slate-200;
+    background: #fff;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color .15s ease;
+
+    &:hover { border-color: rgba(10, 25, 47, 0.28); }
+    &--accent { border-top: 2px solid $accent; }
+  }
+  &__kpi-label {
+    font-family: $mono;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: $slate-400;
+  }
+  &__kpi-value {
+    font-family: $serif;
+    font-size: 46px;
+    line-height: 1;
+    letter-spacing: -.03em;
+    color: $navy;
+    font-variant-numeric: tabular-nums;
+  }
+  &__kpi-sub { font-size: 12px; color: rgba(10, 25, 47, 0.5); }
+
+  // ── Split ──
+  &__cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+  &__main { display: flex; flex-direction: column; gap: 20px; }
+  &__side { display: flex; flex-direction: column; gap: 20px; }
+
+  // ── Panel ──
+  &__panel {
+    border: 1px solid $slate-200;
+    background: #fff;
+    padding: 24px 26px;
+
+    &--navy { background: $navy; border-color: $navy; padding: 24px 26px; }
+  }
+  &__panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid $slate-200;
+  }
+  &__panel-title {
+    font-family: $serif;
+    font-size: 18px;
+    letter-spacing: -.01em;
+    color: $navy;
+
+    &--invert { color: #fff; display: block; margin-bottom: 14px; }
+  }
+  &__panel-meta,
+  &__link {
+    font-family: $mono;
+    font-size: 12px;
+    color: $slate-400;
+    text-decoration: none;
+  }
+  &__link:hover { color: $accent; }
+
+  // ── Pipeline funnel ──
+  &__pipeline { display: flex; flex-direction: column; gap: 18px; }
+  &__stage-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  &__stage-label { font-size: 13px; color: $navy; }
+  &__stage-count {
+    margin-left: auto;
+    font-family: $mono;
+    font-size: 13px;
+    color: rgba(10, 25, 47, 0.7);
+    font-variant-numeric: tabular-nums;
+  }
+  &__dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    &--blue { background: $tone-blue; }
+    &--amber { background: $tone-amber; }
+    &--violet { background: $tone-violet; }
+    &--green { background: $tone-green; }
+  }
+  &__bar {
+    height: 8px;
+    background: $app-bg;
+    border: 1px solid $slate-200;
+    overflow: hidden;
+  }
+  &__bar-fill {
+    height: 100%;
+    min-width: 2px;
+    transition: width .3s ease;
+    &--blue { background: $tone-blue; }
+    &--amber { background: $tone-amber; }
+    &--violet { background: $tone-violet; }
+    &--green { background: $tone-green; }
+  }
+
+  // ── Table ──
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+
+    th {
+      text-align: left;
+      font-family: $mono;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: $slate-400;
+      padding: 0 12px 10px;
+    }
+    td {
+      padding: 14px 12px;
+      border-top: 1px solid $slate-200;
+      vertical-align: middle;
+    }
+    tr:hover td { background: $app-bg; }
+  }
+  &__client { line-height: 1.35; }
+  &__client {
+    display: block;
+    color: $navy;
+    font-weight: 600;
+    text-decoration: none;
+    &:hover { color: $accent; }
+  }
+  &__muted { color: rgba(10, 25, 47, 0.5); display: block; font-size: 12px; }
+  &__mono { font-family: $mono; color: rgba(10, 25, 47, 0.6); }
+  &__ta-right { text-align: right; }
+  &__empty {
+    font-size: 13px;
+    color: rgba(10, 25, 47, 0.5);
+    padding: 16px 0;
+  }
+
+  // ── Status pills ──
+  &__pill {
+    display: inline-block;
+    font-family: $mono;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    padding: 3px 8px;
+    border: 1px solid;
+    &--blue   { color: $tone-blue;   border-color: rgba(0,112,243,.35);  background: rgba(0,112,243,.07); }
+    &--amber  { color: $tone-amber;  border-color: rgba(217,119,6,.35);  background: rgba(217,119,6,.07); }
+    &--violet { color: $tone-violet; border-color: rgba(124,58,237,.35); background: rgba(124,58,237,.07); }
+    &--green  { color: $tone-green;  border-color: rgba(22,163,74,.35);  background: rgba(22,163,74,.07); }
+  }
+
+  // ── Quick actions ──
+  &__actions { display: flex; flex-direction: column; gap: 8px; }
+  &__action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid $slate-200;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: $navy;
+    text-decoration: none;
+    transition: border-color .15s ease, background-color .15s ease;
+
+    &:hover { border-color: $navy; background: $app-bg; }
+    .arrow { font-family: $mono; color: $accent; }
+
+    &--primary {
+      background: $navy;
+      border-color: $navy;
+      color: #fff;
+      &:hover { background: $navy-700; }
+      .arrow { color: #fff; }
+    }
+  }
+
+  // ── System health (navy panel) ──
+  &__health {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.75);
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      &:last-child { border-bottom: 0; }
+    }
+  }
+  &__health-val {
+    margin-left: auto;
+    font-family: $mono;
+    font-size: 11px;
+    color: #22c55e;
+  }
+}
+
+@media (max-width: 900px) {
+  .crm__kpis { grid-template-columns: repeat(2, 1fr); }
+  .crm__cols { grid-template-columns: 1fr; }
+}
+
+// Pulsing "live" dot
+.pristine-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+  animation: pristine-pulse 1.8s infinite;
+  margin-right: 8px;
+}
+@keyframes pristine-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
+  70%  { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+@media (max-width: 700px) {
+  .pristine-dash__grid { grid-template-columns: 1fr; }
+}

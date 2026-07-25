@@ -13,6 +13,12 @@ import { SERVICES, getInclusions, getFaqs } from "@/lib/services";
 const ADMIN_EMAIL = "admin@editorial.test";
 const ADMIN_PASSWORD = "changeme123";
 
+const CATEGORY_SEED = [
+  { title: "Residential", order: 1, blurb: "Homes, apartments, and private residences." },
+  { title: "Commercial", order: 2, blurb: "Offices, retail, and workspaces." },
+  { title: "Specialized", order: 3, blurb: "Precision treatments for demanding surfaces." },
+];
+
 const SPECS = [
   { label: "Filtration", value: "HEPA" },
   { label: "Chemistry", value: "pH-neutral" },
@@ -26,12 +32,17 @@ const SIDEBAR = [
 
 export async function GET() {
   const payload = await getPayload({ config });
-  const result: { admin?: string; created: string[]; skipped: string[] } = {
+  const result: {
+    admin?: string;
+    categories: string[];
+    created: string[];
+    skipped: string[];
+  } = {
+    categories: [],
     created: [],
     skipped: [],
   };
 
-  // 1) First admin user
   const users = await payload.find({ collection: "users", limit: 1 });
   if (users.totalDocs === 0) {
     await payload.create({
@@ -43,7 +54,26 @@ export async function GET() {
     result.admin = "exists (unchanged)";
   }
 
-  // 2) Services
+  // Upsert categories; keep an id lookup by title for the services below.
+  const catIdByTitle: Record<string, number | string> = {};
+  for (const c of CATEGORY_SEED) {
+    const existing = await payload.find({
+      collection: "categories",
+      where: { title: { equals: c.title } },
+      limit: 1,
+    });
+    if (existing.totalDocs > 0) {
+      catIdByTitle[c.title] = existing.docs[0].id;
+    } else {
+      const doc = await payload.create({
+        collection: "categories",
+        data: { title: c.title, order: c.order, blurb: c.blurb },
+      });
+      catIdByTitle[c.title] = doc.id;
+      result.categories.push(c.title);
+    }
+  }
+
   for (const s of SERVICES) {
     const existing = await payload.find({
       collection: "services",
@@ -59,7 +89,7 @@ export async function GET() {
       data: {
         title: s.title,
         slug: s.slug,
-        category: s.category,
+        category: catIdByTitle[s.category],
         durationLabel: s.durationLabel,
         tagline: s.tagline,
         marketing: s.marketing,

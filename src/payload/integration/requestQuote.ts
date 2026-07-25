@@ -32,7 +32,6 @@ export async function requestQuote(
   const serviceSlug = String(formData.get("serviceSlug") ?? "").trim();
   const serviceTitle = String(formData.get("serviceTitle") ?? "").trim();
 
-  // ── Validation ──
   if (!name || !email) {
     return { status: "error", message: "Name and email are required." };
   }
@@ -71,7 +70,6 @@ export async function requestQuote(
       },
     });
 
-    // ── Email stub ──
     // TODO: replace with a real transactional send (Resend / Postmark / SES).
     console.log(
       `[lead] #${lead.id} · ${name} <${email}> · service=${serviceRequested || "n/a"}`,

@@ -10,6 +10,7 @@ export const Leads: CollectionConfig = {
     group: "Sales",
     useAsTitle: "name",
     defaultColumns: ["name", "email", "serviceRequested", "status", "createdAt"],
+    hideAPIURL: true,
   },
   access: {
     create: () => true, // public form submits

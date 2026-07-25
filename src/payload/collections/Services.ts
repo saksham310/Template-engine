@@ -12,6 +12,7 @@ export const Services: CollectionConfig = {
     group: "Content",
     useAsTitle: "title",
     defaultColumns: ["title", "category", "slug", "updatedAt"],
+    hideAPIURL: true,
   },
   access: { read: () => true },
   fields: [
@@ -24,14 +25,13 @@ export const Services: CollectionConfig = {
     slugField("title"),
     {
       name: "category",
-      type: "select",
+      type: "relationship",
+      relationTo: "categories",
       required: true,
-      admin: { position: "sidebar" },
-      options: [
-        { label: "Residential", value: "Residential" },
-        { label: "Commercial", value: "Commercial" },
-        { label: "Specialized", value: "Specialized" },
-      ],
+      admin: {
+        position: "sidebar",
+        description: "Pick a category, or add a new one in the Categories collection.",
+      },
     },
     {
       name: "durationLabel",
@@ -44,7 +44,7 @@ export const Services: CollectionConfig = {
       type: "tabs",
       tabs: [
         {
-          label: "Hero & Editorial",
+          label: "Content",
           description: "Above-the-fold authority layer and pull-quote.",
           fields: [
             {
@@ -103,7 +103,25 @@ export const Services: CollectionConfig = {
           ],
         },
         {
-          label: "Specs & Inclusions",
+          label: "SEO",
+          description: "Search + social metadata. Falls back to tagline/title when blank.",
+          fields: [
+            {
+              name: "metaTitle",
+              type: "text",
+              admin: { description: "Browser tab / search title. Defaults to the service title." },
+            },
+            {
+              name: "metaDescription",
+              type: "textarea",
+              admin: {
+                description: "Search + social description (~155 chars). Defaults to the tagline.",
+              },
+            },
+          ],
+        },
+        {
+          label: "Technical",
           fields: [
             {
               name: "technicalSpecs",

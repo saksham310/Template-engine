@@ -11,18 +11,13 @@ import {
   Droplets,
   Flame,
   Layers,
-  Cog,
-  Leaf,
-  ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
 
 export type ServiceCategory = "Residential" | "Commercial" | "Specialized";
 
 export type ProcessStep = { n: string; title: string; description: string };
-export type Benefit = { icon: LucideIcon; title: string; description: string };
 export type Faq = { q: string; a: string };
-export type Testimonial = { quote: string; author: string; role: string };
 
 export type Service = {
   slug: string;
@@ -31,11 +26,9 @@ export type Service = {
   title: string;
   tagline: string;
   description: string;
-  /** long-form marketing value copy for the deep-dive section */
   marketing: string;
   durationLabel: string;
   image: string;
-  /** service-specific inclusions; getInclusions() appends the shared standard */
   inclusions: string[];
   process: ProcessStep[];
 };
@@ -43,7 +36,6 @@ export type Service = {
 const IMG = (id: string) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1400&q=80`;
 
-// ── Trust layer (Orangeball / Sajilo-style high-contrast proof, editorial variant) ──
 export const TRUST = {
   rating: "4.9/5",
   ratingCount: "240+ verified reviews",
@@ -54,16 +46,7 @@ export const TRUST = {
   guarantee: "Re-clean guarantee",
 } as const;
 
-// Technical spec line — Geist Mono, used in the Value Bento (col 3).
-export const TECH_SPECS = [
-  "HEPA filtration & air scrubbing",
-  "pH-neutral, surface-safe chemistry",
-  "12-point quality check",
-  "Colour-coded micro-fibre system",
-  "Insured, background-checked team of 2+",
-] as const;
-
-// Shared standard — appended to every service so inclusions read dense (15+).
+// Appended to every service so inclusion lists stay dense.
 const COMMON_INCLUSIONS = [
   "Fully insured, background-checked specialists",
   "Eco-certified, low-tox product system",
@@ -360,65 +343,10 @@ export const SERVICES: Service[] = [
   },
 ];
 
-// Gallery pool for the "Results" section (before/after showcase imagery).
-const GALLERY_POOL = [
-  "photo-1584622650111-993a426fbf0a",
-  "photo-1616486338812-3dadae4b4ace",
-  "photo-1600585154340-be6161a56a0c",
-  "photo-1600607687939-ce8a6c25118c",
-  "photo-1567767292278-a4f21aa2d36e",
-  "photo-1560448204-e02f11c3d0e2",
-];
-
-export const CATEGORIES: ServiceCategory[] = [
-  "Residential",
-  "Commercial",
-  "Specialized",
-];
-
-export function getService(slug: string): Service | undefined {
-  return SERVICES.find((s) => s.slug === slug);
-}
-
-export function servicesByCategory(category: ServiceCategory): Service[] {
-  return SERVICES.filter((s) => s.category === category);
-}
-
-/** Dense inclusion list: service-specific first, then the shared standard (15+ total). */
 export function getInclusions(service: Service): string[] {
   return [...service.inclusions, ...COMMON_INCLUSIONS];
 }
 
-/** Four gallery images: the hero shot plus three from the pool. */
-export function getGallery(service: Service): string[] {
-  const pool = GALLERY_POOL.filter((id) => !service.image.includes(id)).slice(0, 3);
-  return [service.image, ...pool.map(IMG)];
-}
-
-/** Three "Why this service" benefit cards. */
-export function getBenefits(service: Service): Benefit[] {
-  return [
-    {
-      icon: Cog,
-      title: "Specialist equipment",
-      description: `HEPA extraction and purpose-built tools calibrated for ${service.title.toLowerCase()} — not a domestic kit.`,
-    },
-    {
-      icon: Leaf,
-      title: "Eco-certified chemistry",
-      description:
-        "Low-tox, surface-safe agents that are effective on the finish and safe around children and pets.",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Vetted, insured staff",
-      description:
-        "Background-checked specialists, fully insured, backed by our satisfaction re-clean guarantee.",
-    },
-  ];
-}
-
-/** FAQ set — 4 objection-killers: price, insurance, access/keys, guarantee. */
 export function getFaqs(service: Service): Faq[] {
   return [
     {
@@ -438,20 +366,4 @@ export function getFaqs(service: Service): Faq[] {
       a: "Tell us within 48 hours and we return to re-clean the area at no additional cost — the guarantee stands on every job.",
     },
   ];
-}
-
-const MACRO_SHOT = IMG("photo-1527515637462-cff94eecc1ac");
-
-/** Macro "finish detail" shot for the Value Bento. */
-export function getMacroShot(): string {
-  return MACRO_SHOT;
-}
-
-/** Single editorial pull-quote testimonial (Source Serif, italic). */
-export function getTestimonial(service: Service): Testimonial {
-  return {
-    quote: `They treated our home the way a gallery treats its collection. The ${service.title.toLowerCase()} was flawless — I've stopped noticing the work and started noticing the light.`,
-    author: "Marguerite L.",
-    role: `${service.category} client · verified review`,
-  };
 }

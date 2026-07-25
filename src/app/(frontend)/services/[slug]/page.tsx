@@ -22,7 +22,10 @@ export async function generateMetadata({
   const { slug } = await params;
   const service = await getServiceView(slug);
   if (!service) return { title: "Service not found" };
-  return { title: `${service.title} — Éditorial`, description: service.tagline };
+  return {
+    title: `${service.seo.title} — Éditorial`,
+    description: service.seo.description,
+  };
 }
 
 export default async function ServicePage({

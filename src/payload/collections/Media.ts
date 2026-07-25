@@ -3,7 +3,7 @@ import type { CollectionConfig } from "payload";
 /** Uploads — the target of the Service hero `image` relationship/upload. */
 export const Media: CollectionConfig = {
   slug: "media",
-  admin: { group: "Content" },
+  admin: { group: "Content", hideAPIURL: true },
   access: { read: () => true },
   upload: {
     // Served from /media by default; add sizes for the editorial hero + cards.

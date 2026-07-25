@@ -1,18 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { getServiceList } from "@/payload/integration/getServiceView";
+import {
+  getServiceList,
+  getServiceCategories,
+} from "@/payload/integration/getServiceView";
 
 export const metadata: Metadata = {
   title: "All Services — Éditorial",
   description: "The full catalog of residential, commercial, and specialized services.",
 };
 
-const CATEGORY_ORDER = ["Residential", "Commercial", "Specialized"];
-
 export default async function ServicesIndex() {
-  const services = await getServiceList();
-  const categories = CATEGORY_ORDER.filter((c) =>
+  const [services, cats] = await Promise.all([
+    getServiceList(),
+    getServiceCategories(),
+  ]);
+  // Ordered category titles that actually have services, plus any orphans.
+  const ordered = cats.map((c) => c.title);
+  const extras = services
+    .map((s) => s.category)
+    .filter((c) => c && !ordered.includes(c));
+  const categories = [...ordered, ...Array.from(new Set(extras))].filter((c) =>
     services.some((s) => s.category === c),
   );
 
