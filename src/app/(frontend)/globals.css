@@ -1,0 +1,68 @@
+@import "tailwindcss";
+@config "../../../tailwind.config.ts";
+
+/*
+ * Fonts (Geist + Playfair Display) are loaded via next/font in layout.tsx,
+ * which exposes --font-geist and --font-playfair as CSS variables.
+ * Geist = everything. Playfair = editorial labels only.
+ */
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: #f9fafb; /* bg */
+    color: #0a192f; /* text */
+    font-family: var(--font-geist), system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  /* High-contrast display typography */
+  h1 {
+    font-weight: 700;
+    line-height: 0.9; /* leading-[0.9] */
+    letter-spacing: -0.05em; /* tracking-tighter */
+    font-size: clamp(2.75rem, 8vw, 6rem);
+  }
+
+  h2 {
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  /* Focus discipline — never remove rings (WCAG) */
+  :focus-visible {
+    outline: 2px solid #0070f3;
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Editorial labels: Playfair only */
+  .editorial-label {
+    font-family: var(--font-playfair), Georgia, serif;
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+
+  /* Prefer 1px border over shadow */
+  .card {
+    border: 1px solid rgb(226 232 240 / 0.6); /* slate-200/60 */
+    border-radius: 0.375rem; /* rounded-md */
+    background: #ffffff;
+  }
+}

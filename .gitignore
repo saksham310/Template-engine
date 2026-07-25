@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Payload
+payload.db
+payload.db-*
+.env
+src/payload/payload-types.ts
