@@ -9,6 +9,8 @@ import { Users } from "./src/payload/collections/Users";
 import { Media } from "./src/payload/collections/Media";
 import { Categories } from "./src/payload/collections/Categories";
 import { Services } from "./src/payload/collections/Services";
+import { Gallery } from "./src/payload/collections/Gallery";
+import { Posts } from "./src/payload/collections/Posts";
 import { Leads } from "./src/payload/collections/Leads";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -36,7 +38,33 @@ export default buildConfig({
     },
   },
   editor: lexicalEditor(),
-  collections: [Users, Media, Categories, Services, Leads],
+  collections: [Users, Media, Categories, Services, Gallery, Posts, Leads],
+  endpoints: [
+    {
+      path: "/seed-samples",
+      method: "post",
+      handler: async (req) => {
+        if (!req.user) {
+          return Response.json({ error: "Unauthorized" }, { status: 403 });
+        }
+        const { seedContent } = await import("./src/payload/seed/content");
+        const summary = await seedContent(req.payload);
+        return Response.json({ ok: true, ...summary });
+      },
+    },
+    {
+      path: "/purge",
+      method: "post",
+      handler: async (req) => {
+        if (!req.user) {
+          return Response.json({ error: "Unauthorized" }, { status: 403 });
+        }
+        const { purgeContent } = await import("./src/payload/seed/content");
+        const summary = await purgeContent(req.payload);
+        return Response.json({ ok: true, ...summary });
+      },
+    },
+  ],
   secret: process.env.PAYLOAD_SECRET || "dev-secret-change-in-production",
   db: sqliteAdapter({
     client: { url: process.env.DATABASE_URI || "file:./payload.db" },

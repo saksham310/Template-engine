@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import type { ServiceNavGroup } from "@/payload/integration/getServiceView";
+import { SITE_CONFIG, NAV_LINKS } from "@/config/site";
 
 const CATEGORY_BLURB: Record<string, string> = {
   Residential: "Homes, apartments, and private residences.",
@@ -30,13 +31,20 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
           href="/"
           className="font-mono text-sm font-semibold uppercase tracking-widest text-text"
         >
-          Éditorial<span className="text-accent">.</span>
+          {SITE_CONFIG.name}
+          <span className="text-accent">.</span>
         </Link>
 
         <nav className="hidden items-center gap-8 text-sm text-text/70 sm:flex">
-          <Link href="/#services" className="transition-colors hover:text-text">
-            Work
-          </Link>
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="transition-colors hover:text-text"
+            >
+              {link.label}
+            </Link>
+          ))}
 
           {/* Services — mega-menu trigger */}
           <button

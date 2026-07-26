@@ -1,14 +1,7 @@
 import React from "react";
 import { getPayload } from "payload";
 import config from "@payload-config";
-
-/**
- * PRISTINE CONSOLE — CRM dashboard (replaces the default collection list).
- * Server component: queries Leads live and renders a professional management
- * surface — KPI row, lead pipeline funnel, recent-requests table, quick actions.
- * Styling lives in admin-custom.scss (`.crm`); no CSS import here (the config /
- * importMap chain must stay CSS-free — CSS in Node code crashes generate).
- */
+import { ContentControls } from "./ContentControls";
 
 const ADMIN = "/admin/collections";
 
@@ -90,7 +83,6 @@ export const Dashboard = async () => {
 
   return (
     <div className="crm">
-      {/* Header */}
       <header className="crm__head">
         <div>
           <p className="crm__eyebrow">Admin Console</p>
@@ -98,7 +90,6 @@ export const Dashboard = async () => {
         </div>
       </header>
 
-      {/* KPI row */}
       <div className="crm__kpis">
         {kpis.map((k) => (
           <div key={k.label} className={`crm__kpi${k.accent ? " crm__kpi--accent" : ""}`}>
@@ -111,10 +102,8 @@ export const Dashboard = async () => {
         ))}
       </div>
 
-      {/* Main split */}
       <div className="crm__cols">
         <div className="crm__main">
-          {/* Pipeline */}
           <section className="crm__panel">
             <div className="crm__panel-head">
               <span className="crm__panel-title">Lead Pipeline</span>
@@ -142,7 +131,6 @@ export const Dashboard = async () => {
             </div>
           </section>
 
-          {/* Recent requests */}
           <section className="crm__panel">
             <div className="crm__panel-head">
               <span className="crm__panel-title">Recent Requests</span>
@@ -190,7 +178,6 @@ export const Dashboard = async () => {
           </section>
         </div>
 
-        {/* Side rail */}
         <aside className="crm__side">
           <section className="crm__panel">
             <div className="crm__panel-head">
@@ -212,6 +199,7 @@ export const Dashboard = async () => {
             </div>
           </section>
 
+          <ContentControls />
         </aside>
       </div>
     </div>

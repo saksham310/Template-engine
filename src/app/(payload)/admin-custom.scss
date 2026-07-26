@@ -426,14 +426,20 @@ $tone-green:  #16a34a;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
     border: 1px solid $slate-200;
+    background: #fff;
     padding: 12px 14px;
+    font-family: inherit;
     font-size: 13px;
+    text-align: left;
     color: $navy;
     text-decoration: none;
+    cursor: pointer;
     transition: border-color .15s ease, background-color .15s ease;
 
     &:hover { border-color: $navy; background: $app-bg; }
+    &:disabled { opacity: .5; cursor: not-allowed; }
     .arrow { font-family: $mono; color: $accent; }
 
     &--primary {
@@ -443,6 +449,23 @@ $tone-green:  #16a34a;
       &:hover { background: $navy-700; }
       .arrow { color: #fff; }
     }
+
+    &--danger {
+      color: #b42318;
+      &:hover { border-color: #b42318; background: rgba(180, 35, 24, 0.04); }
+      .arrow { color: #b42318; }
+    }
+  }
+
+  &__setup-status {
+    margin: 10px 0 0;
+    font-family: $mono;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    &--ok { color: #067647; }
+    &--err { color: #b42318; }
+    &--busy { color: $accent; }
+    &--idle { display: none; }
   }
 
   // ── System health (navy panel) ──
