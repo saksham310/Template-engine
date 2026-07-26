@@ -1,5 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { MotionStagger, MotionWrapper, fadeUpPlain } from "./MotionWrapper";
+
+const REVEAL = { willChange: "transform, opacity" } as const;
 
 type BentoService = {
   slug: string;
@@ -45,15 +51,17 @@ export default function ServiceBento({
 
   return (
     <section className="mx-auto max-w-7xl px-5 py-16 sm:py-28">
-      <header className="mb-7 max-w-xl">
+      <MotionWrapper className="mb-7 max-w-xl">
         <Eyebrow>The Services</Eyebrow>
         <h2 className="mt-2 text-3xl tracking-tight sm:text-4xl">
           A standard of finish, room by room.
         </h2>
-      </header>
+      </MotionWrapper>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:auto-rows-[minmax(0,auto)]">
-        <article
+      <MotionStagger className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:auto-rows-[minmax(0,auto)]">
+        <motion.article
+          variants={fadeUpPlain}
+          style={REVEAL}
           className={`${cardBase} aspect-[4/5] sm:aspect-auto sm:col-span-2 sm:row-span-2 sm:min-h-[440px] text-white`}
         >
           <Image
@@ -86,10 +94,14 @@ export default function ServiceBento({
               <span aria-hidden="true">→</span>
             </Link>
           </div>
-        </article>
+        </motion.article>
 
         {second && (
-          <article className={`${cardBase} aspect-square sm:aspect-auto sm:min-h-[240px] bg-white text-text`}>
+          <motion.article
+            variants={fadeUpPlain}
+            style={REVEAL}
+            className={`${cardBase} aspect-square sm:aspect-auto sm:min-h-[240px] bg-white text-text`}
+          >
             <Image
               src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=700&q=80"
               alt="Detail of a spotless kitchen surface"
@@ -109,10 +121,12 @@ export default function ServiceBento({
               <Eyebrow>{second.category}</Eyebrow>
               <h3 className="mt-1 text-2xl font-semibold tracking-tight">{second.title}</h3>
             </Link>
-          </article>
+          </motion.article>
         )}
 
-        <article
+        <motion.article
+          variants={fadeUpPlain}
+          style={REVEAL}
           className={`${cardBase} min-h-[180px] bg-white p-5 text-text`}
         >
           <Grain opacity={0.1} />
@@ -136,9 +150,11 @@ export default function ServiceBento({
               </li>
             </ul>
           </div>
-        </article>
+        </motion.article>
 
-        <article
+        <motion.article
+          variants={fadeUpPlain}
+          style={REVEAL}
           className={`${cardBase} sm:col-span-3 min-h-[120px] bg-text text-white`}
         >
           <Grain opacity={0.18} />
@@ -157,8 +173,8 @@ export default function ServiceBento({
               <span aria-hidden="true">→</span>
             </a>
           </div>
-        </article>
-      </div>
+        </motion.article>
+      </MotionStagger>
     </section>
   );
 }

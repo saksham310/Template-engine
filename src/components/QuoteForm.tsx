@@ -1,8 +1,18 @@
 "use client";
 
 import { useActionState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { requestQuote, type QuoteState } from "@/payload/integration/requestQuote";
+import { EASE } from "./MotionWrapper";
+
+const SLIDE = {
+  initial: { opacity: 0, y: 8 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -8 },
+  transition: { duration: 0.4, ease: EASE },
+  style: { willChange: "transform, opacity" },
+} as const;
 
 type Props = {
   serviceSlug: string;
@@ -25,18 +35,24 @@ export default function QuoteForm({ serviceSlug, serviceTitle }: Props) {
 
   if (state.status === "success") {
     return (
-      <div className="flex flex-col items-center gap-3 border border-slate-200/60 bg-white p-8 text-center">
-        <span className="flex h-10 w-10 items-center justify-center rounded-sm bg-accent/10 text-accent">
-          <Check className="h-5 w-5" strokeWidth={2.5} />
-        </span>
-        <h3 className="font-serif text-xl text-text">Request received.</h3>
-        <p className="max-w-sm text-sm text-text/60">{state.message}</p>
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="success"
+          {...SLIDE}
+          className="flex flex-col items-center gap-3 border border-slate-200/60 bg-white p-8 text-center"
+        >
+          <span className="flex h-10 w-10 items-center justify-center rounded-sm bg-accent/10 text-accent">
+            <Check className="h-5 w-5" strokeWidth={2.5} />
+          </span>
+          <h3 className="font-serif text-xl text-text">Request received.</h3>
+          <p className="max-w-sm text-sm text-text/60">{state.message}</p>
+        </motion.div>
+      </AnimatePresence>
     );
   }
 
   return (
-    <form action={formAction} className="grid gap-3">
+    <motion.form key="form" {...SLIDE} action={formAction} className="grid gap-3">
       {/* Service context — resolved to a relationship server-side */}
       <input type="hidden" name="serviceSlug" value={serviceSlug} />
       <input type="hidden" name="serviceTitle" value={serviceTitle} />
@@ -106,6 +122,6 @@ export default function QuoteForm({ serviceSlug, serviceTitle }: Props) {
       <p className="text-center font-mono text-[11px] text-text/40">
         No payment required. We&apos;ll contact you within 60 minutes.
       </p>
-    </form>
+    </motion.form>
   );
 }

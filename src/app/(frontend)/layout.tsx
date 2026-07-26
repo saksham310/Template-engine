@@ -5,6 +5,7 @@ import {
   Playfair_Display,
   Source_Serif_4,
 } from "next/font/google";
+import { MotionConfig } from "framer-motion";
 import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -51,9 +52,11 @@ export default async function RootLayout({
       className={`${geist.variable} ${geistMono.variable} ${playfair.variable} ${sourceSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col overflow-x-hidden bg-bg text-text">
-        <SiteHeader nav={nav} />
-        <main className="w-full max-w-full flex-1">{children}</main>
-        <SiteFooter />
+        <MotionConfig reducedMotion="user">
+          <SiteHeader nav={nav} />
+          <main className="w-full max-w-full flex-1">{children}</main>
+          <SiteFooter />
+        </MotionConfig>
       </body>
     </html>
   );

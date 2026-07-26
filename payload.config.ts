@@ -3,6 +3,7 @@ import { fileURLToPath } from "url";
 import { buildConfig } from "payload";
 import { sqliteAdapter } from "@payloadcms/db-sqlite";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { s3Storage } from "@payloadcms/storage-s3";
 import sharp from "sharp";
 
 import { Users } from "./src/payload/collections/Users";
@@ -14,6 +15,48 @@ import { Posts } from "./src/payload/collections/Posts";
 import { Leads } from "./src/payload/collections/Leads";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
+
+/**
+ * S3 media storage. Enabled only when S3_BUCKET is set — otherwise media
+ * falls back to local disk (dev). Uploads (originals + generated sizes) go to
+ * the bucket under the `media/` prefix; the public URL is written to the DB
+ * `url` field so the frontend loads straight from S3/CDN, bypassing Payload.
+ */
+const S3_BUCKET = process.env.S3_BUCKET ?? "";
+const S3_REGION = process.env.S3_REGION ?? "us-east-1";
+const S3_ENDPOINT = process.env.S3_ENDPOINT; // set for R2/MinIO/other S3-compatible
+const S3_PUBLIC_URL = process.env.S3_PUBLIC_URL; // CDN or bucket base, no trailing slash
+const S3_MEDIA_PREFIX = "media";
+
+const s3PublicBase = (
+  S3_PUBLIC_URL ?? `https://${S3_BUCKET}.s3.${S3_REGION}.amazonaws.com`
+).replace(/\/$/, "");
+
+const s3Plugin = s3Storage({
+  enabled: Boolean(S3_BUCKET),
+  acl: "public-read",
+  collections: {
+    media: {
+      prefix: S3_MEDIA_PREFIX,
+      // Serve straight from S3/CDN (skip Payload's proxy route) and persist
+      // the absolute URL to the database.
+      disablePayloadAccessControl: true,
+      generateFileURL: ({ filename, prefix }) => {
+        const key = [prefix, filename].filter(Boolean).join("/");
+        return `${s3PublicBase}/${key}`;
+      },
+    },
+  },
+  bucket: S3_BUCKET,
+  config: {
+    region: S3_REGION,
+    ...(S3_ENDPOINT ? { endpoint: S3_ENDPOINT, forcePathStyle: true } : {}),
+    credentials: {
+      accessKeyId: process.env.S3_ACCESS_KEY_ID ?? "",
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? "",
+    },
+  },
+});
 
 export default buildConfig({
   admin: {
@@ -65,6 +108,7 @@ export default buildConfig({
       },
     },
   ],
+  plugins: [s3Plugin],
   secret: process.env.PAYLOAD_SECRET || "dev-secret-change-in-production",
   db: sqliteAdapter({
     client: { url: process.env.DATABASE_URI || "file:./payload.db" },

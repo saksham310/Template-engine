@@ -2,8 +2,10 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 import { Clock } from "lucide-react";
 import { TRUST } from "@/lib/services";
+import { EASE } from "./MotionWrapper";
 import QuoteForm from "./QuoteForm";
 
 type Titles = Record<string, string>;
@@ -44,9 +46,21 @@ function RequestQuoteInner({ titles }: { titles: Titles }) {
               Request a Quote
             </p>
             <h2 className="mt-2 font-serif text-3xl tracking-tight text-text sm:text-4xl lg:text-5xl">
-              {selected
-                ? `Request your ${selected.title} quote`
-                : "Request your personalised quote"}
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={selected ? selected.title : "default"}
+                  className="inline-block"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.4, ease: EASE }}
+                  style={{ willChange: "transform, opacity" }}
+                >
+                  {selected
+                    ? `Request your ${selected.title} quote`
+                    : "Request your personalised quote"}
+                </motion.span>
+              </AnimatePresence>
             </h2>
             <p className="mt-4 max-w-md text-base leading-relaxed text-text/60">
               Tell us about your space. Every request is reviewed individually —

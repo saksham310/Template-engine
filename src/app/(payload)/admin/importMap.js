@@ -23,6 +23,7 @@ import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { Icon as Icon_89356d7cfffcf024b069ea09bec4d33f } from '../../../../src/payload/admin/Icon'
 import { Logo as Logo_d2905989357a12b553c2a3c64581debd } from '../../../../src/payload/admin/Logo'
+import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { Dashboard as Dashboard_5d80f68b1ab7d058d24d260cf7fef392 } from '../../../../src/payload/admin/Dashboard'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
@@ -53,6 +54,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "/src/payload/admin/Icon#Icon": Icon_89356d7cfffcf024b069ea09bec4d33f,
   "/src/payload/admin/Logo#Logo": Logo_d2905989357a12b553c2a3c64581debd,
+  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   "/src/payload/admin/Dashboard#Dashboard": Dashboard_5d80f68b1ab7d058d24d260cf7fef392,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

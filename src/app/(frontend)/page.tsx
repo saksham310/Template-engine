@@ -4,6 +4,7 @@ import ServiceBento from "@/components/ServiceBento";
 import BookingWizard from "@/components/BookingWizard";
 import { getServiceList } from "@/payload/integration/getServiceView";
 import { HOME_FEATURES, HOME_FAQS } from "@/config/site";
+import { MotionWrapper, MotionStagger, MotionItem } from "@/components/MotionWrapper";
 
 const ICONS: Record<string, LucideIcon> = {
   ShieldCheck,
@@ -28,7 +29,7 @@ export default async function Home() {
 
       <section className="border-b border-slate-200/60 bg-bg">
         <div className="mx-auto max-w-7xl px-5 py-28">
-          <header className="max-w-2xl">
+          <MotionWrapper className="max-w-2xl">
             <div className="flex items-center gap-3">
               <span className="editorial-label text-xs tracking-widest text-accent">
                 Why Choose Us
@@ -43,13 +44,13 @@ export default async function Home() {
               Anyone can leave a room looking clean. We hold four standards that decide
               whether it stays that way — and whether you ever think about it again.
             </p>
-          </header>
+          </MotionWrapper>
 
-          <div className="mt-16 grid sm:grid-cols-2 sm:gap-x-16">
+          <MotionStagger className="mt-16 grid sm:grid-cols-2 sm:gap-x-16">
             {HOME_FEATURES.map((f, i) => {
               const Icon = ICONS[f.icon] ?? ShieldCheck;
               return (
-                <div
+                <MotionItem
                   key={f.title}
                   className="group flex gap-6 border-t border-slate-200/60 py-9"
                 >
@@ -67,10 +68,10 @@ export default async function Home() {
                       {f.description}
                     </p>
                   </div>
-                </div>
+                </MotionItem>
               );
             })}
-          </div>
+          </MotionStagger>
         </div>
       </section>
 
@@ -101,10 +102,10 @@ export default async function Home() {
             </a>
           </header>
 
-          <div className="border-t border-slate-200/60">
+          <MotionStagger className="border-t border-slate-200/60">
             {HOME_FAQS.map((faq, i) => (
+              <MotionItem key={faq.question}>
               <details
-                key={faq.question}
                 open={i === 0}
                 className="group border-b border-slate-200/60"
               >
@@ -124,8 +125,9 @@ export default async function Home() {
                   {faq.answer}
                 </p>
               </details>
+              </MotionItem>
             ))}
-          </div>
+          </MotionStagger>
         </div>
       </section>
 
