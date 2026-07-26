@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import type { ServiceNavGroup } from "@/payload/integration/getServiceView";
 import { SITE_CONFIG, NAV_LINKS } from "@/config/site";
 
@@ -12,13 +12,9 @@ const CATEGORY_BLURB: Record<string, string> = {
   Specialized: "Post-build, restoration, and targeted care.",
 };
 
-/**
- * Global header — thin instrument bar with a Services mega-menu.
- * Nav data is fetched from Payload in (frontend)/layout.tsx and passed in.
- * Solid surfaces (no glass), sharp corners, 1px hairlines.
- */
 export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const cols = Math.min(Math.max(nav.length, 1), 3);
 
   return (
@@ -73,9 +69,20 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
             Request Quote →
           </Link>
         </nav>
+
+        {/* Mobile trigger */}
+        <button
+          type="button"
+          aria-label="Open menu"
+          aria-expanded={mobileOpen}
+          onClick={() => setMobileOpen(true)}
+          className="-mr-1 inline-flex h-9 w-9 items-center justify-center text-text sm:hidden"
+        >
+          <Menu className="h-6 w-6" strokeWidth={1.75} />
+        </button>
       </div>
 
-      {/* Mega-menu panel */}
+      {/* Mega-menu panel (desktop) */}
       {menuOpen && nav.length > 0 && (
         <div className="absolute inset-x-0 top-full hidden border-b border-slate-200/60 bg-white sm:block">
           <div
@@ -133,6 +140,61 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
                 Request Quote →
               </Link>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Full-screen editorial overlay (mobile) */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-[60] flex flex-col bg-bg sm:hidden">
+          <div className="flex items-center justify-between border-b border-slate-200/60 px-5 py-4">
+            <Link
+              href="/"
+              onClick={() => setMobileOpen(false)}
+              className="font-mono text-sm font-semibold uppercase tracking-widest text-text"
+            >
+              {SITE_CONFIG.name}
+              <span className="text-accent">.</span>
+            </Link>
+            <button
+              type="button"
+              aria-label="Close menu"
+              onClick={() => setMobileOpen(false)}
+              className="-mr-1 inline-flex h-9 w-9 items-center justify-center text-text"
+            >
+              <X className="h-6 w-6" strokeWidth={1.75} />
+            </button>
+          </div>
+
+          <nav className="flex flex-1 flex-col justify-center gap-1 px-5">
+            {[...NAV_LINKS, { label: "Services", href: "/services" }].map((link, i) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="group flex items-baseline gap-4 border-b border-slate-200/60 py-4"
+              >
+                <span className="font-mono text-xs tabular-nums text-text/30">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="text-4xl font-bold tracking-tighter text-text transition-colors group-hover:text-accent">
+                  {link.label}
+                </span>
+              </Link>
+            ))}
+          </nav>
+
+          <div className="border-t border-slate-200/60 px-5 py-6">
+            <Link
+              href="/#book"
+              onClick={() => setMobileOpen(false)}
+              className="flex w-full items-center justify-center rounded-sm bg-text px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-text/90"
+            >
+              Request a Quote →
+            </Link>
+            <p className="editorial-label mt-6 text-base text-text/50">
+              {SITE_CONFIG.tagline}
+            </p>
           </div>
         </div>
       )}

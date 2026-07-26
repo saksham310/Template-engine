@@ -44,17 +44,17 @@ export default function ServiceBento({
   if (!lead) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-5 py-28">
+    <section className="mx-auto max-w-7xl px-5 py-16 sm:py-28">
       <header className="mb-7 max-w-xl">
         <Eyebrow>The Services</Eyebrow>
-        <h2 className="mt-2 text-4xl tracking-tight">
+        <h2 className="mt-2 text-3xl tracking-tight sm:text-4xl">
           A standard of finish, room by room.
         </h2>
       </header>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:auto-rows-[minmax(0,auto)]">
         <article
-          className={`${cardBase} sm:col-span-2 sm:row-span-2 min-h-[440px] text-white`}
+          className={`${cardBase} aspect-[4/5] sm:aspect-auto sm:col-span-2 sm:row-span-2 sm:min-h-[440px] text-white`}
         >
           <Image
             src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80"
@@ -89,7 +89,7 @@ export default function ServiceBento({
         </article>
 
         {second && (
-          <article className={`${cardBase} min-h-[240px] bg-white text-text`}>
+          <article className={`${cardBase} aspect-square sm:aspect-auto sm:min-h-[240px] bg-white text-text`}>
             <Image
               src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=700&q=80"
               alt="Detail of a spotless kitchen surface"

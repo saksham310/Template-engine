@@ -50,9 +50,9 @@ export default async function RootLayout({
       lang="en"
       className={`${geist.variable} ${geistMono.variable} ${playfair.variable} ${sourceSerif.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-bg text-text">
+      <body className="min-h-full flex flex-col overflow-x-hidden bg-bg text-text">
         <SiteHeader nav={nav} />
-        <main className="flex-1">{children}</main>
+        <main className="w-full max-w-full flex-1">{children}</main>
         <SiteFooter />
       </body>
     </html>

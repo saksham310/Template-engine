@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Clock } from "lucide-react";
 import { TRUST } from "@/lib/services";
@@ -10,10 +10,6 @@ type Titles = Record<string, string>;
 
 /**
  * Home "Request a Quote" section (#book).
- * Same UI as the service-detail personalised-quote form: Name / Email / Phone /
- * Tell us about the space. Deep-linkable via ?service=<slug> (set by the detail
- * pane / cards), which preselects the service the request is tied to.
- *
  * useSearchParams needs a Suspense boundary during static prerender.
  */
 function RequestQuoteInner({ titles }: { titles: Titles }) {
@@ -25,31 +21,61 @@ function RequestQuoteInner({ titles }: { titles: Titles }) {
   const serviceTitle = title ?? "your space";
   const selected = title ? { title } : undefined;
 
-  return (
-    <section className="mx-auto max-w-7xl px-5 py-28">
-      <div className="grid gap-x-12 gap-y-8 lg:grid-cols-2">
-        <div>
-          <p className="editorial-label text-xs tracking-widest text-text/50">
-            Request a Quote
-          </p>
-          <h2 className="mt-2 font-serif text-4xl tracking-tight text-text sm:text-5xl">
-            {selected
-              ? `Request your ${selected.title} quote`
-              : "Request your personalised quote"}
-          </h2>
-          <p className="mt-4 max-w-md text-base leading-relaxed text-text/60">
-            Tell us about your space. Every request is reviewed individually —
-            no fixed rates, no obligation, no payment details.
-          </p>
-          <div className="mt-6 flex items-center gap-2 font-mono text-xs text-text/50">
-            <Clock className="h-3.5 w-3.5" strokeWidth={2} />
-            Estimates delivered within {TRUST.responseTime}
-          </div>
-        </div>
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const [formVisible, setFormVisible] = useState(false);
 
-        <QuoteForm serviceSlug={serviceSlug} serviceTitle={serviceTitle} />
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setFormVisible(entry.isIntersecting),
+      { rootMargin: "-20% 0px -40% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <>
+      <section ref={sectionRef} className="mx-auto max-w-7xl px-5 py-16 sm:py-28">
+        <div className="grid gap-x-12 gap-y-8 lg:grid-cols-2">
+          <div>
+            <p className="editorial-label text-xs tracking-widest text-text/50">
+              Request a Quote
+            </p>
+            <h2 className="mt-2 font-serif text-3xl tracking-tight text-text sm:text-4xl lg:text-5xl">
+              {selected
+                ? `Request your ${selected.title} quote`
+                : "Request your personalised quote"}
+            </h2>
+            <p className="mt-4 max-w-md text-base leading-relaxed text-text/60">
+              Tell us about your space. Every request is reviewed individually —
+              no fixed rates, no obligation, no payment details.
+            </p>
+            <div className="mt-6 flex items-center gap-2 font-mono text-xs text-text/50">
+              <Clock className="h-3.5 w-3.5" strokeWidth={2} />
+              Estimates delivered within {TRUST.responseTime}
+            </div>
+          </div>
+
+          <QuoteForm serviceSlug={serviceSlug} serviceTitle={serviceTitle} />
+        </div>
+      </section>
+
+      {/* Mobile sticky quote bar — hidden once the form is in view */}
+      <div
+        className={`fixed inset-x-0 bottom-0 z-40 border-t border-slate-200/60 bg-bg/95 px-5 py-3 backdrop-blur-sm transition-transform duration-300 ease-out sm:hidden ${
+          formVisible ? "translate-y-full" : "translate-y-0"
+        }`}
+      >
+        <a
+          href="#book"
+          className="flex w-full items-center justify-center rounded-sm bg-text px-6 py-3.5 text-base font-semibold text-white transition-colors hover:bg-text/90"
+        >
+          Request a Quote →
+        </a>
       </div>
-    </section>
+    </>
   );
 }
 
@@ -57,7 +83,7 @@ export default function BookingWizard({ titles }: { titles: Titles }) {
   return (
     <Suspense
       fallback={
-        <section className="mx-auto max-w-7xl px-5 py-28">
+        <section className="mx-auto max-w-7xl px-5 py-16 sm:py-28">
           <div className="h-96 animate-pulse border border-slate-200/60 bg-white" />
         </section>
       }
