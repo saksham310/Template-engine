@@ -43,7 +43,7 @@ export async function requestQuote(
     const payload = await getPayload({ config });
 
     // Resolve the service slug to a document id for the relationship (if seeded).
-    let serviceRequested: number | string | undefined;
+    let serviceRequested: number | undefined;
     if (serviceSlug && serviceSlug !== "general") {
       const { docs } = await payload.find({
         collection: "services",
@@ -51,7 +51,7 @@ export async function requestQuote(
         limit: 1,
         depth: 0,
       });
-      serviceRequested = docs[0]?.id;
+      serviceRequested = docs[0] ? Number(docs[0].id) : undefined;
     }
 
     const lead = await payload.create({

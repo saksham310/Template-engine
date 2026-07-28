@@ -2,9 +2,11 @@
   "name": "editorial-platform",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "payload migrate && next build",
+    "migrate:create": "payload migrate:create",
     "start": "next start",
     "lint": "eslint"
   },

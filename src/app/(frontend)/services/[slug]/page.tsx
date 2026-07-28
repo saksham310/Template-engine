@@ -10,8 +10,12 @@ import ServiceTemplate from "@/components/ServiceTemplate";
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const slugs = await getAllServiceSlugs();
-  return slugs.map((slug) => ({ slug }));
+  try {
+    const slugs = await getAllServiceSlugs();
+    return slugs.map((slug) => ({ slug }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({

@@ -111,7 +111,12 @@ export default buildConfig({
   plugins: [s3Plugin],
   secret: process.env.PAYLOAD_SECRET || "dev-secret-change-in-production",
   db: sqliteAdapter({
-    client: { url: process.env.DATABASE_URI || "file:./payload.db" },
+    client: {
+      url: process.env.DATABASE_URI || "file:./payload.db",
+      authToken: process.env.DATABASE_AUTH_TOKEN,
+    },
+    push: process.env.NODE_ENV !== "production",
+    migrationDir: path.resolve(dirname, "src/migrations"),
   }),
   sharp,
   typescript: {
