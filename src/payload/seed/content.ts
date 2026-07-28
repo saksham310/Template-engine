@@ -30,7 +30,7 @@ async function uploadRemote(
   payload: Payload,
   url: string,
   alt: string,
-): Promise<number | string | undefined> {
+): Promise<number | undefined> {
   const res = await fetch(url);
   if (!res.ok) return undefined;
   const buffer = Buffer.from(await res.arrayBuffer());
@@ -42,13 +42,13 @@ async function uploadRemote(
     data: { alt },
     file: { data: buffer, mimetype, name, size: buffer.length },
   });
-  return doc.id;
+  return Number(doc.id);
 }
 
 export async function seedContent(payload: Payload): Promise<SeedSummary> {
   const summary: SeedSummary = { categories: 0, services: 0, gallery: 0, posts: 0 };
 
-  const catIdByTitle: Record<string, number | string> = {};
+  const catIdByTitle: Record<string, number> = {};
   for (const c of CATEGORY_SEED) {
     const existing = await payload.find({
       collection: "categories",
@@ -56,13 +56,13 @@ export async function seedContent(payload: Payload): Promise<SeedSummary> {
       limit: 1,
     });
     if (existing.totalDocs > 0) {
-      catIdByTitle[c.title] = existing.docs[0].id;
+      catIdByTitle[c.title] = Number(existing.docs[0].id);
     } else {
       const doc = await payload.create({
         collection: "categories",
         data: { title: c.title, order: c.order, blurb: c.blurb },
       });
-      catIdByTitle[c.title] = doc.id;
+      catIdByTitle[c.title] = Number(doc.id);
       summary.categories++;
     }
   }
@@ -116,7 +116,7 @@ export async function seedContent(payload: Payload): Promise<SeedSummary> {
       collection: "gallery",
       data: {
         title: g.title,
-        category: g.category,
+        category: g.category as "Residential" | "Commercial" | "Specialized",
         description: g.description,
         image,
       },
