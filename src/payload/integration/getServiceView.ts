@@ -169,6 +169,12 @@ export type ServiceListItem = {
   tagline: string;
   durationLabel: string;
   imageUrl: string;
+  /** Published rate, verbatim from the editor. Empty = not publicly priced. */
+  price: string;
+  priceUnit: string;
+  /** What the rate covers — the ticked list on the pricing card. */
+  priceNotes: string[];
+  popular: boolean;
 };
 
 /**
@@ -195,6 +201,12 @@ export async function getServiceList(): Promise<ServiceListItem[]> {
     tagline: d.tagline ?? d.editorialQuote?.quote ?? "",
     durationLabel: d.durationLabel ?? "By scope",
     imageUrl: heroImage(d.hero),
+    price: typeof d.price === "string" ? d.price.trim() : "",
+    priceUnit: typeof d.priceUnit === "string" ? d.priceUnit.trim() : "",
+    priceNotes: Array.isArray(d.priceNotes)
+      ? d.priceNotes.map((n: any) => n.note).filter(Boolean)
+      : [],
+    popular: d.pricePopular === true,
   }));
   /* eslint-enable @typescript-eslint/no-explicit-any */
 }

@@ -107,6 +107,60 @@ export const Services: CollectionConfig = {
           ],
         },
         {
+          label: "Pricing",
+          description:
+            "The published rate, shown on the home page pricing section. Leave the price empty to keep this service out of it.",
+          fields: [
+            {
+              type: "row",
+              fields: [
+                {
+                  name: "price",
+                  type: "text",
+                  label: "Price",
+                  admin: {
+                    width: "50%",
+                    description:
+                      'Written exactly as it should appear, e.g. "$120" or "From $45". Empty = not shown in pricing.',
+                  },
+                },
+                {
+                  name: "priceUnit",
+                  type: "text",
+                  label: "Unit",
+                  defaultValue: "per visit",
+                  admin: {
+                    width: "50%",
+                    description: 'What the price buys, e.g. "per visit", "per hour", "per m²".',
+                  },
+                },
+              ],
+            },
+            {
+              name: "priceNotes",
+              type: "array",
+              label: "What's included",
+              labels: { singular: "Line", plural: "Lines" },
+              maxRows: 6,
+              admin: {
+                description:
+                  "Ticked list on the pricing card. These are pricing promises — only list what the rate actually covers.",
+              },
+              fields: [{ name: "note", type: "text", required: true }],
+            },
+            {
+              name: "pricePopular",
+              type: "checkbox",
+              label: "Highlight this one",
+              defaultValue: false,
+              admin: {
+                description:
+                  "Lifts the card and marks it. Only the first ticked service is highlighted.",
+              },
+            },
+          ],
+        },
+        {
           label: "SEO",
           description: "Search + social metadata. Falls back to tagline/title when blank.",
           fields: [

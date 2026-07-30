@@ -187,6 +187,103 @@ export const Home: GlobalConfig = {
         },
 
         {
+          label: "Pricing",
+          description:
+            "The rate cards. Prices, inclusions, and the highlight come from each service's own Pricing tab — here you edit the wording around them. Services without a price are skipped, and only the first four are shown.",
+          fields: [
+            {
+              name: "pricingEnabled",
+              type: "checkbox",
+              label: "Show the pricing section",
+              defaultValue: true,
+              admin: {
+                description:
+                  "Untick to hide the whole section without losing any of this wording.",
+              },
+            },
+            {
+              name: "pricingHeadline",
+              type: "text",
+              label: "Headline",
+              defaultValue: HOME_SECTIONS.pricing.headline,
+            },
+            {
+              name: "pricingBody",
+              type: "textarea",
+              label: "Line under the headline",
+              defaultValue: HOME_SECTIONS.pricing.body,
+            },
+            {
+              type: "row",
+              fields: [
+                {
+                  name: "pricingCtaLabel",
+                  type: "text",
+                  label: "Button under the headline",
+                  defaultValue: HOME_SECTIONS.pricing.ctaLabel,
+                  admin: { width: "50%" },
+                },
+                {
+                  name: "pricingCtaHref",
+                  type: "text",
+                  label: "Button link",
+                  defaultValue: HOME_SECTIONS.pricing.ctaHref,
+                  admin: { width: "50%", description: PATH_NOTE },
+                },
+              ],
+            },
+            {
+              type: "row",
+              fields: [
+                {
+                  name: "pricingCardCtaLabel",
+                  type: "text",
+                  label: "Button on each card",
+                  defaultValue: HOME_SECTIONS.pricing.cardCtaLabel,
+                  admin: {
+                    width: "50%",
+                    description:
+                      "Goes to the quote form with that service already selected.",
+                  },
+                },
+                {
+                  name: "pricingIncludedLabel",
+                  type: "text",
+                  label: "Heading above the ticked list",
+                  defaultValue: HOME_SECTIONS.pricing.includedLabel,
+                  admin: { width: "50%" },
+                },
+              ],
+            },
+            {
+              type: "row",
+              fields: [
+                {
+                  name: "pricingPopularLabel",
+                  type: "text",
+                  label: "Tag on the highlighted card",
+                  defaultValue: HOME_SECTIONS.pricing.popularLabel,
+                  admin: {
+                    width: "50%",
+                    description: "Which card is highlighted is set per service.",
+                  },
+                },
+                {
+                  name: "pricingViewAllLabel",
+                  type: "text",
+                  label: "“View all” button",
+                  defaultValue: HOME_SECTIONS.pricing.viewAllLabel,
+                  admin: {
+                    width: "50%",
+                    description: "Only appears when more than four services are priced.",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+
+        {
           label: "Why Choose Us",
           description: "The numbered list of standards.",
           fields: [

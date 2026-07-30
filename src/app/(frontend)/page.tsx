@@ -1,6 +1,7 @@
 import { ShieldCheck, Leaf, Users, Clock, Sparkles, type LucideIcon } from "lucide-react";
 import Hero from "@/components/Hero";
 import ServiceBento from "@/components/ServiceBento";
+import PricingCards from "@/components/PricingCards";
 import BookingWizard from "@/components/BookingWizard";
 import { getServiceList } from "@/payload/integration/getServiceView";
 import { getHomeContent } from "@/payload/integration/getHomeContent";
@@ -27,6 +28,8 @@ export default async function Home() {
       <div id="services" className="border-y border-line bg-surface">
         <ServiceBento services={list} heading={content.services} />
       </div>
+
+      <PricingCards services={list} content={content.pricing} />
 
       <section className="border-b border-line bg-bg">
         <div className="mx-auto max-w-7xl px-5 py-28">

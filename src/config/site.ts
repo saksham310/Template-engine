@@ -98,6 +98,17 @@ export const HOME_SECTIONS = {
     addOnsBadge: "Add-ons",
     addOnsTitle: "À La Carte",
   },
+  pricing: {
+    headline: "Priced by the room, not the hour.",
+    body: "Published rates for our most-requested work. Anything outside the listed scope is quoted after a walkthrough.",
+    ctaLabel: "Request a quote",
+    ctaHref: "/#book",
+    cardCtaLabel: "Select & book",
+    viewAllLabel: "View all services",
+    viewAllHref: "/services",
+    popularLabel: "Most booked",
+    includedLabel: "What's included",
+  },
   features: {
     eyebrow: "Why Choose Us",
     headline: "The difference is in the",

@@ -22,6 +22,18 @@ export type HomeContent = {
     addOnsTitle: string;
     addOns: { label: string; meta: string }[];
   };
+  pricing: {
+    enabled: boolean;
+    headline: string;
+    body: string;
+    ctaLabel: string;
+    ctaHref: string;
+    cardCtaLabel: string;
+    includedLabel: string;
+    popularLabel: string;
+    viewAllLabel: string;
+    viewAllHref: string;
+  };
   features: {
     eyebrow: string;
     headline: string;
@@ -60,6 +72,7 @@ export const HOME_FALLBACK: HomeContent = {
     featuredSlugs: [],
     addOns: HOME_ADD_ONS.map((a) => ({ ...a })),
   },
+  pricing: { ...HOME_SECTIONS.pricing, enabled: true },
   features: {
     ...HOME_SECTIONS.features,
     items: HOME_FEATURES.map((f) => ({ ...f })),
@@ -115,6 +128,20 @@ function toContent(doc: Home): HomeContent {
       addOns: doc.addOns?.length
         ? doc.addOns.map((a) => ({ label: a.label, meta: a.meta }))
         : f.services.addOns,
+    },
+    pricing: {
+      // Only an explicit `false` hides it — an unsaved global reads `null`,
+      // which must keep the default-on behaviour.
+      enabled: doc.pricingEnabled !== false,
+      headline: text(doc.pricingHeadline, f.pricing.headline),
+      body: text(doc.pricingBody, f.pricing.body),
+      ctaLabel: text(doc.pricingCtaLabel, f.pricing.ctaLabel),
+      ctaHref: text(doc.pricingCtaHref, f.pricing.ctaHref),
+      cardCtaLabel: text(doc.pricingCardCtaLabel, f.pricing.cardCtaLabel),
+      includedLabel: text(doc.pricingIncludedLabel, f.pricing.includedLabel),
+      popularLabel: text(doc.pricingPopularLabel, f.pricing.popularLabel),
+      viewAllLabel: text(doc.pricingViewAllLabel, f.pricing.viewAllLabel),
+      viewAllHref: f.pricing.viewAllHref,
     },
     features: {
       eyebrow: text(doc.featuresEyebrow, f.features.eyebrow),

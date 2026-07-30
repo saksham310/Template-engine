@@ -32,6 +32,9 @@
   --color-surface-sunken: rgb(221 227 216 / 0.6); /* inset fill */
   --color-fill-mid: #c5cfbe; /* mid-sage marks and rules */
   --color-panel: #d8e4d3; /* hero panel — deep enough that white line-work reads */
+  /* Warm bone. Deliberately deeper than #fdfcf7: at 1% off white, neither the
+     white aura nor the white cards above it would be visible. */
+  --color-surface-warm: #f4f1e8;
 
   /* Semantic aliases */
   --color-background: var(--color-bg);
