@@ -48,7 +48,7 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
 
       {/* 2 — TRUST STRIP */}
       <section className="mx-auto mt-14 max-w-7xl px-5">
-        <div className="grid grid-cols-2 border border-slate-200/60 lg:grid-cols-4">
+        <div className="grid grid-cols-2 border border-line lg:grid-cols-4">
           <TrustBlock invert value={TRUST.rating} label={TRUST.ratingCount} icon={<Star className="h-4 w-4 fill-current" strokeWidth={0} />} />
           <TrustBlock value={TRUST.jobs} label={TRUST.jobsLabel} />
           <TrustBlock value={TRUST.responseTime} label="Avg. quote response" icon={<Clock className="h-4 w-4" strokeWidth={2} />} />
@@ -60,7 +60,7 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
       <section className="mx-auto max-w-7xl px-5 py-28">
         <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr_1fr] lg:auto-rows-fr">
           {/* Col 1 — Bespoke Difference */}
-          <div className="flex flex-col justify-between border border-slate-200/60 bg-white p-7">
+          <div className="flex flex-col justify-between border border-line bg-surface p-7">
             <div>
               <span className="font-mono text-[11px] uppercase tracking-widest text-accent">
                 The Bespoke Difference
@@ -73,7 +73,7 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
           </div>
 
           {/* Col 2 — Finish Detail */}
-          <figure className="relative min-h-[280px] overflow-hidden border border-slate-200/60">
+          <figure className="relative min-h-[280px] overflow-hidden border border-line">
             <Image
               src={service.macroShot}
               alt={`${service.title} finish detail`}
@@ -87,7 +87,7 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
           </figure>
 
           {/* Col 3 — Technical Specifications (label → value) */}
-          <div className="flex flex-col border border-slate-200/60 bg-text text-white">
+          <div className="flex flex-col border border-line bg-text text-white">
             <div className="border-b border-white/15 px-5 py-3">
               <span className="font-mono text-[11px] uppercase tracking-widest text-white/60">
                 Technical Specifications
@@ -109,7 +109,7 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
       </section>
 
       {/* 4 — INCLUSIONS MATRIX */}
-      <section className="border-y border-slate-200/60 bg-white">
+      <section className="border-y border-line bg-surface">
         <div className="mx-auto max-w-7xl px-5 py-28">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div className="max-w-xl">
@@ -125,9 +125,9 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
             </span>
           </div>
 
-          <ul className="mt-8 grid gap-x-10 border-t border-slate-200/60 sm:grid-cols-2">
+          <ul className="mt-8 grid gap-x-10 border-t border-line sm:grid-cols-2">
             {inclusions.map((item) => (
-              <li key={item} className="flex items-center gap-3 border-b border-slate-200/60 py-3">
+              <li key={item} className="flex items-center gap-3 border-b border-line py-3">
                 <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-sm bg-accent/10">
                   <Check className="h-3 w-3 text-accent" strokeWidth={3} />
                 </span>
@@ -150,14 +150,14 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
       </section>
 
       {/* 6 — FAQ + STICKY QUOTE SIDEBAR */}
-      <section className="border-t border-slate-200/60 bg-white">
+      <section className="border-t border-line bg-surface">
         <div className="mx-auto grid max-w-7xl gap-12 px-5 py-28 lg:grid-cols-[1fr_340px]">
           <div>
             <p className="editorial-label text-xs tracking-widest text-text/50">FAQ</p>
             <h2 className="mt-2 font-serif text-4xl tracking-tight text-text">Before you ask.</h2>
-            <div className="mt-6 border-t border-slate-200/60">
+            <div className="mt-6 border-t border-line">
               {faqs.map((faq) => (
-                <details key={faq.q} className="group border-b border-slate-200/60">
+                <details key={faq.q} className="group border-b border-line">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-left transition-colors duration-200 ease-out hover:text-accent [&::-webkit-details-marker]:hidden">
                     <span className="font-serif text-lg text-text">{faq.q}</span>
                     <span className="font-mono text-lg text-text/40 transition-transform duration-200 ease-out group-open:rotate-45">
@@ -172,7 +172,7 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
 
           {/* STICKY — Your Quote Request */}
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="border-2 border-text bg-white">
+            <div className="border-2 border-text bg-surface">
               <div className="bg-text px-5 py-3">
                 <span className="font-mono text-[11px] uppercase tracking-widest text-white/90">
                   Your Quote Request
@@ -182,7 +182,7 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
                 <h3 className="text-lg font-bold tracking-tight text-text">{service.title}</h3>
                 <p className="mt-1 text-sm text-text/60">Estimate delivered after review.</p>
 
-                <ul className="mt-4 space-y-2 border-t border-slate-200/60 pt-4">
+                <ul className="mt-4 space-y-2 border-t border-line pt-4">
                   {sidebarInclusions.map((item) => (
                     <li key={item} className="flex items-start gap-2 text-sm text-text/80">
                       <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" strokeWidth={3} />
@@ -212,7 +212,7 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
       </section>
 
       {/* 7 — REQUEST-QUOTE FORM */}
-      <section id="quote" className="scroll-mt-24 border-t border-slate-200/60 bg-bg">
+      <section id="quote" className="scroll-mt-24 border-t border-line bg-bg">
         <div className="mx-auto grid max-w-7xl gap-x-12 gap-y-8 px-5 py-28 lg:grid-cols-2">
           <div>
             <p className="editorial-label text-xs tracking-widest text-text/50">Get Started</p>
@@ -248,8 +248,8 @@ function TrustBlock({
 }) {
   return (
     <div
-      className={`flex flex-col justify-between gap-3 border-slate-200/60 p-5 [&:not(:last-child)]:border-r ${
-        invert ? "bg-text text-white" : "bg-white text-text"
+      className={`flex flex-col justify-between gap-3 border-line p-5 [&:not(:last-child)]:border-r ${
+        invert ? "bg-text text-white" : "bg-surface text-text"
       }`}
     >
       <span className={invert ? "text-white/80" : "text-accent"}>{icon}</span>

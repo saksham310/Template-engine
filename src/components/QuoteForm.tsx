@@ -20,7 +20,7 @@ type Props = {
 };
 
 const FIELD =
-  "w-full rounded-sm border border-slate-200/60 bg-white px-3 py-2.5 text-sm text-text " +
+  "w-full rounded-sm border border-line bg-surface px-3 py-2.5 text-sm text-text " +
   "placeholder:text-text/40 focus:border-accent focus:outline-none transition-colors duration-200 ease-out";
 
 /**
@@ -39,7 +39,7 @@ export default function QuoteForm({ serviceSlug, serviceTitle }: Props) {
         <motion.div
           key="success"
           {...SLIDE}
-          className="flex flex-col items-center gap-3 border border-slate-200/60 bg-white p-8 text-center"
+          className="flex flex-col items-center gap-3 border border-line bg-surface p-8 text-center"
         >
           <span className="flex h-10 w-10 items-center justify-center rounded-sm bg-accent/10 text-accent">
             <Check className="h-5 w-5" strokeWidth={2.5} />

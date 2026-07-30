@@ -1,8 +1,9 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Global Design Tokens — premium editorial service platform.
- * Loaded by Tailwind v4 via `@config` in src/app/globals.css.
+ * Layout tokens — spacing, radius, typography scale, font families.
+ * Loaded by Tailwind v4 via `@config` in src/app/(frontend)/globals.css.
+ * Colours are NOT here; see the `@theme` block in that file.
  *
  * DISCIPLINE:
  *   - Radius: sm/md only. No full / xl / 2xl / 3xl utilities generated.
@@ -17,20 +18,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        // Global Design Tokens
-        bg: "#F9FAFB",
-        text: "#0A192F",
-        accent: "#0070F3",
-        // semantic aliases
-        background: "#F9FAFB",
-        foreground: "#0A192F",
-        primary: {
-          DEFAULT: "#0070F3",
-          foreground: "#F9FAFB",
-        },
-        border: "rgb(226 232 240 / 0.6)", // slate-200/60 — 1px borders over shadows
-      },
+      // Colours live in `@theme` in src/app/(frontend)/globals.css — Tailwind v4
+      // emits CSS variables for those but not for legacy JS-config values, and
+      // hand-written CSS in that file needs to read the same declarations.
       fontFamily: {
         // Geist = everything; Playfair = editorial labels; Geist Mono = data;
         // Source Serif = testimonial / FAQ headers

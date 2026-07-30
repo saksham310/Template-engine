@@ -20,7 +20,7 @@ export default function GalleryGrid({
 
   return (
     <>
-      <div className="mt-8 flex flex-wrap gap-px border border-slate-200/60 bg-slate-200/60 sm:inline-flex">
+      <div className="mt-8 flex flex-wrap gap-px border border-line bg-surface-sunken sm:inline-flex">
         {filters.map((f) => {
           const on = f === active;
           return (
@@ -30,7 +30,7 @@ export default function GalleryGrid({
               onClick={() => setActive(f)}
               aria-pressed={on}
               className={`px-4 py-2 font-mono text-[11px] uppercase tracking-widest transition-colors ${
-                on ? "bg-text text-white" : "bg-white text-text/60 hover:text-text"
+                on ? "bg-text text-white" : "bg-surface text-text/60 hover:text-text"
               }`}
             >
               {f}
@@ -43,7 +43,7 @@ export default function GalleryGrid({
         {visible.map((item) => (
           <figure
             key={item.id}
-            className="group mb-4 break-inside-avoid overflow-hidden border border-slate-200/60 bg-white"
+            className="group mb-4 break-inside-avoid overflow-hidden border border-line bg-surface"
           >
             <div className="overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -56,7 +56,7 @@ export default function GalleryGrid({
                 className="w-full transition-transform duration-500 ease-out group-hover:scale-[1.02]"
               />
             </div>
-            <figcaption className="flex items-baseline justify-between gap-3 border-t border-slate-200/60 px-4 py-3">
+            <figcaption className="flex items-baseline justify-between gap-3 border-t border-line px-4 py-3">
               <span className="text-sm font-semibold tracking-tight text-text">
                 {item.title}
               </span>

@@ -34,7 +34,7 @@ export default function ContactPage() {
         </p>
       </header>
 
-      <div className="mt-16 grid gap-px border border-slate-200/60 bg-slate-200/60 sm:grid-cols-3">
+      <div className="mt-16 grid gap-px border border-line bg-surface-sunken sm:grid-cols-3">
         {CHANNELS.map((c) => {
           const Icon = c.icon;
           const body = (
@@ -52,19 +52,19 @@ export default function ContactPage() {
             <a
               key={c.label}
               href={c.href}
-              className="flex flex-col bg-white p-7 transition-colors hover:bg-bg"
+              className="flex flex-col bg-surface p-7 transition-colors hover:bg-bg"
             >
               {body}
             </a>
           ) : (
-            <div key={c.label} className="flex flex-col bg-white p-7">
+            <div key={c.label} className="flex flex-col bg-surface p-7">
               {body}
             </div>
           );
         })}
       </div>
 
-      <div className="mt-16 flex flex-col justify-between gap-8 border-t border-slate-200/60 pt-10 sm:flex-row sm:items-end">
+      <div className="mt-16 flex flex-col justify-between gap-8 border-t border-line pt-10 sm:flex-row sm:items-end">
         <div>
           <p className="font-mono text-[11px] uppercase tracking-widest text-text/40">Follow</p>
           <div className="mt-3 flex gap-5">

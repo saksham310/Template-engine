@@ -31,8 +31,8 @@ function Grain({ opacity = 0.14 }: { opacity?: number }) {
 }
 
 const cardBase =
-  "group relative isolate overflow-hidden rounded-md border border-slate-200/60 " +
-  "transition-all duration-300 ease-out hover:-translate-y-1 hover:border-slate-400/70";
+  "group relative isolate overflow-hidden rounded-md border border-line " +
+  "transition-all duration-300 ease-out hover:-translate-y-1 hover:border-line-strong";
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
@@ -104,7 +104,7 @@ export default function ServiceBento({
             </p>
             <Link
               href={`/services/${lead.slug}`}
-              className="mt-6 inline-flex w-fit items-center gap-1 rounded-sm bg-white px-5 py-2.5 text-sm font-medium text-text transition-colors hover:bg-white/90"
+              className="mt-6 inline-flex w-fit items-center gap-1 rounded-sm bg-surface px-5 py-2.5 text-sm font-medium text-text transition-colors hover:bg-surface/90"
             >
               {heading.leadCtaLabel}
               <span aria-hidden="true">→</span>
@@ -116,7 +116,7 @@ export default function ServiceBento({
           <motion.article
             variants={fadeUpPlain}
             style={REVEAL}
-            className={`${cardBase} aspect-square sm:aspect-auto sm:min-h-[240px] bg-white text-text`}
+            className={`${cardBase} aspect-square sm:aspect-auto sm:min-h-[240px] bg-surface text-text`}
           >
             <Image
               src={second.imageUrl}
@@ -143,7 +143,7 @@ export default function ServiceBento({
         <motion.article
           variants={fadeUpPlain}
           style={REVEAL}
-          className={`${cardBase} min-h-[180px] bg-white p-5 text-text`}
+          className={`${cardBase} min-h-[180px] bg-surface p-5 text-text`}
         >
           <Grain opacity={0.1} />
           <div className="relative">
@@ -157,7 +157,7 @@ export default function ServiceBento({
                   key={addOn.label}
                   className={`flex justify-between ${
                     i < heading.addOns.length - 1
-                      ? "border-b border-slate-200/60 pb-1.5"
+                      ? "border-b border-line pb-1.5"
                       : ""
                   }`}
                 >

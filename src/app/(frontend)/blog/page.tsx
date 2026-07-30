@@ -38,9 +38,9 @@ export default async function BlogIndex() {
       {featured && (
         <Link
           href={`/blog/${featured.slug}`}
-          className="group mt-16 grid gap-6 border-b border-slate-200/60 pb-16 lg:grid-cols-5"
+          className="group mt-16 grid gap-6 border-b border-line pb-16 lg:grid-cols-5"
         >
-          <div className="overflow-hidden border border-slate-200/60 bg-white lg:col-span-3">
+          <div className="overflow-hidden border border-line bg-surface lg:col-span-3">
             {featured.heroUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -49,13 +49,13 @@ export default async function BlogIndex() {
                 className="aspect-[16/10] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
               />
             ) : (
-              <div className="aspect-[16/10] w-full bg-slate-100" />
+              <div className="aspect-[16/10] w-full bg-surface-muted" />
             )}
           </div>
           <div className="flex flex-col justify-center lg:col-span-2">
             <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest text-text/40">
               <span>Featured</span>
-              <span className="h-px flex-1 bg-slate-200/60" />
+              <span className="h-px flex-1 bg-surface-sunken" />
               <span>{fmtDate(featured.publishedDate)}</span>
             </div>
             <h2 className="mt-4 text-4xl font-bold leading-[1.05] tracking-tight text-text">
@@ -84,7 +84,7 @@ export default async function BlogIndex() {
 function PostTile({ post }: { post: PostCard }) {
   return (
     <Link href={`/blog/${post.slug}`} className="group flex flex-col">
-      <div className="overflow-hidden border border-slate-200/60 bg-white">
+      <div className="overflow-hidden border border-line bg-surface">
         {post.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -93,7 +93,7 @@ function PostTile({ post }: { post: PostCard }) {
             className="aspect-[4/3] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
           />
         ) : (
-          <div className="aspect-[4/3] w-full bg-slate-100" />
+          <div className="aspect-[4/3] w-full bg-surface-muted" />
         )}
       </div>
       <div className="mt-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-text/40">

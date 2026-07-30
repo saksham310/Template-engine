@@ -77,7 +77,7 @@ export default function Hero({ content }: { content: HomeContent["hero"] }) {
 
         <div className="relative -mt-8 sm:-mt-4 lg:mt-0">
           <motion.div
-            className="relative aspect-[4/5] w-full overflow-hidden rounded-md border border-slate-200/60 sm:aspect-[3/4]"
+            className="relative aspect-[4/5] w-full overflow-hidden rounded-md border border-line sm:aspect-[3/4]"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: DURATION, ease: EASE, delay: 0.12 }}
@@ -94,7 +94,7 @@ export default function Hero({ content }: { content: HomeContent["hero"] }) {
           </motion.div>
 
           <motion.div
-            className="absolute -bottom-4 left-3 w-[260px] max-w-[85%] rounded-md border border-slate-200/60 bg-white/80 p-4 backdrop-blur-sm sm:w-[280px] lg:-bottom-6 lg:-left-6"
+            className="absolute -bottom-4 left-3 w-[260px] max-w-[85%] rounded-md border border-line bg-surface/80 p-4 backdrop-blur-sm sm:w-[280px] lg:-bottom-6 lg:-left-6"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: DURATION, ease: EASE, delay: 0.28 }}
@@ -109,7 +109,7 @@ export default function Hero({ content }: { content: HomeContent["hero"] }) {
                 {content.statusText}
               </span>
             </div>
-            <div className="mt-2 flex items-baseline justify-between border-t border-slate-200/60 pt-2">
+            <div className="mt-2 flex items-baseline justify-between border-t border-line pt-2">
               <span className="editorial-label text-xs text-text/60">
                 {content.statusMetricLabel}
               </span>

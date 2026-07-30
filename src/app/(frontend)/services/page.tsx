@@ -40,7 +40,7 @@ export default async function ServicesIndex() {
           const items = services.filter((s) => s.category === category);
           return (
             <section key={category}>
-              <div className="mb-5 flex items-baseline justify-between border-b border-slate-200/60 pb-2">
+              <div className="mb-5 flex items-baseline justify-between border-b border-line pb-2">
                 <h2 className="editorial-label text-2xl text-text">{category}</h2>
                 <span className="font-mono text-[11px] tabular-nums text-text/40">
                   {String(items.length).padStart(2, "0")} services
@@ -51,7 +51,7 @@ export default async function ServicesIndex() {
                   <li key={svc.slug}>
                     <Link
                       href={`/services/${svc.slug}`}
-                      className="group flex h-full flex-col border border-slate-200/60 bg-white p-5 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-slate-400/70"
+                      className="group flex h-full flex-col border border-line bg-surface p-5 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-line-strong"
                     >
                       <div className="flex items-start justify-between">
                         <span className="font-mono text-[11px] tabular-nums text-text/30">

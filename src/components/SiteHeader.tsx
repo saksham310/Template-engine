@@ -19,7 +19,7 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
 
   return (
     <header
-      className="sticky top-0 z-50 border-b border-slate-200/60 bg-bg"
+      className="sticky top-0 z-50 border-b border-line bg-bg"
       onMouseLeave={() => setMenuOpen(false)}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
@@ -84,9 +84,9 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
 
       {/* Mega-menu panel (desktop) */}
       {menuOpen && nav.length > 0 && (
-        <div className="absolute inset-x-0 top-full hidden border-b border-slate-200/60 bg-white sm:block">
+        <div className="absolute inset-x-0 top-full hidden border-b border-line bg-surface sm:block">
           <div
-            className="mx-auto grid max-w-7xl divide-x divide-slate-200/60 px-5"
+            className="mx-auto grid max-w-7xl divide-x divide-line px-5"
             style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
           >
             {nav.map((group) => (
@@ -120,7 +120,7 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
             ))}
           </div>
           {/* View All + prominent Request Quote */}
-          <div className="border-t border-slate-200/60 bg-bg">
+          <div className="border-t border-line bg-bg">
             <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3">
               <Link
                 href="/services"
@@ -147,7 +147,7 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
       {/* Full-screen editorial overlay (mobile) */}
       {mobileOpen && (
         <div className="fixed inset-0 z-[60] flex flex-col bg-bg sm:hidden">
-          <div className="flex items-center justify-between border-b border-slate-200/60 px-5 py-4">
+          <div className="flex items-center justify-between border-b border-line px-5 py-4">
             <Link
               href="/"
               onClick={() => setMobileOpen(false)}
@@ -172,7 +172,7 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="group flex items-baseline gap-4 border-b border-slate-200/60 py-4"
+                className="group flex items-baseline gap-4 border-b border-line py-4"
               >
                 <span className="font-mono text-xs tabular-nums text-text/30">
                   {String(i + 1).padStart(2, "0")}
@@ -184,7 +184,7 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
             ))}
           </nav>
 
-          <div className="border-t border-slate-200/60 px-5 py-6">
+          <div className="border-t border-line px-5 py-6">
             <Link
               href="/#book"
               onClick={() => setMobileOpen(false)}

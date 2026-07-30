@@ -77,7 +77,7 @@ function RequestQuoteInner({ titles, copy }: { titles: Titles; copy: Copy }) {
 
       {/* Mobile sticky quote bar — hidden once the form is in view */}
       <div
-        className={`fixed inset-x-0 bottom-0 z-40 border-t border-slate-200/60 bg-bg/95 px-5 py-3 backdrop-blur-sm transition-transform duration-300 ease-out sm:hidden ${
+        className={`fixed inset-x-0 bottom-0 z-40 border-t border-line bg-bg/95 px-5 py-3 backdrop-blur-sm transition-transform duration-300 ease-out sm:hidden ${
           formVisible ? "translate-y-full" : "translate-y-0"
         }`}
       >
@@ -97,7 +97,7 @@ export default function BookingWizard({ titles, copy }: { titles: Titles; copy: 
     <Suspense
       fallback={
         <section className="mx-auto max-w-7xl px-5 py-16 sm:py-28">
-          <div className="h-96 animate-pulse border border-slate-200/60 bg-white" />
+          <div className="h-96 animate-pulse border border-line bg-surface" />
         </section>
       }
     >

@@ -24,18 +24,18 @@ export default async function Home() {
         <Hero content={content.hero} />
       </div>
 
-      <div id="services" className="border-y border-slate-200/60 bg-white">
+      <div id="services" className="border-y border-line bg-surface">
         <ServiceBento services={list} heading={content.services} />
       </div>
 
-      <section className="border-b border-slate-200/60 bg-bg">
+      <section className="border-b border-line bg-bg">
         <div className="mx-auto max-w-7xl px-5 py-28">
           <MotionWrapper className="max-w-2xl">
             <div className="flex items-center gap-3">
               <span className="editorial-label text-xs tracking-widest text-accent">
                 {content.features.eyebrow}
               </span>
-              <span className="h-px w-16 bg-slate-300" />
+              <span className="h-px w-16 bg-fill-mid" />
             </div>
             <h2 className="mt-5 text-4xl leading-[1.05] tracking-tight sm:text-5xl">
               {content.features.headline}{" "}
@@ -54,9 +54,9 @@ export default async function Home() {
               return (
                 <MotionItem
                   key={f.title}
-                  className="group flex gap-6 border-t border-slate-200/60 py-9"
+                  className="group flex gap-6 border-t border-line py-9"
                 >
-                  <span className="font-editorial text-6xl leading-[0.8] text-slate-300 transition-colors duration-300 group-hover:text-accent">
+                  <span className="font-editorial text-6xl leading-[0.8] text-fill-mid transition-colors duration-300 group-hover:text-accent">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div className="flex-1 pt-1">
@@ -77,14 +77,14 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="border-b border-slate-200/60 bg-white">
+      <section className="border-b border-line bg-surface">
         <div className="mx-auto grid max-w-7xl gap-12 px-5 py-28 lg:grid-cols-[0.8fr_1.6fr]">
           <header className="self-start lg:sticky lg:top-28">
             <div className="flex items-center gap-3">
               <span className="editorial-label text-xs tracking-widest text-accent">
                 {content.faq.eyebrow}
               </span>
-              <span className="h-px w-16 bg-slate-300" />
+              <span className="h-px w-16 bg-fill-mid" />
             </div>
             <h2 className="mt-4 text-4xl leading-[1.05] tracking-tight sm:text-5xl">
               {content.faq.headline}{" "}
@@ -106,12 +106,12 @@ export default async function Home() {
             </a>
           </header>
 
-          <MotionStagger className="border-t border-slate-200/60">
+          <MotionStagger className="border-t border-line">
             {content.faq.items.map((faq, i) => (
               <MotionItem key={faq.question}>
               <details
                 open={i === 0}
-                className="group border-b border-slate-200/60"
+                className="group border-b border-line"
               >
                 <summary className="flex cursor-pointer list-none items-baseline gap-4 py-6 marker:hidden [&::-webkit-details-marker]:hidden">
                   <span className="font-mono text-xs tabular-nums text-accent">

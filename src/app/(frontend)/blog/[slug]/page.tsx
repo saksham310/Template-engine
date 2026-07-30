@@ -72,7 +72,7 @@ export default async function BlogPost({
       <header className="mx-auto mt-8 max-w-2xl">
         <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest text-text/40">
           <span>{post.author}</span>
-          <span className="h-px flex-1 bg-slate-200/60" />
+          <span className="h-px flex-1 bg-surface-sunken" />
           <span>{fmtDate(post.publishedDate)}</span>
         </div>
         <h1 className="mt-5 text-5xl font-bold leading-[0.95] tracking-tighter text-text">
@@ -84,7 +84,7 @@ export default async function BlogPost({
       </header>
 
       {post.heroUrl && (
-        <div className="mx-auto mt-12 max-w-4xl overflow-hidden border border-slate-200/60 bg-white">
+        <div className="mx-auto mt-12 max-w-4xl overflow-hidden border border-line bg-surface">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={post.heroUrl}
@@ -107,7 +107,7 @@ export default async function BlogPost({
       </div>
 
       {related.length > 0 && (
-        <section className="mx-auto mt-24 max-w-4xl border-t border-slate-200/60 pt-12">
+        <section className="mx-auto mt-24 max-w-4xl border-t border-line pt-12">
           <h2 className="editorial-label text-2xl text-text">More from the Journal</h2>
           <div className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-3">
             {related.map((r) => (
@@ -123,7 +123,7 @@ export default async function BlogPost({
 function RelatedTile({ post }: { post: PostCard }) {
   return (
     <Link href={`/blog/${post.slug}`} className="group flex flex-col">
-      <div className="overflow-hidden border border-slate-200/60 bg-white">
+      <div className="overflow-hidden border border-line bg-surface">
         {post.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -132,7 +132,7 @@ function RelatedTile({ post }: { post: PostCard }) {
             className="aspect-[4/3] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
           />
         ) : (
-          <div className="aspect-[4/3] w-full bg-slate-100" />
+          <div className="aspect-[4/3] w-full bg-surface-muted" />
         )}
       </div>
       <h3 className="mt-3 text-base font-bold leading-tight tracking-tight text-text transition-colors group-hover:text-accent">
