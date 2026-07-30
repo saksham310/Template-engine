@@ -1,46 +1,58 @@
 import Link from "next/link";
 import { SITE_CONFIG, FOOTER_SECTIONS } from "@/config/site";
+import { Grain } from "./patterns";
+import CurrentYear from "./CurrentYear";
+
+const CONTACT_PILL =
+  "inline-flex items-center rounded-full border border-bg/20 px-4 py-2 font-mono text-xs " +
+  "tabular-nums text-bg/80 transition-colors duration-200 ease-out hover:bg-bg hover:text-text";
 
 export default function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-line bg-text text-white">
-      <div className="mx-auto max-w-7xl px-5 py-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_repeat(3,1fr)]">
+    <footer className="relative isolate overflow-hidden bg-text text-bg">
+      <Grain opacity={0.2} />
+
+      <div className="relative mx-auto max-w-7xl px-5 pt-16 pb-8">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_repeat(3,1fr)] lg:gap-12">
           <div>
-            <p className="editorial-label text-lg">{SITE_CONFIG.name}</p>
-            <p className="mt-2 max-w-xs text-sm text-white/60">
+            <p className="font-mono text-sm font-semibold uppercase tracking-widest">
+              {SITE_CONFIG.name}
+              <span className="text-accent">.</span>
+            </p>
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-bg/55">
               {SITE_CONFIG.description}
             </p>
-            <div className="mt-5 space-y-1 font-mono text-xs text-white/50">
-              <a
-                href={`mailto:${SITE_CONFIG.email}`}
-                className="block transition-colors hover:text-white"
-              >
+
+            <div className="mt-6 flex flex-wrap gap-2">
+              <a href={`mailto:${SITE_CONFIG.email}`} className={CONTACT_PILL}>
                 {SITE_CONFIG.email}
               </a>
               <a
                 href={`tel:${SITE_CONFIG.phone.replace(/[^\d+]/g, "")}`}
-                className="block transition-colors hover:text-white"
+                className={`${CONTACT_PILL} font-bold`}
               >
                 {SITE_CONFIG.phone}
               </a>
-              <p className="max-w-[22ch] text-white/40">{SITE_CONFIG.address}</p>
             </div>
+
+            <p className="mt-4 max-w-[26ch] font-mono text-[11px] leading-5 text-bg/35">
+              {SITE_CONFIG.address}
+            </p>
           </div>
 
           {FOOTER_SECTIONS.map((section) => (
             <div key={section.title}>
-              <p className="font-mono text-[11px] uppercase tracking-widest text-white/40">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-bg/35">
                 {section.title}
               </p>
-              <ul className="mt-3 space-y-2">
+              <ul className="mt-4 space-y-2.5">
                 {section.links.map((link) => (
                   <li key={`${section.title}-${link.label}`}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/70 transition-colors hover:text-white"
+                      className="text-sm text-bg/70 transition-colors duration-200 hover:text-bg"
                     >
                       {link.label}
                     </Link>
@@ -51,18 +63,31 @@ export default function SiteFooter() {
           ))}
         </div>
 
-        <div className="mt-14 flex flex-col justify-between gap-3 border-t border-white/10 pt-6 sm:flex-row sm:items-center">
-          <p className="font-mono text-xs uppercase tracking-widest text-white/40">
-            © {year} {SITE_CONFIG.name} — All rights reserved
+        <div className="mt-14 flex flex-col justify-between gap-3 border-t border-bg/15 pt-6 sm:flex-row sm:items-center">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-bg/35">
+            © <CurrentYear fallback={year} /> {SITE_CONFIG.name} — All rights reserved
           </p>
           <Link
             href="/#book"
-            className="font-mono text-xs uppercase tracking-widest text-white/70 transition-colors hover:text-white"
+            className="group inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-bg/60 transition-colors hover:text-bg"
           >
-            Book a walkthrough →
+            Request a quote
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+            >
+              →
+            </span>
           </Link>
         </div>
       </div>
+
+      <p
+        aria-hidden="true"
+        className="pointer-events-none relative -mb-[0.22em] select-none whitespace-nowrap text-center font-editorial text-[22vw] leading-none text-bg/[0.07]"
+      >
+        {SITE_CONFIG.name}
+      </p>
     </footer>
   );
 }
