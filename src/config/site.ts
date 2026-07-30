@@ -58,19 +58,11 @@ export const FOOTER_SECTIONS: FooterSection[] = [
  * (or unreachable) CMS still renders a complete page.
  */
 export const HOME_HERO = {
-  eyebrow: "Est. 2026 — Bespoke Care",
   headline: SITE_CONFIG.tagline,
   body: SITE_CONFIG.description,
-  primaryLabel: "Request a Quote →",
-  primaryHref: "#book",
-  secondaryLabel: "View recent work",
-  secondaryHref: "/gallery",
   imageUrl:
     "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=80",
   imageAlt: "Sunlit modern living room with clean minimal interior",
-  statusText: "Live Status: Professionals active nearby",
-  statusMetricLabel: "Avg. response",
-  statusMetricValue: "~12 min",
 } as const;
 
 /**
@@ -102,14 +94,9 @@ export const HOME_SECTIONS = {
   services: {
     eyebrow: "The Services",
     headline: "A standard of finish, room by room.",
-    leadBadge: "Signature",
     leadCtaLabel: "Start Here",
     addOnsBadge: "Add-ons",
     addOnsTitle: "À La Carte",
-    membershipBadge: "Membership",
-    membershipTitle: "Recurring care, on your schedule.",
-    membershipCtaLabel: "See plans",
-    membershipCtaHref: "/#book",
   },
   features: {
     eyebrow: "Why Choose Us",

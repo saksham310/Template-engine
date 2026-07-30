@@ -44,14 +44,9 @@ export const Home: GlobalConfig = {
       tabs: [
         {
           label: "Hero",
-          description: "The first screen: headline, intro, buttons, and the photo beside them.",
+          description:
+            "The first screen: headline, intro, and the photo. The quote bar below it is the hero's only action, so there are no buttons to set here.",
           fields: [
-            {
-              name: "heroEyebrow",
-              type: "text",
-              label: "Small label above the headline",
-              defaultValue: "Est. 2026 — Bespoke Care",
-            },
             {
               name: "heroHeadline",
               type: "text",
@@ -64,44 +59,6 @@ export const Home: GlobalConfig = {
               type: "textarea",
               label: "Intro paragraph",
               defaultValue: SITE_CONFIG.description,
-            },
-            {
-              type: "row",
-              fields: [
-                {
-                  name: "heroPrimaryLabel",
-                  type: "text",
-                  label: "Primary button label",
-                  defaultValue: "Request a Quote →",
-                  admin: { width: "50%" },
-                },
-                {
-                  name: "heroPrimaryHref",
-                  type: "text",
-                  label: "Primary button link",
-                  defaultValue: "#book",
-                  admin: { width: "50%", description: PATH_NOTE },
-                },
-              ],
-            },
-            {
-              type: "row",
-              fields: [
-                {
-                  name: "heroSecondaryLabel",
-                  type: "text",
-                  label: "Secondary link label",
-                  defaultValue: "View recent work",
-                  admin: { width: "50%" },
-                },
-                {
-                  name: "heroSecondaryHref",
-                  type: "text",
-                  label: "Secondary link",
-                  defaultValue: "/gallery",
-                  admin: { width: "50%", description: PATH_NOTE },
-                },
-              ],
             },
             {
               type: "collapsible",
@@ -126,41 +83,6 @@ export const Home: GlobalConfig = {
                     description:
                       "Read aloud by screen readers. Describe what is in the photo, not the mood.",
                   },
-                },
-              ],
-            },
-            {
-              type: "collapsible",
-              label: "Live status card (overlaps the photo)",
-              fields: [
-                {
-                  name: "heroStatusText",
-                  type: "text",
-                  label: "Status line",
-                  defaultValue: "Live Status: Professionals active nearby",
-                  admin: { description: "Sits next to a pulsing green dot." },
-                },
-                {
-                  type: "row",
-                  fields: [
-                    {
-                      name: "heroStatusMetricLabel",
-                      type: "text",
-                      label: "Metric label",
-                      defaultValue: "Avg. response",
-                      admin: { width: "50%" },
-                    },
-                    {
-                      name: "heroStatusMetricValue",
-                      type: "text",
-                      label: "Metric value",
-                      defaultValue: "~12 min",
-                      admin: {
-                        width: "50%",
-                        description: "A public promise — only claim what you can meet.",
-                      },
-                    },
-                  ],
                 },
               ],
             },
@@ -197,32 +119,11 @@ export const Home: GlobalConfig = {
               },
             },
             {
-              type: "collapsible",
-              label: "Large card wording",
-              fields: [
-                {
-                  type: "row",
-                  fields: [
-                    {
-                      name: "servicesLeadBadge",
-                      type: "text",
-                      label: "Small label on the card",
-                      defaultValue: HOME_SECTIONS.services.leadBadge,
-                      admin: { width: "50%" },
-                    },
-                    {
-                      name: "servicesLeadCtaLabel",
-                      type: "text",
-                      label: "Button label",
-                      defaultValue: HOME_SECTIONS.services.leadCtaLabel,
-                      admin: {
-                        width: "50%",
-                        description: "Always links to the featured service's own page.",
-                      },
-                    },
-                  ],
-                },
-              ],
+              name: "servicesLeadCtaLabel",
+              type: "text",
+              label: "Button label on the large card",
+              defaultValue: HOME_SECTIONS.services.leadCtaLabel,
+              admin: { description: "Always links to the featured service's own page." },
             },
             {
               type: "collapsible",
@@ -277,53 +178,6 @@ export const Home: GlobalConfig = {
                           admin: { width: "35%", description: 'e.g. "+45m".' },
                         },
                       ],
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              type: "collapsible",
-              label: "Membership bar",
-              fields: [
-                {
-                  type: "row",
-                  fields: [
-                    {
-                      name: "servicesMembershipBadge",
-                      type: "text",
-                      label: "Small label",
-                      defaultValue: HOME_SECTIONS.services.membershipBadge,
-                      admin: { width: "40%" },
-                    },
-                    {
-                      name: "servicesMembershipTitle",
-                      type: "text",
-                      label: "Headline",
-                      defaultValue: HOME_SECTIONS.services.membershipTitle,
-                      admin: { width: "60%" },
-                    },
-                  ],
-                },
-                {
-                  type: "row",
-                  fields: [
-                    {
-                      name: "servicesMembershipCtaLabel",
-                      type: "text",
-                      label: "Button label",
-                      defaultValue: HOME_SECTIONS.services.membershipCtaLabel,
-                      admin: { width: "50%" },
-                    },
-                    {
-                      name: "servicesMembershipCtaHref",
-                      type: "text",
-                      label: "Button link",
-                      defaultValue: HOME_SECTIONS.services.membershipCtaHref,
-                      admin: {
-                        width: "50%",
-                        description: `${PATH_NOTE} The old default pointed at #membership, which does not exist on the page.`,
-                      },
                     },
                   ],
                 },

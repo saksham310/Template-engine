@@ -1,6 +1,7 @@
 import * as migration_20260728_122350_initial from './20260728_122350_initial';
 import * as migration_20260730_012905_home_global from './20260730_012905_home_global';
 import * as migration_20260730_015426_services_order_and_home_services from './20260730_015426_services_order_and_home_services';
+import * as migration_20260730_080656_drop_unused_home_fields from './20260730_080656_drop_unused_home_fields';
 
 export const migrations = [
   {
@@ -16,6 +17,11 @@ export const migrations = [
   {
     up: migration_20260730_015426_services_order_and_home_services.up,
     down: migration_20260730_015426_services_order_and_home_services.down,
-    name: '20260730_015426_services_order_and_home_services'
+    name: '20260730_015426_services_order_and_home_services',
+  },
+  {
+    up: migration_20260730_080656_drop_unused_home_fields.up,
+    down: migration_20260730_080656_drop_unused_home_fields.down,
+    name: '20260730_080656_drop_unused_home_fields'
   },
 ];
