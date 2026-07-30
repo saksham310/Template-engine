@@ -3,10 +3,12 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Clock } from "lucide-react";
+import { Check, Phone } from "lucide-react";
 import { TRUST } from "@/lib/services";
+import { SITE_CONFIG } from "@/config/site";
 import { EASE } from "./MotionWrapper";
-import QuoteForm from "./QuoteForm";
+import { Grain } from "./patterns";
+import QuoteForm, { type QuoteContext } from "./QuoteForm";
 import type { HomeContent } from "@/payload/integration/getHomeContent";
 
 type Titles = Record<string, string>;
@@ -25,13 +27,13 @@ function RequestQuoteInner({ titles, copy }: { titles: Titles; copy: Copy }) {
   const serviceTitle = title ?? "your space";
   const selected = title ? { title } : undefined;
 
-  // Carried over from the hero quote bar. Seeds the message so the visitor does
-  // not retype what they already picked; `key` remounts the form when it changes,
-  // since the textarea is uncontrolled.
-  const location = params.get("location");
-  const property = params.get("property");
-  const seeded = [property, location && `in ${location}`].filter(Boolean).join(" ");
-  const defaultMessage = seeded ? `${seeded}.` : undefined;
+  const context: QuoteContext = {
+    serviceSlug,
+    serviceTitle,
+    source: "home",
+    location: params.get("location") ?? undefined,
+    propertyType: params.get("property") ?? undefined,
+  };
 
   const sectionRef = useRef<HTMLElement | null>(null);
   const [formVisible, setFormVisible] = useState(false);
@@ -47,15 +49,34 @@ function RequestQuoteInner({ titles, copy }: { titles: Titles; copy: Copy }) {
     return () => io.disconnect();
   }, []);
 
+  const assurances = [
+    `Reply within ${TRUST.responseTime}`,
+    "No payment details required",
+    TRUST.guarantee,
+  ];
+
   return (
     <>
-      <section ref={sectionRef} className="mx-auto max-w-7xl px-5 py-16 sm:py-28">
-        <div className="grid gap-x-12 gap-y-8 lg:grid-cols-2">
-          <div>
-            <p className="editorial-label text-xs tracking-widest text-text/50">
+      <section
+        ref={sectionRef}
+        className="relative isolate overflow-hidden bg-surface-warm"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(60% 45% at 50% 30%, rgb(255 255 255 / 0.85), rgb(255 255 255 / 0) 70%)",
+          }}
+        />
+        <Grain opacity={0.07} />
+
+        <div className="relative mx-auto grid max-w-7xl items-start gap-10 px-5 py-20 sm:py-24 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+          <div className="lg:sticky lg:top-24">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-accent">
               {copy.eyebrow}
             </p>
-            <h2 className="mt-2 font-serif text-3xl tracking-tight text-text sm:text-4xl lg:text-5xl">
+            <h2 className="mt-4 text-3xl leading-[1.05] tracking-tight text-text sm:text-5xl">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span
                   key={selected ? selected.title : "default"}
@@ -73,18 +94,31 @@ function RequestQuoteInner({ titles, copy }: { titles: Titles; copy: Copy }) {
             <p className="mt-4 max-w-md text-base leading-relaxed text-text/60">
               {copy.body}
             </p>
-            <div className="mt-6 flex items-center gap-2 font-mono text-xs text-text/50">
-              <Clock className="h-3.5 w-3.5" strokeWidth={2} />
-              Estimates delivered within {TRUST.responseTime}
-            </div>
+
+            <ul className="mt-7 space-y-3">
+              {assurances.map((line) => (
+                <li key={line} className="flex items-center gap-3 text-[15px] text-text/70">
+                  <Check className="h-4 w-4 shrink-0 text-accent" strokeWidth={2.5} />
+                  {line}
+                </li>
+              ))}
+            </ul>
+
+            <a
+              href={`tel:${SITE_CONFIG.phone.replace(/[^+\d]/g, "")}`}
+              className="mt-7 inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-2.5 font-mono text-xs font-bold tabular-nums text-text transition-colors duration-200 ease-out hover:bg-text hover:text-bg"
+            >
+              <Phone className="h-3.5 w-3.5" strokeWidth={2.5} />
+              {SITE_CONFIG.phone}
+            </a>
           </div>
 
-          <QuoteForm
-            key={defaultMessage ?? "blank"}
-            serviceSlug={serviceSlug}
-            serviceTitle={serviceTitle}
-            defaultMessage={defaultMessage}
-          />
+          <div className="rounded-3xl border border-line bg-surface p-6 sm:p-8">
+            <QuoteForm
+              key={`${context.serviceSlug}-${context.location}-${context.propertyType}`}
+              context={context}
+            />
+          </div>
         </div>
       </section>
 
@@ -96,7 +130,7 @@ function RequestQuoteInner({ titles, copy }: { titles: Titles; copy: Copy }) {
       >
         <a
           href="#book"
-          className="flex w-full items-center justify-center rounded-sm bg-text px-6 py-3.5 text-base font-semibold text-white transition-colors hover:bg-text/90"
+          className="flex w-full items-center justify-center rounded-full bg-text px-6 py-3.5 text-base font-semibold text-bg transition-colors hover:bg-accent"
         >
           Request a Quote →
         </a>

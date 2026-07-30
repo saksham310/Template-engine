@@ -29,6 +29,26 @@ export const Leads: CollectionConfig = {
       admin: { description: "The service this quote request is tied to." },
     },
     {
+      type: "row",
+      fields: [
+        {
+          name: "propertyType",
+          type: "text",
+          label: "Property type",
+          admin: {
+            width: "50%",
+            description: "Carried over from wherever the visitor started.",
+          },
+        },
+        {
+          name: "location",
+          type: "text",
+          label: "Location",
+          admin: { width: "50%" },
+        },
+      ],
+    },
+    {
       name: "message",
       type: "textarea",
       label: "Message / Details",
@@ -49,8 +69,23 @@ export const Leads: CollectionConfig = {
     {
       name: "source",
       type: "text",
+      label: "Submitted from",
       defaultValue: "service-detail",
-      admin: { position: "sidebar", readOnly: true },
+      admin: {
+        position: "sidebar",
+        readOnly: true,
+        description: "Which form the request came through.",
+      },
+    },
+    {
+      name: "sourcePath",
+      type: "text",
+      label: "Page",
+      admin: {
+        position: "sidebar",
+        readOnly: true,
+        description: "The exact page the visitor submitted from.",
+      },
     },
   ],
 };

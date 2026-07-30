@@ -4,6 +4,7 @@ import * as migration_20260730_015426_services_order_and_home_services from './2
 import * as migration_20260730_080656_drop_unused_home_fields from './20260730_080656_drop_unused_home_fields';
 import * as migration_20260730_081513_pricing_fields from './20260730_081513_pricing_fields';
 import * as migration_20260730_084632_drop_feature_icons from './20260730_084632_drop_feature_icons';
+import * as migration_20260730_092630_lead_context from './20260730_092630_lead_context';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20260730_084632_drop_feature_icons.up,
     down: migration_20260730_084632_drop_feature_icons.down,
-    name: '20260730_084632_drop_feature_icons'
+    name: '20260730_084632_drop_feature_icons',
+  },
+  {
+    up: migration_20260730_092630_lead_context.up,
+    down: migration_20260730_092630_lead_context.down,
+    name: '20260730_092630_lead_context'
   },
 ];

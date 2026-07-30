@@ -31,6 +31,10 @@ export async function requestQuote(
   const message = String(formData.get("message") ?? "").trim();
   const serviceSlug = String(formData.get("serviceSlug") ?? "").trim();
   const serviceTitle = String(formData.get("serviceTitle") ?? "").trim();
+  const location = String(formData.get("location") ?? "").trim();
+  const propertyType = String(formData.get("propertyType") ?? "").trim();
+  const source = String(formData.get("source") ?? "").trim() || "unknown";
+  const sourcePath = String(formData.get("sourcePath") ?? "").trim();
 
   if (!name || !email) {
     return { status: "error", message: "Name and email are required." };
@@ -54,6 +58,8 @@ export async function requestQuote(
       serviceRequested = docs[0] ? Number(docs[0].id) : undefined;
     }
 
+    const unresolved = !serviceRequested && serviceTitle && serviceSlug !== "general";
+
     const lead = await payload.create({
       collection: "leads",
       data: {
@@ -61,18 +67,21 @@ export async function requestQuote(
         email,
         phone: phone || undefined,
         message:
-          [message, serviceTitle ? `(Service: ${serviceTitle})` : ""]
+          [message, unresolved ? `(Service requested: ${serviceTitle})` : ""]
             .filter(Boolean)
-            .join("\n") || undefined,
+            .join("\n\n") || undefined,
         serviceRequested,
+        propertyType: propertyType || undefined,
+        location: location || undefined,
         status: "New",
-        source: "service-detail",
+        source,
+        sourcePath: sourcePath || undefined,
       },
     });
 
     // TODO: replace with a real transactional send (Resend / Postmark / SES).
     console.log(
-      `[lead] #${lead.id} · ${name} <${email}> · service=${serviceRequested || "n/a"}`,
+      `[lead] #${lead.id} · ${name} <${email}> · service=${serviceRequested || "n/a"} · from=${source}`,
     );
 
     return {
