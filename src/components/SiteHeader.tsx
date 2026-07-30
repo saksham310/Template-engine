@@ -22,7 +22,9 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
       className="sticky top-0 z-50 border-b border-line bg-bg"
       onMouseLeave={() => setMenuOpen(false)}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
+      {/* Three columns so the nav is centred on the page, not pushed around by
+          the width of the wordmark or the button. */}
+      <div className="mx-auto grid max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 px-5 py-4">
         <Link
           href="/"
           className="font-mono text-sm font-semibold uppercase tracking-widest text-text"
@@ -31,7 +33,7 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
           <span className="text-accent">.</span>
         </Link>
 
-        <nav className="hidden items-center gap-8 text-sm text-text/70 sm:flex">
+        <nav className="hidden items-center justify-center gap-8 text-sm text-text/70 sm:flex">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
@@ -62,24 +64,27 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
             />
           </button>
 
+        </nav>
+
+        <div className="flex items-center justify-end">
           <Link
             href="/#book"
-            className="rounded-sm bg-text px-5 py-2 font-semibold text-white transition-colors hover:bg-text/90"
+            className="hidden rounded-xl bg-text px-5 py-2.5 text-sm font-semibold text-bg transition-colors hover:bg-text/90 sm:inline-flex"
           >
             Request Quote →
           </Link>
-        </nav>
 
-        {/* Mobile trigger */}
-        <button
-          type="button"
-          aria-label="Open menu"
-          aria-expanded={mobileOpen}
-          onClick={() => setMobileOpen(true)}
-          className="-mr-1 inline-flex h-9 w-9 items-center justify-center text-text sm:hidden"
-        >
-          <Menu className="h-6 w-6" strokeWidth={1.75} />
-        </button>
+          {/* Mobile trigger */}
+          <button
+            type="button"
+            aria-label="Open menu"
+            aria-expanded={mobileOpen}
+            onClick={() => setMobileOpen(true)}
+            className="-mr-1 inline-flex h-9 w-9 items-center justify-center text-text sm:hidden"
+          >
+            <Menu className="h-6 w-6" strokeWidth={1.75} />
+          </button>
+        </div>
       </div>
 
       {/* Mega-menu panel (desktop) */}

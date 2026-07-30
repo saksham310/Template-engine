@@ -21,7 +21,7 @@ export default async function Home() {
   return (
     <>
       <div className="bg-bg">
-        <Hero content={content.hero} />
+        <Hero content={content.hero} services={list} />
       </div>
 
       <div id="services" className="border-y border-line bg-surface">

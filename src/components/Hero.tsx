@@ -1,13 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { EASE, DURATION } from "./MotionWrapper";
+import HeroQuoteBar from "./HeroQuoteBar";
+import { SITE_CONFIG } from "@/config/site";
+import type { ServiceListItem } from "@/payload/integration/getServiceView";
 import type { HomeContent } from "@/payload/integration/getHomeContent";
 
 const fade = (delay: number, duration = DURATION) => ({
-  hidden: { opacity: 0, y: 8 },
+  hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
@@ -15,111 +17,126 @@ const fade = (delay: number, duration = DURATION) => ({
   },
 });
 
-export default function Hero({ content }: { content: HomeContent["hero"] }) {
+/**
+ * Arch mask — the crown is a true semicircle (radius = half the width), so the
+ * shape stays a proper arch at every breakpoint instead of a rounded rectangle.
+ * With a cut-out subject on transparency, drop the mask and use `object-contain`
+ * so the figure itself breaks the panel edge.
+ */
+const PHOTO_FRAME = "overflow-hidden rounded-t-[9999px]";
+
+/**
+ * Panel texture: a surveyor's grid with an oversized brand letterform cropped
+ * by the panel edge — architectural rather than decorative, and it fills the
+ * space the hero buttons used to occupy.
+ */
+function PanelPattern() {
   return (
-    <section className="relative isolate overflow-visible">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-6 px-5 pt-28 pb-16 sm:pt-36 sm:pb-20 lg:grid-cols-[65fr_35fr] lg:gap-8 lg:pt-40 lg:pb-24">
-        <div className="relative z-10 lg:pr-6">
-          <motion.p
-            className="editorial-label mb-4 text-sm text-text/60 sm:text-base"
-            initial="hidden"
-            animate="visible"
-            variants={fade(0)}
-            style={{ willChange: "transform, opacity" }}
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+      <svg className="h-full w-full" fill="none">
+        <defs>
+          <pattern
+            id="hero-grid"
+            width="56"
+            height="56"
+            patternUnits="userSpaceOnUse"
           >
-            {content.eyebrow}
-          </motion.p>
+            <path
+              d="M56 0H0V56"
+              stroke="var(--color-surface)"
+              strokeWidth="1"
+              fill="none"
+            />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#hero-grid)" opacity="0.6" />
+      </svg>
 
-          <motion.h1
-            className="relative z-10 mb-[-24px] max-w-[14ch] text-5xl font-bold leading-[0.9] tracking-tighter sm:mb-[-32px] sm:text-7xl lg:mb-[-40px] lg:text-8xl"
-            initial="hidden"
-            animate="visible"
-            variants={fade(0.08)}
-            style={{ willChange: "transform, opacity" }}
-          >
-            {content.headline}
-          </motion.h1>
+      <span className="absolute -bottom-[22%] -left-[3%] select-none font-editorial text-[26rem] leading-none text-surface/50 sm:text-[38rem]">
+        {SITE_CONFIG.name.charAt(0)}
+      </span>
+    </div>
+  );
+}
 
+/**
+ * Sets the business name in the accent colour where it appears in the intro
+ * line, as in the reference. Copy without the name renders unchanged.
+ */
+function IntroLine({ body }: { body: string }) {
+  const name = SITE_CONFIG.name;
+  const at = body.indexOf(name);
+  if (at === -1) return <>{body}</>;
+
+  return (
+    <>
+      {body.slice(0, at)}
+      <span className="font-semibold text-accent">{name}</span>
+      {body.slice(at + name.length)}
+    </>
+  );
+}
+
+export default function Hero({
+  content,
+  services,
+}: {
+  content: HomeContent["hero"];
+  services: ServiceListItem[];
+}) {
+  return (
+    <section className="px-3 pt-3 sm:px-5 sm:pt-5">
+      <div className="relative isolate overflow-hidden rounded-3xl bg-panel">
+        <PanelPattern />
+
+        <div className="relative grid gap-10 px-6 pt-14 pb-24 sm:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:gap-6 lg:px-14 lg:pt-24 lg:pb-32">
+          {/* No buttons here — the bar below the panel is the hero's action.
+              Extra bottom padding keeps the text column optically centred
+              against the photo now that the CTA no longer fills the space. */}
+          <div className="max-w-2xl lg:pb-24">
+            <motion.h1
+              className="text-4xl font-bold leading-[1.08] tracking-tight text-text sm:text-6xl lg:text-7xl"
+              initial="hidden"
+              animate="visible"
+              variants={fade(0)}
+              style={{ willChange: "transform, opacity" }}
+            >
+              {content.headline}
+            </motion.h1>
+
+            <motion.p
+              className="mt-6 max-w-md text-base leading-relaxed text-text/70 sm:text-lg"
+              initial="hidden"
+              animate="visible"
+              variants={fade(0.1)}
+              style={{ willChange: "transform, opacity" }}
+            >
+              <IntroLine body={content.body} />
+            </motion.p>
+          </div>
+
+          {/* Anchored to the panel floor so the subject rises out of the bar
+              below rather than sitting in a slot beside the text. */}
           <motion.div
-            className="mt-12 max-w-xl sm:mt-14 lg:mt-[64px]"
-            initial="hidden"
-            animate="visible"
-            variants={fade(0.18)}
-            style={{ willChange: "transform, opacity" }}
-          >
-            <p className="text-base leading-relaxed text-text/70 sm:text-lg sm:leading-snug">
-              {content.body}
-            </p>
-
-            <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
-              <Link
-                href={content.primaryHref}
-                className="flex w-full items-center justify-center rounded-sm bg-text px-6 py-4 text-base font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-text/90 sm:w-auto sm:py-3.5"
-              >
-                {content.primaryLabel}
-              </Link>
-
-              <Link
-                href={content.secondaryHref}
-                className="group inline-flex items-center justify-center gap-1 text-base font-medium text-text underline-offset-4 transition-colors hover:text-accent hover:underline"
-              >
-                {content.secondaryLabel}
-                <span
-                  aria-hidden="true"
-                  className="transition-transform group-hover:translate-x-0.5"
-                >
-                  →
-                </span>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-
-        <div className="relative -mt-8 sm:-mt-4 lg:mt-0">
-          <motion.div
-            className="relative aspect-[4/5] w-full overflow-hidden rounded-md border border-line sm:aspect-[3/4]"
-            initial={{ opacity: 0, y: 8 }}
+            className={`relative mx-auto aspect-[3/4] w-full max-w-sm self-end lg:-mb-32 lg:mx-0 lg:h-[560px] lg:max-w-none ${PHOTO_FRAME}`}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: DURATION, ease: EASE, delay: 0.12 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.15 }}
             style={{ willChange: "transform, opacity" }}
           >
             <Image
               src={content.imageUrl}
               alt={content.imageAlt}
               fill
-              sizes="(max-width: 1024px) 100vw, 35vw"
-              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 460px"
+              className="object-cover object-bottom"
               priority
             />
           </motion.div>
-
-          <motion.div
-            className="absolute -bottom-4 left-3 w-[260px] max-w-[85%] rounded-md border border-line bg-surface/80 p-4 backdrop-blur-sm sm:w-[280px] lg:-bottom-6 lg:-left-6"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: DURATION, ease: EASE, delay: 0.28 }}
-            style={{ willChange: "transform, opacity" }}
-          >
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500/60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-              </span>
-              <span className="text-sm font-medium text-text">
-                {content.statusText}
-              </span>
-            </div>
-            <div className="mt-2 flex items-baseline justify-between border-t border-line pt-2">
-              <span className="editorial-label text-xs text-text/60">
-                {content.statusMetricLabel}
-              </span>
-              <span className="text-sm font-semibold tabular-nums text-text">
-                {content.statusMetricValue}
-              </span>
-            </div>
-          </motion.div>
         </div>
       </div>
+
+      <HeroQuoteBar services={services} />
     </section>
   );
 }

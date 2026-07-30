@@ -31,6 +31,7 @@
   --color-surface-muted: #eff2ec; /* quiet fill */
   --color-surface-sunken: rgb(221 227 216 / 0.6); /* inset fill */
   --color-fill-mid: #c5cfbe; /* mid-sage marks and rules */
+  --color-panel: #d8e4d3; /* hero panel — deep enough that white line-work reads */
 
   /* Semantic aliases */
   --color-background: var(--color-bg);

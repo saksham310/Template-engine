@@ -25,6 +25,14 @@ function RequestQuoteInner({ titles, copy }: { titles: Titles; copy: Copy }) {
   const serviceTitle = title ?? "your space";
   const selected = title ? { title } : undefined;
 
+  // Carried over from the hero quote bar. Seeds the message so the visitor does
+  // not retype what they already picked; `key` remounts the form when it changes,
+  // since the textarea is uncontrolled.
+  const location = params.get("location");
+  const property = params.get("property");
+  const seeded = [property, location && `in ${location}`].filter(Boolean).join(" ");
+  const defaultMessage = seeded ? `${seeded}.` : undefined;
+
   const sectionRef = useRef<HTMLElement | null>(null);
   const [formVisible, setFormVisible] = useState(false);
 
@@ -71,7 +79,12 @@ function RequestQuoteInner({ titles, copy }: { titles: Titles; copy: Copy }) {
             </div>
           </div>
 
-          <QuoteForm serviceSlug={serviceSlug} serviceTitle={serviceTitle} />
+          <QuoteForm
+            key={defaultMessage ?? "blank"}
+            serviceSlug={serviceSlug}
+            serviceTitle={serviceTitle}
+            defaultMessage={defaultMessage}
+          />
         </div>
       </section>
 

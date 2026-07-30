@@ -73,6 +73,31 @@ export const HOME_HERO = {
   statusMetricValue: "~12 min",
 } as const;
 
+/**
+ * The quote bar floating over the hero panel. Its three fields are carried into
+ * the real quote form at #book — service as a selection, location and property
+ * type as a seeded message — so nothing here is decorative.
+ *
+ * Lives in code rather than the `home` global while the hero layout is still
+ * being settled; move it into Payload once the design is signed off.
+ */
+export const HERO_BAR = {
+  locationLabel: "Location",
+  locationPlaceholder: "Where do you live",
+  propertyLabel: "Property type",
+  propertyPlaceholder: "Choose your property",
+  serviceLabel: "Service",
+  servicePlaceholder: "What needs cleaning",
+  submitLabel: "Get a price",
+  propertyTypes: [
+    "Apartment",
+    "House",
+    "Townhouse",
+    "Studio / office",
+    "Retail space",
+  ],
+} as const;
+
 export const HOME_SECTIONS = {
   services: {
     eyebrow: "The Services",

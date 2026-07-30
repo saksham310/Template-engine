@@ -17,6 +17,8 @@ const SLIDE = {
 type Props = {
   serviceSlug: string;
   serviceTitle: string;
+  /** Seeded from the hero quote bar. Editable — it is only a starting point. */
+  defaultMessage?: string;
 };
 
 const FIELD =
@@ -27,7 +29,7 @@ const FIELD =
  * Request-Quote form. Submits via the `requestQuote` Server Action, which saves
  * a Lead to Payload (SQLite) and logs an email stub. Instrument styling.
  */
-export default function QuoteForm({ serviceSlug, serviceTitle }: Props) {
+export default function QuoteForm({ serviceSlug, serviceTitle, defaultMessage }: Props) {
   const [state, formAction, isPending] = useActionState<QuoteState, FormData>(
     requestQuote,
     { status: "idle" },
@@ -91,6 +93,7 @@ export default function QuoteForm({ serviceSlug, serviceTitle }: Props) {
         <textarea
           name="message"
           rows={3}
+          defaultValue={defaultMessage}
           className={`${FIELD} resize-none`}
           placeholder={`e.g. 3-bed apartment, ${serviceTitle.toLowerCase()}, available weekday mornings`}
         />
