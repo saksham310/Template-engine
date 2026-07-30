@@ -9,15 +9,6 @@ import {
   SITE_CONFIG,
 } from "../../config/site";
 
-/** Icons the "Why Choose Us" list can render (mapped in (frontend)/page.tsx). */
-const ICON_OPTIONS = [
-  { label: "Shield (standards)", value: "ShieldCheck" },
-  { label: "Leaf (eco)", value: "Leaf" },
-  { label: "People (teams)", value: "Users" },
-  { label: "Clock (response time)", value: "Clock" },
-  { label: "Sparkles (finish)", value: "Sparkles" },
-];
-
 const PATH_NOTE = "Site path such as /contact, or #book to scroll down this page.";
 
 /**
@@ -329,30 +320,15 @@ export const Home: GlobalConfig = {
               maxRows: 6,
               admin: {
                 description:
-                  "Numbered automatically in the order listed here. Four fill the two-column layout evenly.",
+                  "Numbered automatically in the order listed here. The first is set larger and runs full width; the rest fill two columns beneath it.",
               },
               defaultValue: HOME_FEATURES.map((f) => ({ ...f })),
               fields: [
                 {
-                  type: "row",
-                  fields: [
-                    {
-                      name: "title",
-                      type: "text",
-                      label: "Title",
-                      required: true,
-                      admin: { width: "60%" },
-                    },
-                    {
-                      name: "icon",
-                      type: "select",
-                      label: "Icon",
-                      required: true,
-                      defaultValue: "ShieldCheck",
-                      options: ICON_OPTIONS,
-                      admin: { width: "40%" },
-                    },
-                  ],
+                  name: "title",
+                  type: "text",
+                  label: "Title",
+                  required: true,
                 },
                 {
                   name: "description",

@@ -140,32 +140,28 @@ export const HOME_ADD_ONS: HomeAddOn[] = [
   { label: "Wardrobe reset", meta: "+60m" },
 ];
 
-export type HomeFeature = { title: string; description: string; icon: string };
+export type HomeFeature = { title: string; description: string };
 
 export const HOME_FEATURES: HomeFeature[] = [
   {
     title: "Archival-Grade Method",
     description:
       "A documented 12-point protocol per room — the same discipline a gallery applies to its collection.",
-    icon: "ShieldCheck",
   },
   {
     title: "Eco-Certified Chemistry",
     description:
       "pH-neutral, low-residue formulations that protect finishes and the people who live with them.",
-    icon: "Leaf",
   },
   {
     title: "Trained Specialists",
     description:
       "Vetted, insured teams of two or more — never a rotating cast of subcontractors.",
-    icon: "Users",
   },
   {
     title: "Response in Minutes",
     description:
       "Quotes reviewed and returned within the hour. Recurring care scheduled around your calendar.",
-    icon: "Clock",
   },
 ];
 

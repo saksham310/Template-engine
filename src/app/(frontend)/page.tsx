@@ -1,19 +1,11 @@
-import { ShieldCheck, Leaf, Users, Clock, Sparkles, type LucideIcon } from "lucide-react";
 import Hero from "@/components/Hero";
 import ServiceBento from "@/components/ServiceBento";
 import PricingCards from "@/components/PricingCards";
+import WhyUs from "@/components/WhyUs";
 import BookingWizard from "@/components/BookingWizard";
 import { getServiceList } from "@/payload/integration/getServiceView";
 import { getHomeContent } from "@/payload/integration/getHomeContent";
-import { MotionWrapper, MotionStagger, MotionItem } from "@/components/MotionWrapper";
-
-const ICONS: Record<string, LucideIcon> = {
-  ShieldCheck,
-  Leaf,
-  Users,
-  Clock,
-  Sparkles,
-};
+import { MotionStagger, MotionItem } from "@/components/MotionWrapper";
 
 export default async function Home() {
   const [list, content] = await Promise.all([getServiceList(), getHomeContent()]);
@@ -31,54 +23,11 @@ export default async function Home() {
 
       <PricingCards services={list} content={content.pricing} />
 
-      <section className="border-b border-line bg-bg">
-        <div className="mx-auto max-w-7xl px-5 py-28">
-          <MotionWrapper className="max-w-2xl">
-            <div className="flex items-center gap-3">
-              <span className="editorial-label text-xs tracking-widest text-accent">
-                {content.features.eyebrow}
-              </span>
-              <span className="h-px w-16 bg-fill-mid" />
-            </div>
-            <h2 className="mt-5 text-4xl leading-[1.05] tracking-tight sm:text-5xl">
-              {content.features.headline}{" "}
-              <span className="font-editorial italic text-text/70">
-                {content.features.headlineAccent}
-              </span>
-            </h2>
-            <p className="mt-5 font-serif text-lg leading-8 text-text/60">
-              {content.features.body}
-            </p>
-          </MotionWrapper>
-
-          <MotionStagger className="mt-16 grid sm:grid-cols-2 sm:gap-x-16">
-            {content.features.items.map((f, i) => {
-              const Icon = ICONS[f.icon] ?? ShieldCheck;
-              return (
-                <MotionItem
-                  key={f.title}
-                  className="group flex gap-6 border-t border-line py-9"
-                >
-                  <span className="font-editorial text-6xl leading-[0.8] text-fill-mid transition-colors duration-300 group-hover:text-accent">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div className="flex-1 pt-1">
-                    <div className="flex items-center gap-2.5">
-                      <Icon className="h-4 w-4 text-accent" strokeWidth={2} />
-                      <h3 className="text-lg font-bold tracking-tight text-text">
-                        {f.title}
-                      </h3>
-                    </div>
-                    <p className="mt-3 font-serif text-[15px] leading-7 text-text/60">
-                      {f.description}
-                    </p>
-                  </div>
-                </MotionItem>
-              );
-            })}
-          </MotionStagger>
-        </div>
-      </section>
+      <WhyUs
+        content={content.features}
+        imageUrl={list[0]?.imageUrl ?? content.hero.imageUrl}
+        imageAlt={list[0] ? `${list[0].title} — recent work` : content.hero.imageAlt}
+      />
 
       <section className="border-b border-line bg-surface">
         <div className="mx-auto grid max-w-7xl gap-12 px-5 py-28 lg:grid-cols-[0.8fr_1.6fr]">

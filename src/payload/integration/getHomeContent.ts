@@ -39,7 +39,7 @@ export type HomeContent = {
     headline: string;
     headlineAccent: string;
     body: string;
-    items: { title: string; description: string; icon: string }[];
+    items: { title: string; description: string }[];
   };
   faq: {
     eyebrow: string;
@@ -103,7 +103,6 @@ function toContent(doc: Home): HomeContent {
     ? doc.features.map((item) => ({
         title: item.title,
         description: item.description,
-        icon: item.icon,
       }))
     : f.features.items;
 
