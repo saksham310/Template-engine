@@ -17,28 +17,40 @@ type BentoService = {
   imageUrl: string;
 };
 
-const GRAIN =
-  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
+/**
+ * The section's one shape idea, used once. A radius this large clamps to half
+ * the shorter side, so the crown stays a true semicircle at every breakpoint —
+ * a fixed rem value drifts into a rounded rectangle when wide.
+ */
+const ARCH = "rounded-t-[9999px]";
 
-function Grain({ opacity = 0.14 }: { opacity?: number }) {
-  return (
-    <span
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 mix-blend-overlay"
-      style={{ backgroundImage: GRAIN, opacity }}
-    />
-  );
-}
-
+/**
+ * Cards share a frame but not a layout: each one below is built around a
+ * different idea (arch, full-bleed, list), so the grid reads as composed rather
+ * than as one component filled three times.
+ */
 const cardBase =
-  "group relative isolate overflow-hidden rounded-md border border-line " +
-  "transition-all duration-300 ease-out hover:-translate-y-1 hover:border-line-strong";
+  "group relative isolate overflow-hidden rounded-3xl border border-line " +
+  "transition-colors duration-300 ease-out hover:border-line-strong";
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
+/** One labelling device for the whole section: index number on a hairline. */
+function IndexRule({
+  index,
+  label,
+  tone = "text-text/45",
+  rule = "bg-line-strong/40",
+}: {
+  index: string;
+  label: string;
+  tone?: string;
+  rule?: string;
+}) {
   return (
-    <p className="editorial-label text-xs tracking-widest opacity-70">
-      {children}
-    </p>
+    <div className={`flex items-center gap-3 font-mono text-[10px] uppercase tracking-widest ${tone}`}>
+      <span className="tabular-nums">{index}</span>
+      <span className={`h-px w-6 ${rule}`} />
+      <span>{label}</span>
+    </div>
   );
 }
 
@@ -66,45 +78,57 @@ export default function ServiceBento({
   if (!lead) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-5 py-16 sm:py-28">
-      <MotionWrapper className="mb-7 max-w-xl">
-        <Eyebrow>{heading.eyebrow}</Eyebrow>
-        <h2 className="mt-2 text-3xl tracking-tight sm:text-4xl">
+    <section className="mx-auto max-w-7xl px-5 py-14 sm:py-20">
+      <MotionWrapper className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <h2 className="max-w-xl text-3xl tracking-tight sm:text-4xl">
           {heading.headline}
         </h2>
+        <p className="font-mono text-[10px] uppercase tracking-widest text-text/40">
+          {heading.eyebrow}
+        </p>
       </MotionWrapper>
 
-      <MotionStagger className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:auto-rows-[minmax(0,auto)]">
+      {/* Uneven columns — 7/5 rather than 2/1, so the grid isn't a tidy split. */}
+      <MotionStagger className="grid grid-cols-1 gap-3 sm:grid-cols-12">
+        {/* ── 01 · Arch ── */}
         <motion.article
           variants={fadeUpPlain}
           style={REVEAL}
-          className={`${cardBase} aspect-[4/5] sm:aspect-auto sm:col-span-2 sm:row-span-2 sm:min-h-[440px] text-white`}
+          className={`${cardBase} flex flex-col bg-surface sm:col-span-7 sm:row-span-2`}
         >
-          <Image
-            src={lead.imageUrl}
-            alt={`${lead.title} — recent work`}
-            fill
-            sizes="(max-width: 640px) 100vw, 66vw"
-            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-            priority
-          />
-          <span
-            aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"
-          />
-          <Grain opacity={0.12} />
+          <div className="relative flex-1 overflow-hidden p-4 pb-0">
+            <Image
+              src={lead.imageUrl}
+              alt=""
+              aria-hidden="true"
+              fill
+              sizes="(max-width: 640px) 100vw, 58vw"
+              className="scale-125 object-cover opacity-35 blur-2xl"
+            />
+            <div className={`relative aspect-[4/5] w-full overflow-hidden sm:aspect-[16/9] ${ARCH}`}>
+              <Image
+                src={lead.imageUrl}
+                alt={`${lead.title} — recent work`}
+                fill
+                sizes="(max-width: 640px) 100vw, 58vw"
+                className="object-cover"
+                priority
+              />
+            </div>
+          </div>
 
-          <div className="relative flex h-full flex-col justify-end p-6 sm:p-8">
-            <Eyebrow>{heading.leadBadge}</Eyebrow>
-            <h3 className="mt-2 max-w-[16ch] text-4xl font-bold leading-[0.95] tracking-tight sm:text-5xl">
+          <div className="bg-surface-muted px-8 pb-8 pt-6">
+            <IndexRule index="01" label={`${lead.category} · ${lead.durationLabel}`} />
+            <h3 className="mt-3 text-3xl tracking-tight text-text sm:text-[2.5rem] sm:leading-[1.05]">
               {lead.title}
             </h3>
-            <p className="mt-3 max-w-md text-base leading-snug text-white/80">
+            {/* Serif against the geometric sans — the section's one warm voice. */}
+            <p className="mt-3 max-w-md font-serif text-[17px] leading-relaxed text-text/65">
               {lead.tagline}
             </p>
             <Link
               href={`/services/${lead.slug}`}
-              className="mt-6 inline-flex w-fit items-center gap-1 rounded-sm bg-surface px-5 py-2.5 text-sm font-medium text-text transition-colors hover:bg-surface/90"
+              className="mt-6 inline-flex w-fit items-center gap-1.5 rounded-full bg-text px-6 py-2.5 text-sm font-semibold text-bg transition-colors duration-200 ease-out hover:bg-accent"
             >
               {heading.leadCtaLabel}
               <span aria-hidden="true">→</span>
@@ -112,84 +136,61 @@ export default function ServiceBento({
           </div>
         </motion.article>
 
+        {/* ── 02 · Full bleed ── */}
         {second && (
           <motion.article
             variants={fadeUpPlain}
             style={REVEAL}
-            className={`${cardBase} aspect-square sm:aspect-auto sm:min-h-[240px] bg-surface text-text`}
+            className={`${cardBase} min-h-[260px] bg-surface sm:col-span-5`}
           >
-            <Image
-              src={second.imageUrl}
-              alt={`${second.title} — recent work`}
-              fill
-              sizes="(max-width: 640px) 100vw, 33vw"
-              className="object-cover opacity-90 transition-transform duration-500 ease-out group-hover:scale-[1.05]"
-            />
-            <span
-              aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-t from-white via-white/60 to-transparent"
-            />
-            <Grain />
-            <Link
-              href={`/services/${second.slug}`}
-              className="relative flex h-full flex-col justify-end p-5"
-            >
-              <Eyebrow>{second.category}</Eyebrow>
-              <h3 className="mt-1 text-2xl font-semibold tracking-tight">{second.title}</h3>
+            <Link href={`/services/${second.slug}`} className="block h-full">
+              <Image
+                src={second.imageUrl}
+                alt={`${second.title} — recent work`}
+                fill
+                sizes="(max-width: 640px) 100vw, 40vw"
+                className="object-cover"
+              />
+              {/* Forest ink rather than pure black — the scrim stays in palette. */}
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 bg-gradient-to-t from-text via-text/45 to-transparent"
+              />
+              <div className="relative flex h-full flex-col justify-end p-7 text-bg">
+                <IndexRule
+                  index="02"
+                  label={second.durationLabel}
+                  tone="text-bg/60"
+                  rule="bg-bg/40"
+                />
+                <h3 className="mt-3 text-2xl tracking-tight sm:text-3xl">{second.title}</h3>
+              </div>
             </Link>
           </motion.article>
         )}
 
+        {/* ── Everything else · a list, not a card of labels ── */}
         <motion.article
           variants={fadeUpPlain}
           style={REVEAL}
-          className={`${cardBase} min-h-[180px] bg-surface p-5 text-text`}
+          className={`${cardBase} bg-surface px-7 pb-7 pt-6 text-text sm:col-span-5`}
         >
-          <Grain opacity={0.1} />
-          <div className="relative">
-            <Eyebrow>{heading.addOnsBadge}</Eyebrow>
-            <h3 className="mt-1 text-2xl font-semibold tracking-tight">
-              {heading.addOnsTitle}
-            </h3>
-            <ul className="mt-3 space-y-1.5 text-sm leading-tight text-text/70">
-              {heading.addOns.map((addOn, i) => (
-                <li
-                  key={addOn.label}
-                  className={`flex justify-between ${
-                    i < heading.addOns.length - 1
-                      ? "border-b border-line pb-1.5"
-                      : ""
-                  }`}
-                >
-                  <span>{addOn.label}</span>
-                  <span className="tabular-nums">{addOn.meta}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </motion.article>
+          <IndexRule index="+" label={heading.addOnsBadge} />
+          <h3 className="mt-3 text-2xl tracking-tight">{heading.addOnsTitle}</h3>
 
-        <motion.article
-          variants={fadeUpPlain}
-          style={REVEAL}
-          className={`${cardBase} sm:col-span-3 min-h-[120px] bg-text text-white`}
-        >
-          <Grain opacity={0.18} />
-          <div className="relative flex h-full flex-col items-start justify-between gap-3 p-6 sm:flex-row sm:items-center">
-            <div>
-              <Eyebrow>{heading.membershipBadge}</Eyebrow>
-              <h3 className="mt-1 text-2xl font-semibold tracking-tight">
-                {heading.membershipTitle}
-              </h3>
-            </div>
-            <Link
-              href={heading.membershipCtaHref}
-              className="inline-flex items-center gap-1 rounded-sm border border-white/30 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:border-white/70"
-            >
-              {heading.membershipCtaLabel}
-              <span aria-hidden="true">→</span>
-            </Link>
-          </div>
+          <ul className="mt-5">
+            {heading.addOns.map((addOn) => (
+              <li
+                key={addOn.label}
+                className="flex items-baseline justify-between gap-4 border-t border-line py-2.5 last:pb-0"
+              >
+                <span className="text-sm text-text/80">{addOn.label}</span>
+                <span className="font-mono text-xs tabular-nums text-text/45">
+                  {addOn.meta}
+                </span>
+              </li>
+            ))}
+          </ul>
         </motion.article>
       </MotionStagger>
     </section>

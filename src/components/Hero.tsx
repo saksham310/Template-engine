@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { EASE, DURATION } from "./MotionWrapper";
 import HeroQuoteBar from "./HeroQuoteBar";
+import { GridPattern } from "./patterns";
 import { SITE_CONFIG } from "@/config/site";
 import type { ServiceListItem } from "@/payload/integration/getServiceView";
 import type { HomeContent } from "@/payload/integration/getHomeContent";
@@ -32,25 +33,8 @@ const PHOTO_FRAME = "overflow-hidden rounded-t-[9999px]";
  */
 function PanelPattern() {
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-      <svg className="h-full w-full" fill="none">
-        <defs>
-          <pattern
-            id="hero-grid"
-            width="56"
-            height="56"
-            patternUnits="userSpaceOnUse"
-          >
-            <path
-              d="M56 0H0V56"
-              stroke="var(--color-surface)"
-              strokeWidth="1"
-              fill="none"
-            />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#hero-grid)" opacity="0.6" />
-      </svg>
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 text-surface">
+      <GridPattern id="hero-grid" />
 
       <span className="absolute -bottom-[22%] -left-[3%] select-none font-editorial text-[26rem] leading-none text-surface/50 sm:text-[38rem]">
         {SITE_CONFIG.name.charAt(0)}
