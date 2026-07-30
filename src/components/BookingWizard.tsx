@@ -7,14 +7,16 @@ import { Clock } from "lucide-react";
 import { TRUST } from "@/lib/services";
 import { EASE } from "./MotionWrapper";
 import QuoteForm from "./QuoteForm";
+import type { HomeContent } from "@/payload/integration/getHomeContent";
 
 type Titles = Record<string, string>;
+type Copy = HomeContent["quote"];
 
 /**
  * Home "Request a Quote" section (#book).
  * useSearchParams needs a Suspense boundary during static prerender.
  */
-function RequestQuoteInner({ titles }: { titles: Titles }) {
+function RequestQuoteInner({ titles, copy }: { titles: Titles; copy: Copy }) {
   const params = useSearchParams();
   const slug = params.get("service");
   const title = slug ? titles[slug] : undefined;
@@ -43,7 +45,7 @@ function RequestQuoteInner({ titles }: { titles: Titles }) {
         <div className="grid gap-x-12 gap-y-8 lg:grid-cols-2">
           <div>
             <p className="editorial-label text-xs tracking-widest text-text/50">
-              Request a Quote
+              {copy.eyebrow}
             </p>
             <h2 className="mt-2 font-serif text-3xl tracking-tight text-text sm:text-4xl lg:text-5xl">
               <AnimatePresence mode="wait" initial={false}>
@@ -56,15 +58,12 @@ function RequestQuoteInner({ titles }: { titles: Titles }) {
                   transition={{ duration: 0.4, ease: EASE }}
                   style={{ willChange: "transform, opacity" }}
                 >
-                  {selected
-                    ? `Request your ${selected.title} quote`
-                    : "Request your personalised quote"}
+                  {selected ? `Request your ${selected.title} quote` : copy.headline}
                 </motion.span>
               </AnimatePresence>
             </h2>
             <p className="mt-4 max-w-md text-base leading-relaxed text-text/60">
-              Tell us about your space. Every request is reviewed individually —
-              no fixed rates, no obligation, no payment details.
+              {copy.body}
             </p>
             <div className="mt-6 flex items-center gap-2 font-mono text-xs text-text/50">
               <Clock className="h-3.5 w-3.5" strokeWidth={2} />
@@ -93,7 +92,7 @@ function RequestQuoteInner({ titles }: { titles: Titles }) {
   );
 }
 
-export default function BookingWizard({ titles }: { titles: Titles }) {
+export default function BookingWizard({ titles, copy }: { titles: Titles; copy: Copy }) {
   return (
     <Suspense
       fallback={
@@ -102,7 +101,7 @@ export default function BookingWizard({ titles }: { titles: Titles }) {
         </section>
       }
     >
-      <RequestQuoteInner titles={titles} />
+      <RequestQuoteInner titles={titles} copy={copy} />
     </Suspense>
   );
 }

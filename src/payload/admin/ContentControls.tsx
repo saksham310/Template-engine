@@ -37,31 +37,38 @@ export const ContentControls: React.FC = () => {
   }
 
   return (
-    <section className="crm__panel">
-      <div className="crm__panel-head">
-        <span className="crm__panel-title">Content Setup</span>
-      </div>
-      <div className="crm__actions">
+    <section className="ed-card ed-card--wide" aria-labelledby="ed-setup">
+      <h2 className="ed-card__title" id="ed-setup">
+        Starting from scratch?
+      </h2>
+      <p className="ed-card__note ed-card__note--tight">
+        Sample content fills the website with example services, photos, and posts so you
+        can see how it looks. Clearing removes everything — there is no undo.
+      </p>
+      <div className="ed-setup">
         <button
           type="button"
-          className="crm__action crm__action--primary"
+          className="ed-btn ed-btn--primary"
           onClick={seed}
           disabled={busy}
         >
-          Load Sample Content <span className="arrow">→</span>
+          Load sample content <span className="ed-btn__arrow" aria-hidden="true">→</span>
         </button>
         <button
           type="button"
-          className="crm__action crm__action--danger"
+          className="ed-btn ed-btn--danger"
           onClick={purge}
           disabled={busy}
         >
-          Clear All Content <span className="arrow">→</span>
+          Clear all content <span className="ed-btn__arrow" aria-hidden="true">→</span>
         </button>
       </div>
-      {status.text && (
-        <p className={`crm__setup-status crm__setup-status--${status.tone}`}>{status.text}</p>
-      )}
+      <p
+        aria-live="polite"
+        className={`ed-setup__status ed-setup__status--${status.tone}`}
+      >
+        {status.text}
+      </p>
     </section>
   );
 };

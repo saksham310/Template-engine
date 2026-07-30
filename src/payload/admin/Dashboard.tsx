@@ -1,9 +1,17 @@
 import React from "react";
-import { getPayload } from "payload";
-import config from "@payload-config";
-import { ContentControls } from "./ContentControls";
+import Link from "next/link";
+import { formatAdminURL } from "payload/shared";
+import type { AdminViewServerProps, Payload, Where } from "payload";
+import {
+  Home as HomeIcon,
+  Images,
+  Inbox,
+  PenLine,
+  Sparkles,
+  SquarePen,
+} from "lucide-react";
 
-const ADMIN = "/admin/collections";
+import { SITE_CONFIG } from "../../config/site";
 
 const STATUSES = [
   { value: "New", label: "New", tone: "blue" },
@@ -11,6 +19,8 @@ const STATUSES = [
   { value: "Quoted", label: "Quoted", tone: "violet" },
   { value: "Converted", label: "Converted", tone: "green" },
 ] as const;
+
+type User = AdminViewServerProps["initPageResult"]["req"]["user"];
 
 type LeadRow = {
   id: string | number;
@@ -21,38 +31,48 @@ type LeadRow = {
   serviceRequested?: { title?: string } | string | null;
 };
 
-async function getData() {
+type Tile = { label: string; value: string; hint: string };
+
+/** Counts run as the signed-in user, so a limited role never sees more than it may. */
+async function countDocs(
+  payload: Payload,
+  collection: "gallery" | "leads" | "media" | "posts" | "services",
+  user: User,
+  where?: Where,
+): Promise<number | null> {
   try {
-    const payload = await getPayload({ config });
-
-    const [byStatus, totalLeads, services, recent] = await Promise.all([
-      Promise.all(
-        STATUSES.map((s) =>
-          payload
-            .count({ collection: "leads", where: { status: { equals: s.value } } })
-            .then((r) => [s.value, r.totalDocs] as const),
-        ),
-      ),
-      payload.count({ collection: "leads" }),
-      payload.count({ collection: "services" }),
-      payload.find({
-        collection: "leads",
-        limit: 6,
-        sort: "-createdAt",
-        depth: 1,
-      }),
-    ]);
-
-    const counts = Object.fromEntries(byStatus) as Record<string, number>;
-    return {
-      counts,
-      totalLeads: totalLeads.totalDocs,
-      services: services.totalDocs,
-      recent: (recent.docs as LeadRow[]) ?? [],
-    };
-  } catch {
-    return { counts: {}, totalLeads: 0, services: 0, recent: [] as LeadRow[] };
+    const { totalDocs } = await payload.count({
+      collection,
+      overrideAccess: false,
+      user,
+      ...(where ? { where } : {}),
+    });
+    return totalDocs;
+  } catch (error) {
+    payload.logger.error({ err: error }, `dashboard: could not count "${collection}"`);
+    return null;
   }
+}
+
+async function recentLeads(payload: Payload, user: User): Promise<LeadRow[]> {
+  try {
+    const { docs } = await payload.find({
+      collection: "leads",
+      limit: 6,
+      sort: "-createdAt",
+      depth: 1,
+      overrideAccess: false,
+      user,
+    });
+    return docs as LeadRow[];
+  } catch (error) {
+    payload.logger.error({ err: error }, "dashboard: could not load recent leads");
+    return [];
+  }
+}
+
+function num(value: number | null): string {
+  return value === null ? "—" : String(value);
 }
 
 function serviceName(s: LeadRow["serviceRequested"]): string {
@@ -62,92 +82,155 @@ function serviceName(s: LeadRow["serviceRequested"]): string {
 
 function fmtDate(iso?: string): string {
   if (!iso) return "—";
-  const d = new Date(iso);
-  return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
+  return new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
 }
 
-export const Dashboard = async () => {
-  const { counts, totalLeads, services, recent } = await getData();
+function firstName(user: User): string | null {
+  const name = (user as { name?: unknown } | null)?.name;
+  if (typeof name !== "string" || !name.trim()) return null;
+  return name.trim().split(/\s+/)[0];
+}
 
-  const newLeads = counts["New"] ?? 0;
-  const converted = counts["Converted"] ?? 0;
-  const conversion = totalLeads > 0 ? Math.round((converted / totalLeads) * 100) : 0;
+export const Dashboard = async ({ initPageResult }: AdminViewServerProps) => {
+  const { payload, user } = initPageResult.req;
+
+  const [totalLeads,  byStatus, recent] =
+    await Promise.all([
+      countDocs(payload, "leads", user),
+      Promise.all(
+        STATUSES.map((s) =>
+          countDocs(payload, "leads", user, { status: { equals: s.value } }).then(
+            (count) => [s.value, count ?? 0] as const,
+          ),
+        ),
+      ),
+      recentLeads(payload, user),
+    ]);
+
+  const adminUrl = (path: `/${string}`) =>
+    formatAdminURL({ adminRoute: payload.config.routes.admin, path });
+
+  const counts = Object.fromEntries(byStatus) as Record<string, number>;
   const pipelineMax = Math.max(1, ...STATUSES.map((s) => counts[s.value] ?? 0));
 
-  const kpis = [
-    { label: "New Requests", value: newLeads, sub: "Awaiting review", accent: true },
-    { label: "Total Leads", value: totalLeads, sub: "All time" },
-    { label: "Conversion", value: `${conversion}%`, sub: `${converted} converted` },
-    { label: "Active Services", value: services, sub: "Published" },
+
+  const actions = [
+    {
+      icon: Inbox,
+      title: "Read new quote requests",
+      description: "See who got in touch, what they need, and reply from their record.",
+      href: adminUrl("/collections/leads"),
+    },
+    {
+      icon: HomeIcon,
+      title: "Edit the home page",
+      description: "Headline, intro, the four standards, and the questions people ask.",
+      href: adminUrl("/globals/home"),
+    },
+    {
+      icon: Sparkles,
+      title: "Add or edit a service",
+      description: "Everything a service page shows — pricing notes, inclusions, photos.",
+      href: adminUrl("/collections/services"),
+    },
+    {
+      icon: PenLine,
+      title: "Write a journal post",
+      description: "Start a draft. It stays private until you press Publish.",
+      href: adminUrl("/collections/posts"),
+    },
+    {
+      icon: Images,
+      title: "Add or browse photos",
+      description: "Upload a picture, or look through everything already uploaded.",
+      href: adminUrl("/collections/media"),
+    },
+    {
+      icon: SquarePen,
+      title: "Manage the gallery",
+      description: "Choose which photos appear on the public gallery page, and in what order.",
+      href: adminUrl("/collections/gallery"),
+    },
   ];
 
+  const name = firstName(user);
+
   return (
-    <div className="crm">
-      <header className="crm__head">
-        <div>
-          <p className="crm__eyebrow">Admin Console</p>
-          <h1 className="crm__title">Management Overview</h1>
-        </div>
+    <div className="ed-dash">
+      <header className="ed-dash__head">
+        <p className="ed-dash__eyebrow">
+          Welcome <span aria-hidden="true">👋</span>
+        </p>
+        <h1 className="ed-dash__title">{name ?? SITE_CONFIG.name}</h1>
+        <p className="ed-dash__lead">
+          Everything the public website shows is edited from here. Changes go live as
+          soon as you save.
+        </p>
       </header>
 
-      <div className="crm__kpis">
-        {kpis.map((k) => (
-          <div key={k.label} className={`crm__kpi${k.accent ? " crm__kpi--accent" : ""}`}>
-            <span className="crm__kpi-label">{k.label}</span>
-            <span className="crm__kpi-value">
-              {typeof k.value === "number" ? String(k.value).padStart(2, "0") : k.value}
-            </span>
-            <span className="crm__kpi-sub">{k.sub}</span>
+      <div className="ed-bento">
+
+
+        <section className="ed-card" aria-labelledby="ed-pipeline">
+          <h2 className="ed-card__title" id="ed-pipeline">
+            Where your requests stand
+          </h2>
+          <p className="ed-card__note ed-card__note--tight">
+            {totalLeads === null
+              ? "Counts are unavailable right now."
+              : `${totalLeads} request${totalLeads === 1 ? "" : "s"} in total. Set the stage on each record as you work through it.`}
+          </p>
+
+          <ul className="ed-pipeline">
+            {STATUSES.map((s) => {
+              const c = counts[s.value] ?? 0;
+              return (
+                <li key={s.value} className="ed-stage">
+                  <span className="ed-stage__top">
+                    <span
+                      className={`ed-dot ed-dot--${s.tone}`}
+                      aria-hidden="true"
+                    />
+                    <span className="ed-stage__label">{s.label}</span>
+                    <span className="ed-stage__count">{c}</span>
+                  </span>
+                  <span className="ed-bar">
+                    <span
+                      className={`ed-bar__fill ed-bar__fill--${s.tone}`}
+                      style={{ width: `${Math.round((c / pipelineMax) * 100)}%` }}
+                    />
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        <section className="ed-card" aria-labelledby="ed-recent">
+          <div className="ed-card__head">
+            <h2 className="ed-card__title ed-card__title--flush" id="ed-recent">
+              The latest requests
+            </h2>
+            <Link className="ed-card__link" href={adminUrl("/collections/leads")}>
+              See all →
+            </Link>
           </div>
-        ))}
-      </div>
 
-      <div className="crm__cols">
-        <div className="crm__main">
-          <section className="crm__panel">
-            <div className="crm__panel-head">
-              <span className="crm__panel-title">Lead Pipeline</span>
-              <span className="crm__panel-meta">{totalLeads} total</span>
-            </div>
-            <div className="crm__pipeline">
-              {STATUSES.map((s) => {
-                const c = counts[s.value] ?? 0;
-                return (
-                  <div key={s.value} className="crm__stage">
-                    <div className="crm__stage-top">
-                      <span className={`crm__dot crm__dot--${s.tone}`} />
-                      <span className="crm__stage-label">{s.label}</span>
-                      <span className="crm__stage-count">{c}</span>
-                    </div>
-                    <div className="crm__bar">
-                      <div
-                        className={`crm__bar-fill crm__bar-fill--${s.tone}`}
-                        style={{ width: `${Math.round((c / pipelineMax) * 100)}%` }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-
-          <section className="crm__panel">
-            <div className="crm__panel-head">
-              <span className="crm__panel-title">Recent Requests</span>
-              <a className="crm__link" href={`${ADMIN}/leads`}>
-                View all →
-              </a>
-            </div>
-            {recent.length === 0 ? (
-              <p className="crm__empty">No quote requests yet. New leads land here.</p>
-            ) : (
-              <table className="crm__table">
+          {recent.length === 0 ? (
+            <p className="ed-empty">
+              No quote requests yet. Anything sent through the website lands here.
+            </p>
+          ) : (
+            <div className="ed-scroll">
+              <table className="ed-table">
                 <thead>
                   <tr>
-                    <th>Client</th>
-                    <th>Service</th>
-                    <th>Status</th>
-                    <th className="crm__ta-right">Date</th>
+                    <th scope="col">Who</th>
+                    <th scope="col">Asked about</th>
+                    <th scope="col">Stage</th>
+                    <th className="ed-ta-right" scope="col">
+                      Sent
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -157,50 +240,51 @@ export const Dashboard = async () => {
                     return (
                       <tr key={l.id}>
                         <td>
-                          <a className="crm__client" href={`${ADMIN}/leads/${l.id}`}>
+                          <Link
+                            className="ed-client"
+                            href={adminUrl(`/collections/leads/${l.id}`)}
+                          >
                             {l.name || "Unnamed"}
-                          </a>
-                          <span className="crm__muted">{l.email}</span>
+                          </Link>
+                          <span className="ed-muted">{l.email}</span>
                         </td>
-                        <td className="crm__muted">{serviceName(l.serviceRequested)}</td>
+                        <td className="ed-muted">{serviceName(l.serviceRequested)}</td>
                         <td>
-                          <span className={`crm__pill crm__pill--${tone}`}>
+                          <span className={`ed-pill ed-pill--${tone}`}>
                             {l.status || "New"}
                           </span>
                         </td>
-                        <td className="crm__ta-right crm__mono">{fmtDate(l.createdAt)}</td>
+                        <td className="ed-ta-right ed-mono">{fmtDate(l.createdAt)}</td>
                       </tr>
                     );
                   })}
                 </tbody>
               </table>
-            )}
-          </section>
-        </div>
-
-        <aside className="crm__side">
-          <section className="crm__panel">
-            <div className="crm__panel-head">
-              <span className="crm__panel-title">Quick Actions</span>
             </div>
-            <div className="crm__actions">
-              <a className="crm__action crm__action--primary" href={`${ADMIN}/services/create`}>
-                Create New Service <span className="arrow">→</span>
-              </a>
-              <a className="crm__action" href={`${ADMIN}/leads`}>
-                Review Leads <span className="arrow">→</span>
-              </a>
-              <a className="crm__action" href={`${ADMIN}/media`}>
-                Manage Media <span className="arrow">→</span>
-              </a>
-              <a className="crm__action" href={`${ADMIN}/services`}>
-                Manage Services <span className="arrow">→</span>
-              </a>
-            </div>
-          </section>
+          )}
+        </section>
 
-          <ContentControls />
-        </aside>
+        <section className="ed-card ed-card--wide" aria-labelledby="ed-actions">
+          <h2 className="ed-card__title" id="ed-actions">
+            What would you like to do?
+          </h2>
+
+          <ul className="ed-actions">
+            {actions.map((action) => (
+              <li key={action.title}>
+                <Link className="ed-action" href={action.href}>
+                  <span className="ed-action__icon" aria-hidden="true">
+                    <action.icon size={18} strokeWidth={1.75} />
+                  </span>
+                  <span className="ed-action__text">
+                    <span className="ed-action__title">{action.title}</span>
+                    <span className="ed-action__desc">{action.description}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
-import { ShieldCheck, Leaf, Users, Clock, type LucideIcon } from "lucide-react";
+import { ShieldCheck, Leaf, Users, Clock, Sparkles, type LucideIcon } from "lucide-react";
 import Hero from "@/components/Hero";
 import ServiceBento from "@/components/ServiceBento";
 import BookingWizard from "@/components/BookingWizard";
 import { getServiceList } from "@/payload/integration/getServiceView";
-import { HOME_FEATURES, HOME_FAQS } from "@/config/site";
+import { getHomeContent } from "@/payload/integration/getHomeContent";
 import { MotionWrapper, MotionStagger, MotionItem } from "@/components/MotionWrapper";
 
 const ICONS: Record<string, LucideIcon> = {
@@ -11,20 +11,21 @@ const ICONS: Record<string, LucideIcon> = {
   Leaf,
   Users,
   Clock,
+  Sparkles,
 };
 
 export default async function Home() {
-  const list = await getServiceList();
+  const [list, content] = await Promise.all([getServiceList(), getHomeContent()]);
   const titles = Object.fromEntries(list.map((s) => [s.slug, s.title]));
 
   return (
     <>
       <div className="bg-bg">
-        <Hero />
+        <Hero content={content.hero} />
       </div>
 
       <div id="services" className="border-y border-slate-200/60 bg-white">
-        <ServiceBento services={list} />
+        <ServiceBento services={list} heading={content.services} />
       </div>
 
       <section className="border-b border-slate-200/60 bg-bg">
@@ -32,22 +33,23 @@ export default async function Home() {
           <MotionWrapper className="max-w-2xl">
             <div className="flex items-center gap-3">
               <span className="editorial-label text-xs tracking-widest text-accent">
-                Why Choose Us
+                {content.features.eyebrow}
               </span>
               <span className="h-px w-16 bg-slate-300" />
             </div>
             <h2 className="mt-5 text-4xl leading-[1.05] tracking-tight sm:text-5xl">
-              The difference is in the{" "}
-              <span className="font-editorial italic text-text/70">discipline.</span>
+              {content.features.headline}{" "}
+              <span className="font-editorial italic text-text/70">
+                {content.features.headlineAccent}
+              </span>
             </h2>
             <p className="mt-5 font-serif text-lg leading-8 text-text/60">
-              Anyone can leave a room looking clean. We hold four standards that decide
-              whether it stays that way — and whether you ever think about it again.
+              {content.features.body}
             </p>
           </MotionWrapper>
 
           <MotionStagger className="mt-16 grid sm:grid-cols-2 sm:gap-x-16">
-            {HOME_FEATURES.map((f, i) => {
+            {content.features.items.map((f, i) => {
               const Icon = ICONS[f.icon] ?? ShieldCheck;
               return (
                 <MotionItem
@@ -80,22 +82,24 @@ export default async function Home() {
           <header className="self-start lg:sticky lg:top-28">
             <div className="flex items-center gap-3">
               <span className="editorial-label text-xs tracking-widest text-accent">
-                Common Questions
+                {content.faq.eyebrow}
               </span>
               <span className="h-px w-16 bg-slate-300" />
             </div>
             <h2 className="mt-4 text-4xl leading-[1.05] tracking-tight sm:text-5xl">
-              Answered before{" "}
-              <span className="font-editorial italic text-text/70">you ask.</span>
+              {content.faq.headline}{" "}
+              <span className="font-editorial italic text-text/70">
+                {content.faq.headlineAccent}
+              </span>
             </h2>
             <p className="mt-5 max-w-xs font-serif text-base leading-7 text-text/60">
-              Still curious? We answer every message ourselves, within the hour.
+              {content.faq.body}
             </p>
             <a
-              href="/contact"
+              href={content.faq.ctaHref}
               className="group mt-5 inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest text-text/60 transition-colors hover:text-text"
             >
-              Ask us directly
+              {content.faq.ctaLabel}
               <span className="transition-transform duration-200 ease-out group-hover:translate-x-0.5">
                 →
               </span>
@@ -103,7 +107,7 @@ export default async function Home() {
           </header>
 
           <MotionStagger className="border-t border-slate-200/60">
-            {HOME_FAQS.map((faq, i) => (
+            {content.faq.items.map((faq, i) => (
               <MotionItem key={faq.question}>
               <details
                 open={i === 0}
@@ -132,7 +136,7 @@ export default async function Home() {
       </section>
 
       <div id="book" className="bg-bg">
-        <BookingWizard titles={titles} />
+        <BookingWizard titles={titles} copy={content.quote} />
       </div>
     </>
   );

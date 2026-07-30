@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { SITE_CONFIG } from "@/config/site";
 import { EASE, DURATION } from "./MotionWrapper";
+import type { HomeContent } from "@/payload/integration/getHomeContent";
 
 const fade = (delay: number, duration = DURATION) => ({
   hidden: { opacity: 0, y: 8 },
@@ -15,7 +15,7 @@ const fade = (delay: number, duration = DURATION) => ({
   },
 });
 
-export default function Hero() {
+export default function Hero({ content }: { content: HomeContent["hero"] }) {
   return (
     <section className="relative isolate overflow-visible">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-6 px-5 pt-28 pb-16 sm:pt-36 sm:pb-20 lg:grid-cols-[65fr_35fr] lg:gap-8 lg:pt-40 lg:pb-24">
@@ -27,7 +27,7 @@ export default function Hero() {
             variants={fade(0)}
             style={{ willChange: "transform, opacity" }}
           >
-            Est. 2026 — Bespoke Care
+            {content.eyebrow}
           </motion.p>
 
           <motion.h1
@@ -37,7 +37,7 @@ export default function Hero() {
             variants={fade(0.08)}
             style={{ willChange: "transform, opacity" }}
           >
-            {SITE_CONFIG.tagline}
+            {content.headline}
           </motion.h1>
 
           <motion.div
@@ -48,22 +48,22 @@ export default function Hero() {
             style={{ willChange: "transform, opacity" }}
           >
             <p className="text-base leading-relaxed text-text/70 sm:text-lg sm:leading-snug">
-              {SITE_CONFIG.description}
+              {content.body}
             </p>
 
             <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
               <Link
-                href="#book"
+                href={content.primaryHref}
                 className="flex w-full items-center justify-center rounded-sm bg-text px-6 py-4 text-base font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-text/90 sm:w-auto sm:py-3.5"
               >
-                Request a Quote →
+                {content.primaryLabel}
               </Link>
 
               <Link
-                href="/gallery"
+                href={content.secondaryHref}
                 className="group inline-flex items-center justify-center gap-1 text-base font-medium text-text underline-offset-4 transition-colors hover:text-accent hover:underline"
               >
-                View recent work
+                {content.secondaryLabel}
                 <span
                   aria-hidden="true"
                   className="transition-transform group-hover:translate-x-0.5"
@@ -84,8 +84,8 @@ export default function Hero() {
             style={{ willChange: "transform, opacity" }}
           >
             <Image
-              src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=80"
-              alt="Sunlit modern living room with clean minimal interior"
+              src={content.imageUrl}
+              alt={content.imageAlt}
               fill
               sizes="(max-width: 1024px) 100vw, 35vw"
               className="object-cover"
@@ -106,15 +106,15 @@ export default function Hero() {
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
               </span>
               <span className="text-sm font-medium text-text">
-                Live Status: Professionals active nearby
+                {content.statusText}
               </span>
             </div>
             <div className="mt-2 flex items-baseline justify-between border-t border-slate-200/60 pt-2">
               <span className="editorial-label text-xs text-text/60">
-                Avg. response
+                {content.statusMetricLabel}
               </span>
               <span className="text-sm font-semibold tabular-nums text-text">
-                ~12 min
+                {content.statusMetricValue}
               </span>
             </div>
           </motion.div>

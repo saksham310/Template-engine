@@ -52,6 +52,55 @@ export const FOOTER_SECTIONS: FooterSection[] = [
   },
 ];
 
+/**
+ * Home page copy. This is the fallback layer: the `home` global in Payload
+ * overrides any of it, and the page falls back here field by field so a blank
+ * (or unreachable) CMS still renders a complete page.
+ */
+export const HOME_HERO = {
+  eyebrow: "Est. 2026 — Bespoke Care",
+  headline: SITE_CONFIG.tagline,
+  body: SITE_CONFIG.description,
+  primaryLabel: "Request a Quote →",
+  primaryHref: "#book",
+  secondaryLabel: "View recent work",
+  secondaryHref: "/gallery",
+  imageUrl:
+    "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=80",
+  imageAlt: "Sunlit modern living room with clean minimal interior",
+  statusText: "Live Status: Professionals active nearby",
+  statusMetricLabel: "Avg. response",
+  statusMetricValue: "~12 min",
+} as const;
+
+export const HOME_SECTIONS = {
+  services: {
+    eyebrow: "The Services",
+    headline: "A standard of finish, room by room.",
+  },
+  features: {
+    eyebrow: "Why Choose Us",
+    headline: "The difference is in the",
+    headlineAccent: "discipline.",
+    body:
+      "Anyone can leave a room looking clean. We hold four standards that decide whether it stays that way — and whether you ever think about it again.",
+  },
+  faq: {
+    eyebrow: "Common Questions",
+    headline: "Answered before",
+    headlineAccent: "you ask.",
+    body: "Still curious? We answer every message ourselves, within the hour.",
+    ctaLabel: "Ask us directly",
+    ctaHref: "/contact",
+  },
+  quote: {
+    eyebrow: "Request a Quote",
+    headline: "Request your personalised quote",
+    body:
+      "Tell us about your space. Every request is reviewed individually — no fixed rates, no obligation, no payment details.",
+  },
+} as const;
+
 export type HomeFeature = { title: string; description: string; icon: string };
 
 export const HOME_FEATURES: HomeFeature[] = [

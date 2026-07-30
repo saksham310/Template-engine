@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { MotionStagger, MotionWrapper, fadeUpPlain } from "./MotionWrapper";
+import type { HomeContent } from "@/payload/integration/getHomeContent";
 
 const REVEAL = { willChange: "transform, opacity" } as const;
 
@@ -42,8 +43,10 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 
 export default function ServiceBento({
   services = [],
+  heading,
 }: {
   services?: BentoService[];
+  heading: HomeContent["services"];
 }) {
   const lead = services[0];
   const second = services[1];
@@ -52,9 +55,9 @@ export default function ServiceBento({
   return (
     <section className="mx-auto max-w-7xl px-5 py-16 sm:py-28">
       <MotionWrapper className="mb-7 max-w-xl">
-        <Eyebrow>The Services</Eyebrow>
+        <Eyebrow>{heading.eyebrow}</Eyebrow>
         <h2 className="mt-2 text-3xl tracking-tight sm:text-4xl">
-          A standard of finish, room by room.
+          {heading.headline}
         </h2>
       </MotionWrapper>
 

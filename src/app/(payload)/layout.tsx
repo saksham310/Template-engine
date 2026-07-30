@@ -5,6 +5,7 @@ import "./admin-custom.scss"; // Pristine Console brand overrides — loads afte
 import { RootLayout, handleServerFunctions } from "@payloadcms/next/layouts";
 import React from "react";
 import { importMap } from "./admin/importMap.js";
+import { adminFontVariables } from "@/app/fonts";
 
 type Args = { children: React.ReactNode };
 
@@ -14,7 +15,12 @@ const serverFunction: ServerFunctionClient = async function (args) {
 };
 
 const Layout = ({ children }: Args) => (
-  <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
+  <RootLayout
+    config={config}
+    htmlProps={{ className: adminFontVariables }}
+    importMap={importMap}
+    serverFunction={serverFunction}
+  >
     {children}
   </RootLayout>
 );
