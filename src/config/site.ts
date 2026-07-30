@@ -1,5 +1,5 @@
 export const SITE_CONFIG = {
-  name: "Éditorial",
+  name: "Neatify",
   tagline: "Expert Cleaning for Modern Spaces",
   description:
     "We treat interiors like editorial subjects — trained specialists, archival-grade products, and a standard of finish reserved for the spaces you photograph.",
@@ -77,6 +77,14 @@ export const HOME_SECTIONS = {
   services: {
     eyebrow: "The Services",
     headline: "A standard of finish, room by room.",
+    leadBadge: "Signature",
+    leadCtaLabel: "Start Here",
+    addOnsBadge: "Add-ons",
+    addOnsTitle: "À La Carte",
+    membershipBadge: "Membership",
+    membershipTitle: "Recurring care, on your schedule.",
+    membershipCtaLabel: "See plans",
+    membershipCtaHref: "/#book",
   },
   features: {
     eyebrow: "Why Choose Us",
@@ -100,6 +108,14 @@ export const HOME_SECTIONS = {
       "Tell us about your space. Every request is reviewed individually — no fixed rates, no obligation, no payment details.",
   },
 } as const;
+
+export type HomeAddOn = { label: string; meta: string };
+
+export const HOME_ADD_ONS: HomeAddOn[] = [
+  { label: "Interior windows", meta: "+45m" },
+  { label: "Oven & range", meta: "+30m" },
+  { label: "Wardrobe reset", meta: "+60m" },
+];
 
 export type HomeFeature = { title: string; description: string; icon: string };
 

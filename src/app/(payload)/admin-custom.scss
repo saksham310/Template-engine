@@ -137,7 +137,30 @@ code,
   }
 }
 
+// Payload zeroes padding-left on active links and on links carrying an
+// indicator (it reserves that space for the bar), which collapses the pill.
+// Same-specificity overrides put the inline padding back.
+.nav__link.active,
+.nav__link--active,
+.nav__link:has(.nav__link-indicator) {
+  padding-inline: 16px;
+}
+
+// Payload underlines nav links on hover with `.nav a.nav__link:hover`
+// (specificity 0,2,1) — the pill tint is the hover affordance instead.
+.nav a.nav__link:hover,
+.nav a.nav__link:focus-visible {
+  text-decoration: none;
+}
+
 .nav__link-indicator { background: $accent; }
+
+// Inside a filled active pill an accent bar is invisible — go white.
+.nav__link.active .nav__link-indicator,
+.nav__link--active .nav__link-indicator,
+.nav__link[aria-current="page"] .nav__link-indicator {
+  background: #fff;
+}
 
 // Account / logout controls in the rail
 .nav__controls,

@@ -7,8 +7,8 @@ import SiteFooter from "@/components/SiteFooter";
 import { getServiceNav } from "@/payload/integration/getServiceView";
 
 export const metadata: Metadata = {
-  title: "Editorial Platform",
-  description: "A premium editorial service platform.",
+  title: "Neatify",
+  description: "A premium cleaning service platform.",
 };
 
 export default async function RootLayout({

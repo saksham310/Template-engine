@@ -14,6 +14,7 @@ type BentoService = {
   category: string;
   tagline: string;
   durationLabel: string;
+  imageUrl: string;
 };
 
 const GRAIN =
@@ -41,6 +42,19 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
+/**
+ * Resolves the two featured card slots: the slugs picked in the Home global
+ * first (in that order), then the remaining services in their admin drag order.
+ * A pick that no longer exists is skipped rather than leaving a hole.
+ */
+function featured(services: BentoService[], slugs: string[]): BentoService[] {
+  const picked = slugs
+    .map((slug) => services.find((s) => s.slug === slug))
+    .filter((s): s is BentoService => Boolean(s));
+  const rest = services.filter((s) => !picked.includes(s));
+  return [...picked, ...rest];
+}
+
 export default function ServiceBento({
   services = [],
   heading,
@@ -48,8 +62,7 @@ export default function ServiceBento({
   services?: BentoService[];
   heading: HomeContent["services"];
 }) {
-  const lead = services[0];
-  const second = services[1];
+  const [lead, second] = featured(services, heading.featuredSlugs);
   if (!lead) return null;
 
   return (
@@ -68,8 +81,8 @@ export default function ServiceBento({
           className={`${cardBase} aspect-[4/5] sm:aspect-auto sm:col-span-2 sm:row-span-2 sm:min-h-[440px] text-white`}
         >
           <Image
-            src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80"
-            alt="Minimal, sunlit modern interior after a deep clean"
+            src={lead.imageUrl}
+            alt={`${lead.title} — recent work`}
             fill
             sizes="(max-width: 640px) 100vw, 66vw"
             className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
@@ -82,7 +95,7 @@ export default function ServiceBento({
           <Grain opacity={0.12} />
 
           <div className="relative flex h-full flex-col justify-end p-6 sm:p-8">
-            <Eyebrow>Signature</Eyebrow>
+            <Eyebrow>{heading.leadBadge}</Eyebrow>
             <h3 className="mt-2 max-w-[16ch] text-4xl font-bold leading-[0.95] tracking-tight sm:text-5xl">
               {lead.title}
             </h3>
@@ -93,7 +106,7 @@ export default function ServiceBento({
               href={`/services/${lead.slug}`}
               className="mt-6 inline-flex w-fit items-center gap-1 rounded-sm bg-white px-5 py-2.5 text-sm font-medium text-text transition-colors hover:bg-white/90"
             >
-              Start Here
+              {heading.leadCtaLabel}
               <span aria-hidden="true">→</span>
             </Link>
           </div>
@@ -106,8 +119,8 @@ export default function ServiceBento({
             className={`${cardBase} aspect-square sm:aspect-auto sm:min-h-[240px] bg-white text-text`}
           >
             <Image
-              src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=700&q=80"
-              alt="Detail of a spotless kitchen surface"
+              src={second.imageUrl}
+              alt={`${second.title} — recent work`}
               fill
               sizes="(max-width: 640px) 100vw, 33vw"
               className="object-cover opacity-90 transition-transform duration-500 ease-out group-hover:scale-[1.05]"
@@ -134,23 +147,24 @@ export default function ServiceBento({
         >
           <Grain opacity={0.1} />
           <div className="relative">
-            <Eyebrow>Add-ons</Eyebrow>
+            <Eyebrow>{heading.addOnsBadge}</Eyebrow>
             <h3 className="mt-1 text-2xl font-semibold tracking-tight">
-              À La Carte
+              {heading.addOnsTitle}
             </h3>
             <ul className="mt-3 space-y-1.5 text-sm leading-tight text-text/70">
-              <li className="flex justify-between border-b border-slate-200/60 pb-1.5">
-                <span>Interior windows</span>
-                <span className="tabular-nums">+45m</span>
-              </li>
-              <li className="flex justify-between border-b border-slate-200/60 pb-1.5">
-                <span>Oven &amp; range</span>
-                <span className="tabular-nums">+30m</span>
-              </li>
-              <li className="flex justify-between">
-                <span>Wardrobe reset</span>
-                <span className="tabular-nums">+60m</span>
-              </li>
+              {heading.addOns.map((addOn, i) => (
+                <li
+                  key={addOn.label}
+                  className={`flex justify-between ${
+                    i < heading.addOns.length - 1
+                      ? "border-b border-slate-200/60 pb-1.5"
+                      : ""
+                  }`}
+                >
+                  <span>{addOn.label}</span>
+                  <span className="tabular-nums">{addOn.meta}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </motion.article>
@@ -163,18 +177,18 @@ export default function ServiceBento({
           <Grain opacity={0.18} />
           <div className="relative flex h-full flex-col items-start justify-between gap-3 p-6 sm:flex-row sm:items-center">
             <div>
-              <Eyebrow>Membership</Eyebrow>
+              <Eyebrow>{heading.membershipBadge}</Eyebrow>
               <h3 className="mt-1 text-2xl font-semibold tracking-tight">
-                Recurring care, on your schedule.
+                {heading.membershipTitle}
               </h3>
             </div>
-            <a
-              href="#membership"
+            <Link
+              href={heading.membershipCtaHref}
               className="inline-flex items-center gap-1 rounded-sm border border-white/30 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:border-white/70"
             >
-              See plans
+              {heading.membershipCtaLabel}
               <span aria-hidden="true">→</span>
-            </a>
+            </Link>
           </div>
         </motion.article>
       </MotionStagger>

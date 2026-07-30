@@ -1,7 +1,7 @@
 import { getPayload } from "payload";
 import config from "@payload-config";
 
-import { HOME_FAQS, HOME_FEATURES, HOME_HERO, HOME_SECTIONS } from "@/config/site";
+import { HOME_ADD_ONS, HOME_FAQS, HOME_FEATURES, HOME_HERO, HOME_SECTIONS } from "@/config/site";
 import type { Home, Media } from "@/payload/payload-types";
 
 /** Normalized shape the home page components consume. */
@@ -20,7 +20,21 @@ export type HomeContent = {
     statusMetricLabel: string;
     statusMetricValue: string;
   };
-  services: { eyebrow: string; headline: string };
+  services: {
+    eyebrow: string;
+    headline: string;
+    /** Slugs of the services filling the large + small cards, in that order. */
+    featuredSlugs: string[];
+    leadBadge: string;
+    leadCtaLabel: string;
+    addOnsBadge: string;
+    addOnsTitle: string;
+    addOns: { label: string; meta: string }[];
+    membershipBadge: string;
+    membershipTitle: string;
+    membershipCtaLabel: string;
+    membershipCtaHref: string;
+  };
   features: {
     eyebrow: string;
     headline: string;
@@ -67,7 +81,11 @@ export const HOME_FALLBACK: HomeContent = {
     statusMetricLabel: HOME_HERO.statusMetricLabel,
     statusMetricValue: HOME_HERO.statusMetricValue,
   },
-  services: { ...HOME_SECTIONS.services },
+  services: {
+    ...HOME_SECTIONS.services,
+    featuredSlugs: [],
+    addOns: HOME_ADD_ONS.map((a) => ({ ...a })),
+  },
   features: {
     ...HOME_SECTIONS.features,
     items: HOME_FEATURES.map((f) => ({ ...f })),
@@ -78,6 +96,18 @@ export const HOME_FALLBACK: HomeContent = {
   },
   quote: { ...HOME_SECTIONS.quote },
 };
+
+/** Featured picks arrive as ids (unpopulated) or docs (depth >= 1) — keep the slugs. */
+function featuredSlugs(value: Home["featuredServices"]): string[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((entry) =>
+      entry && typeof entry === "object" && typeof entry.slug === "string"
+        ? entry.slug
+        : null,
+    )
+    .filter((slug): slug is string => Boolean(slug));
+}
 
 function toContent(doc: Home): HomeContent {
   const f = HOME_FALLBACK;
@@ -112,6 +142,24 @@ function toContent(doc: Home): HomeContent {
     services: {
       eyebrow: text(doc.servicesEyebrow, f.services.eyebrow),
       headline: text(doc.servicesHeadline, f.services.headline),
+      featuredSlugs: featuredSlugs(doc.featuredServices),
+      leadBadge: text(doc.servicesLeadBadge, f.services.leadBadge),
+      leadCtaLabel: text(doc.servicesLeadCtaLabel, f.services.leadCtaLabel),
+      addOnsBadge: text(doc.servicesAddOnsBadge, f.services.addOnsBadge),
+      addOnsTitle: text(doc.servicesAddOnsTitle, f.services.addOnsTitle),
+      addOns: doc.addOns?.length
+        ? doc.addOns.map((a) => ({ label: a.label, meta: a.meta }))
+        : f.services.addOns,
+      membershipBadge: text(doc.servicesMembershipBadge, f.services.membershipBadge),
+      membershipTitle: text(doc.servicesMembershipTitle, f.services.membershipTitle),
+      membershipCtaLabel: text(
+        doc.servicesMembershipCtaLabel,
+        f.services.membershipCtaLabel,
+      ),
+      membershipCtaHref: text(
+        doc.servicesMembershipCtaHref,
+        f.services.membershipCtaHref,
+      ),
     },
     features: {
       eyebrow: text(doc.featuresEyebrow, f.features.eyebrow),

@@ -1,7 +1,13 @@
 import type { GlobalConfig } from "payload";
 
 import { revalidateHome } from "./hooks/revalidateHome";
-import { HOME_FAQS, HOME_FEATURES, HOME_SECTIONS, SITE_CONFIG } from "../../config/site";
+import {
+  HOME_ADD_ONS,
+  HOME_FAQS,
+  HOME_FEATURES,
+  HOME_SECTIONS,
+  SITE_CONFIG,
+} from "../../config/site";
 
 /** Icons the "Why Choose Us" list can render (mapped in (frontend)/page.tsx). */
 const ICON_OPTIONS = [
@@ -163,7 +169,8 @@ export const Home: GlobalConfig = {
 
         {
           label: "Services",
-          description: "The heading above the services grid. The cards themselves come from Services.",
+          description:
+            "The services grid. Service names, taglines, and photos come from the Services collection — here you choose which two are featured and edit everything around them.",
           fields: [
             {
               name: "servicesEyebrow",
@@ -176,6 +183,151 @@ export const Home: GlobalConfig = {
               type: "text",
               label: "Headline",
               defaultValue: HOME_SECTIONS.services.headline,
+            },
+            {
+              name: "featuredServices",
+              type: "relationship",
+              relationTo: "services",
+              hasMany: true,
+              maxRows: 2,
+              label: "Featured services",
+              admin: {
+                description:
+                  "The first one fills the large card, the second the small card beside it. Leave empty to use the first two services in the order set on the Services list.",
+              },
+            },
+            {
+              type: "collapsible",
+              label: "Large card wording",
+              fields: [
+                {
+                  type: "row",
+                  fields: [
+                    {
+                      name: "servicesLeadBadge",
+                      type: "text",
+                      label: "Small label on the card",
+                      defaultValue: HOME_SECTIONS.services.leadBadge,
+                      admin: { width: "50%" },
+                    },
+                    {
+                      name: "servicesLeadCtaLabel",
+                      type: "text",
+                      label: "Button label",
+                      defaultValue: HOME_SECTIONS.services.leadCtaLabel,
+                      admin: {
+                        width: "50%",
+                        description: "Always links to the featured service's own page.",
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "collapsible",
+              label: "Add-ons card",
+              fields: [
+                {
+                  type: "row",
+                  fields: [
+                    {
+                      name: "servicesAddOnsBadge",
+                      type: "text",
+                      label: "Small label",
+                      defaultValue: HOME_SECTIONS.services.addOnsBadge,
+                      admin: { width: "50%" },
+                    },
+                    {
+                      name: "servicesAddOnsTitle",
+                      type: "text",
+                      label: "Card title",
+                      defaultValue: HOME_SECTIONS.services.addOnsTitle,
+                      admin: { width: "50%" },
+                    },
+                  ],
+                },
+                {
+                  name: "addOns",
+                  type: "array",
+                  label: "Add-ons",
+                  labels: { singular: "Add-on", plural: "Add-ons" },
+                  maxRows: 6,
+                  admin: {
+                    description:
+                      "Three fit the card without scrolling. These are public claims about time — keep them honest.",
+                  },
+                  defaultValue: HOME_ADD_ONS.map((a) => ({ ...a })),
+                  fields: [
+                    {
+                      type: "row",
+                      fields: [
+                        {
+                          name: "label",
+                          type: "text",
+                          label: "Add-on",
+                          required: true,
+                          admin: { width: "65%" },
+                        },
+                        {
+                          name: "meta",
+                          type: "text",
+                          label: "Extra time",
+                          required: true,
+                          admin: { width: "35%", description: 'e.g. "+45m".' },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "collapsible",
+              label: "Membership bar",
+              fields: [
+                {
+                  type: "row",
+                  fields: [
+                    {
+                      name: "servicesMembershipBadge",
+                      type: "text",
+                      label: "Small label",
+                      defaultValue: HOME_SECTIONS.services.membershipBadge,
+                      admin: { width: "40%" },
+                    },
+                    {
+                      name: "servicesMembershipTitle",
+                      type: "text",
+                      label: "Headline",
+                      defaultValue: HOME_SECTIONS.services.membershipTitle,
+                      admin: { width: "60%" },
+                    },
+                  ],
+                },
+                {
+                  type: "row",
+                  fields: [
+                    {
+                      name: "servicesMembershipCtaLabel",
+                      type: "text",
+                      label: "Button label",
+                      defaultValue: HOME_SECTIONS.services.membershipCtaLabel,
+                      admin: { width: "50%" },
+                    },
+                    {
+                      name: "servicesMembershipCtaHref",
+                      type: "text",
+                      label: "Button link",
+                      defaultValue: HOME_SECTIONS.services.membershipCtaHref,
+                      admin: {
+                        width: "50%",
+                        description: `${PATH_NOTE} The old default pointed at #membership, which does not exist on the page.`,
+                      },
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },

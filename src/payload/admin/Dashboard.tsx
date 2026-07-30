@@ -31,8 +31,6 @@ type LeadRow = {
   serviceRequested?: { title?: string } | string | null;
 };
 
-type Tile = { label: string; value: string; hint: string };
-
 /** Counts run as the signed-in user, so a limited role never sees more than it may. */
 async function countDocs(
   payload: Payload,
@@ -71,10 +69,6 @@ async function recentLeads(payload: Payload, user: User): Promise<LeadRow[]> {
   }
 }
 
-function num(value: number | null): string {
-  return value === null ? "—" : String(value);
-}
-
 function serviceName(s: LeadRow["serviceRequested"]): string {
   if (s && typeof s === "object") return s.title ?? "—";
   return "—";
@@ -94,7 +88,7 @@ function firstName(user: User): string | null {
 export const Dashboard = async ({ initPageResult }: AdminViewServerProps) => {
   const { payload, user } = initPageResult.req;
 
-  const [totalLeads,  byStatus, recent] =
+  const [totalLeads, byStatus, recent] =
     await Promise.all([
       countDocs(payload, "leads", user),
       Promise.all(

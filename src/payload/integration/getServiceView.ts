@@ -162,16 +162,30 @@ export async function getServiceNav(): Promise<ServiceNavGroup[]> {
     .filter((g) => g.items.length > 0);
 }
 
-/** Lightweight list for the /services index, grouped-ready. */
-export async function getServiceList(): Promise<
-  { slug: string; title: string; category: string; tagline: string; durationLabel: string }[]
-> {
+export type ServiceListItem = {
+  slug: string;
+  title: string;
+  category: string;
+  tagline: string;
+  durationLabel: string;
+  imageUrl: string;
+};
+
+/**
+ * Lightweight list for the /services index and the home page bento.
+ * Sorted by `_order` so the drag order set in the admin list view is the order
+ * visitors see.
+ */
+export async function getServiceList(): Promise<ServiceListItem[]> {
   const payload = await getPayload({ config });
   const { docs } = await payload.find({
     collection: "services",
     limit: 1000,
     pagination: false,
     depth: 1,
+    // `_order` is null for services created before drag-ordering existed, so
+    // fall back to creation date for a deterministic order until they're moved.
+    sort: ["_order", "createdAt"],
   });
   /* eslint-disable @typescript-eslint/no-explicit-any */
   return docs.map((d: any) => ({
@@ -180,6 +194,7 @@ export async function getServiceList(): Promise<
     category: categoryTitle(d.category),
     tagline: d.tagline ?? d.editorialQuote?.quote ?? "",
     durationLabel: d.durationLabel ?? "By scope",
+    imageUrl: heroImage(d.hero),
   }));
   /* eslint-enable @typescript-eslint/no-explicit-any */
 }
