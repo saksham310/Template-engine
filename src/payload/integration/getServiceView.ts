@@ -10,7 +10,6 @@ export type ServiceView = {
   tagline: string;
   marketing: string;
   hero: { headline: string; subheadline: string; imageUrl: string };
-  /** Published rate, verbatim from the editor. Empty = not publicly priced. */
   price: string;
   priceUnit: string;
   technicalSpecs: { label: string; value: string }[];

@@ -1,9 +1,10 @@
- import Image from "next/image";
+import Image from "next/image";
+import Link from "next/link";
 import { Phone } from "lucide-react";
 import { TRUST } from "@/lib/services";
 import { SITE_CONFIG } from "@/config/site";
-import { GridPattern, Grain } from "./patterns";
-import { MotionWrapper, MotionStagger, MotionItem } from "./MotionWrapper";
+import { Grain } from "./patterns";
+import { MotionWrapper } from "./MotionWrapper";
 import QuoteForm from "./QuoteForm";
 import type { ServiceView } from "@/payload/integration/getServiceView";
 
@@ -42,7 +43,7 @@ function IndexRule({ index, label }: { index: string; label: string }) {
 }
 
 export default function ServiceTemplate({ service }: { service: ServiceView }) {
-  const { hero, inclusions, technicalSpecs, sidebarInclusions, faqs, testimonial } = service;
+  const { hero, inclusions, technicalSpecs, sidebarInclusions, faqs } = service;
   const priced = Boolean(service.price);
 
   const specs = [
@@ -60,110 +61,95 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
 
   return (
     <article>
-      <section className="px-3 pt-3 sm:px-5 sm:pt-5">
-        <div className="relative isolate overflow-hidden rounded-3xl bg-panel">
-          {/* Same surveyor's grid as the home panel, but the letterform is the
-              service's own initial so the two pages don't read as one template. */}
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 text-surface">
-            <GridPattern id="service-grid" />
-            <span className="absolute -bottom-[24%] -left-[3%] select-none font-editorial text-[24rem] leading-none text-surface/50 sm:text-[34rem]">
-              {service.title.charAt(0)}
-            </span>
-          </div>
-
-          <div className="relative grid gap-10 px-6 pt-12 pb-20 sm:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:gap-6 lg:px-14 lg:pt-20 lg:pb-28">
-            <div className="max-w-2xl lg:pb-20">
-              <MotionWrapper>
-                <p className="font-mono text-[10px] uppercase tracking-widest text-accent">
-                  {service.category}
-                </p>
-                <h1 className="mt-4 text-4xl font-bold leading-[1.08] tracking-tight text-text sm:text-6xl">
-                  {hero.headline}
-                </h1>
-                <p className="mt-5 max-w-md font-serif text-lg leading-relaxed text-text/70">
-                  {hero.subheadline}
-                </p>
-              </MotionWrapper>
-
-              <MotionWrapper delay={0.1} className="mt-8 flex flex-wrap items-center gap-3">
-                <a href="#quote" className={PILL_SOLID}>
-                  Request a quote
-                  <span aria-hidden="true">→</span>
-                </a>
-                <a href={TEL} className={PILL_OUTLINE}>
-                  <Phone className="h-3.5 w-3.5" strokeWidth={2.5} />
-                  {SITE_CONFIG.phone}
-                </a>
-              </MotionWrapper>
-
-              {priced && (
-                <MotionWrapper delay={0.15}>
-                  <p className="mt-5 font-mono text-xs uppercase tracking-widest text-text/50">
-                    From{" "}
-                    <span className="text-base font-bold tabular-nums text-text">
-                      {service.price}
-                    </span>{" "}
-                    {service.priceUnit}
-                  </p>
-                </MotionWrapper>
-              )}
-            </div>
-
-            {/* Arch, used once on the page — the shape idea, not a motif. */}
-            <div className="relative mx-auto aspect-[3/4] w-full max-w-sm self-end overflow-hidden rounded-t-[9999px] lg:-mb-28 lg:mx-0 lg:h-[520px] lg:max-w-none">
-              <Image
-                src={hero.imageUrl}
-                alt={`${service.title} — recent work`}
-                fill
-                sizes="(max-width: 1024px) 100vw, 460px"
-                className="object-cover object-bottom"
-                priority
-              />
-            </div>
-          </div>
+      <section className="mx-auto max-w-7xl px-5 pt-4">
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl sm:aspect-[21/9]">
+          <Image
+            src={hero.imageUrl}
+            alt={`${service.title} — recent work`}
+            fill
+            sizes="(max-width: 1280px) 100vw, 1280px"
+            className="object-cover"
+            priority
+          />
         </div>
-      </section>
 
-      <section className="mx-auto max-w-7xl px-5 pt-12 sm:pt-16">
-        <MotionWrapper className="grid grid-cols-2 overflow-hidden rounded-3xl border border-line bg-surface lg:grid-cols-4">
-          {specs.map((spec) => (
-            <div
-              key={spec.label}
-              className="border-b border-line px-6 py-6 last:border-b-0 even:border-l sm:even:border-l lg:border-b-0 lg:border-l lg:first:border-l-0"
-            >
-              <p className="font-mono text-2xl font-semibold tracking-tight tabular-nums text-text">
-                {spec.value}
-              </p>
-              <p className="mt-1.5 font-mono text-[10px] uppercase tracking-widest text-text/45">
-                {spec.label}
-              </p>
+        <MotionWrapper className="relative z-10 grid items-stretch gap-x-10 gap-y-6 lg:grid-cols-[1.5fr_1fr]">
+          <div className="-mt-16 rounded-3xl bg-panel p-7 sm:-mt-24 sm:p-10">
+            <nav className="flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-text/45">
+              <Link href="/services" className="transition-colors hover:text-text">
+                Services
+              </Link>
+              <span aria-hidden="true">/</span>
+              <span className="text-accent">{service.category}</span>
+            </nav>
+
+            <h1 className="mt-4 text-4xl font-bold leading-[1.05] tracking-tight text-text sm:text-5xl">
+              {hero.headline}
+            </h1>
+            <p className="mt-4 max-w-lg font-serif text-lg leading-relaxed text-text/70">
+              {hero.subheadline}
+            </p>
+
+            <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-text/10 pt-6">
+              {priced && (
+                <p className="flex items-baseline gap-1.5 border-r border-text/10 pr-6">
+                  <span className="font-mono text-2xl font-bold tabular-nums tracking-tight text-text">
+                    {service.price}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-text/50">
+                    {service.priceUnit}
+                  </span>
+                </p>
+              )}
+              <a href="#quote" className={PILL_SOLID}>
+                Request a quote
+                <span aria-hidden="true">→</span>
+              </a>
+              <a href={TEL} className={PILL_OUTLINE}>
+                <Phone className="h-3.5 w-3.5" strokeWidth={2.5} />
+                {SITE_CONFIG.phone}
+              </a>
             </div>
-          ))}
+          </div>
+
+          <dl className="flex flex-col justify-between lg:pt-2">
+            {specs.map((spec) => (
+              <div
+                key={spec.label}
+                className="flex flex-1 items-baseline justify-between gap-4 border-b border-line py-3.5 first:border-t first:border-line"
+              >
+                <dt className="font-mono text-[10px] uppercase tracking-widest text-text/45">
+                  {spec.label}
+                </dt>
+                <dd className="font-mono text-base font-semibold tabular-nums tracking-tight text-text">
+                  {spec.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </MotionWrapper>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-16 sm:py-20">
-        <MotionStagger className="grid grid-cols-1 gap-3 sm:grid-cols-12">
-          <MotionItem className="flex flex-col justify-between rounded-3xl border border-line bg-surface p-8 sm:col-span-7 sm:p-10">
-            <div>
-              <IndexRule index="01" label="The approach" />
-              <h2 className="mt-4 text-3xl leading-[1.1] tracking-tight text-text sm:text-4xl">
-                What a {service.title.toLowerCase()} actually involves
-              </h2>
-            </div>
-            <p className="mt-6 max-w-lg font-serif text-[17px] leading-relaxed text-text/65">
+      <section className="mx-auto max-w-7xl px-5 py-14 sm:py-16">
+        <MotionWrapper className="grid overflow-hidden rounded-3xl border border-line bg-surface lg:grid-cols-[1.25fr_1fr]">
+          <div className="p-7 sm:p-10">
+            <IndexRule index="01" label="The approach" />
+            <h2 className="mt-4 text-2xl leading-[1.15] tracking-tight text-text sm:text-3xl">
+              What a {service.title.toLowerCase()} actually involves
+            </h2>
+            <p className="mt-4 font-serif text-[17px] leading-relaxed text-text/65">
               {service.marketing || service.tagline}
             </p>
-          </MotionItem>
+          </div>
 
           {technicalSpecs.length > 0 && (
-            <MotionItem className="rounded-3xl border border-line bg-surface-muted px-7 pb-7 pt-6 sm:col-span-5">
+            <div className="border-t border-line bg-surface-muted p-7 sm:p-8 lg:border-l lg:border-t-0">
               <IndexRule index="02" label="Specification" />
-              <ul className="mt-5">
+              <ul className="mt-4">
                 {technicalSpecs.map((spec) => (
                   <li
                     key={spec.label}
-                    className="flex items-baseline justify-between gap-4 border-t border-line py-2.5 last:pb-0"
+                    className="flex items-baseline justify-between gap-4 border-b border-line py-2.5 last:border-b-0"
                   >
                     <span className="text-sm text-text/80">{spec.label}</span>
                     <span className="font-mono text-xs tabular-nums text-text/45">
@@ -172,9 +158,9 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
                   </li>
                 ))}
               </ul>
-            </MotionItem>
+            </div>
           )}
-        </MotionStagger>
+        </MotionWrapper>
       </section>
 
       {inclusions.length > 0 && (
@@ -211,57 +197,36 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
         </section>
       )}
 
-      {testimonial.quote && (
-        <section className="relative isolate overflow-hidden bg-surface-warm">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0"
-            style={{
-              backgroundImage:
-                "radial-gradient(55% 50% at 50% 35%, rgb(255 255 255 / 0.85), rgb(255 255 255 / 0) 70%)",
-            }}
-          />
-          <Grain opacity={0.07} />
-
-          <MotionWrapper className="relative mx-auto max-w-3xl px-5 py-20 text-center sm:py-24">
-            <blockquote className="font-editorial text-2xl italic leading-snug text-text sm:text-4xl">
-              “{testimonial.quote}”
-            </blockquote>
-            <figcaption className="mt-8 font-mono text-[10px] uppercase tracking-widest text-text/45">
-              {testimonial.citation}
-            </figcaption>
-          </MotionWrapper>
-        </section>
-      )}
-
       {faqs.length > 0 && (
-        <section className="border-y border-line bg-bg">
-          <div className="mx-auto max-w-3xl px-5 py-20 sm:py-24">
-            <MotionWrapper className="text-center">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-accent">
-                Questions
-              </p>
-              <h2 className="mt-4 text-3xl leading-[1.05] tracking-tight text-text sm:text-5xl">
-                Before you{" "}
-                <span className="font-editorial italic text-text/60">ask.</span>
+        <section className="border-y border-line bg-surface">
+          <div className="mx-auto grid max-w-7xl gap-8 px-5 py-16 sm:py-20 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
+            <MotionWrapper className="lg:sticky lg:top-24 lg:self-start">
+              <IndexRule index="03" label="Questions" />
+              <h2 className="mt-4 text-2xl leading-[1.15] tracking-tight text-text sm:text-3xl">
+                Answered before you ask
               </h2>
+              <a href={TEL} className={`${PILL_OUTLINE} mt-6`}>
+                <Phone className="h-3.5 w-3.5" strokeWidth={2.5} />
+                {SITE_CONFIG.phone}
+              </a>
             </MotionWrapper>
 
-            <MotionWrapper className="mt-10 overflow-hidden rounded-3xl border border-line bg-surface">
+            <MotionWrapper className="border-t border-line">
               {faqs.map((faq, i) => (
-                <details key={faq.q} open={i === 0} className="group border-b border-line last:border-b-0">
-                  <summary className="flex cursor-pointer list-none items-center gap-4 px-6 py-5 transition-colors duration-200 hover:bg-surface-muted marker:hidden sm:px-7 [&::-webkit-details-marker]:hidden">
-                    <span className="flex-1 text-base font-semibold tracking-tight text-text sm:text-lg">
+                <details key={faq.q} open={i === 0} className="group border-b border-line">
+                  <summary className="flex cursor-pointer list-none items-baseline gap-4 py-4 marker:hidden [&::-webkit-details-marker]:hidden">
+                    <span className="flex-1 text-base font-semibold tracking-tight text-text transition-colors duration-200 group-hover:text-accent">
                       {faq.q}
                     </span>
-                    <span className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line text-text/50 transition-colors duration-300 ease-out group-hover:border-line-strong group-open:border-accent group-open:bg-accent group-open:text-white">
-                      <span className="relative block h-3.5 w-3.5 transition-transform duration-300 ease-out group-open:rotate-45">
-                        <span className="absolute left-0 top-1/2 h-px w-3.5 -translate-y-1/2 bg-current" />
-                        <span className="absolute left-1/2 top-0 h-3.5 w-px -translate-x-1/2 bg-current" />
-                      </span>
+                    <span
+                      aria-hidden="true"
+                      className="relative block h-3 w-3 shrink-0 text-text/35 transition-transform duration-300 ease-out group-open:rotate-45 group-open:text-accent"
+                    >
+                      <span className="absolute left-0 top-1/2 h-px w-3 -translate-y-1/2 bg-current" />
+                      <span className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 bg-current" />
                     </span>
                   </summary>
-                  <p className="max-w-2xl px-6 pb-6 text-[15px] leading-relaxed text-text/60 sm:px-7">
+                  <p className="max-w-2xl pb-5 text-[15px] leading-relaxed text-text/60">
                     {faq.a}
                   </p>
                 </details>
