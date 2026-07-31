@@ -12,11 +12,30 @@ export const Gallery: CollectionConfig = {
   fields: [
     { name: "title", type: "text", required: true },
     {
-      name: "image",
-      type: "upload",
-      relationTo: "media",
-      required: true,
-      admin: { description: "Portfolio photo. Card + hero sizes are generated automatically." },
+      type: "row",
+      fields: [
+        {
+          name: "beforeImage",
+          type: "upload",
+          relationTo: "media",
+          label: "Before",
+          admin: {
+            width: "50%",
+            description: "Optional. Leave empty to show the after photo on its own.",
+          },
+        },
+        {
+          name: "image",
+          type: "upload",
+          relationTo: "media",
+          label: "After",
+          required: true,
+          admin: {
+            width: "50%",
+            description: "The finished result. Card + hero sizes are generated automatically.",
+          },
+        },
+      ],
     },
     {
       name: "category",

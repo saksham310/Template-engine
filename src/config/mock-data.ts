@@ -1,75 +1,66 @@
-import type { GalleryItem } from "@/payload/integration/getGallery";
 import type { PostView } from "@/payload/integration/getPosts";
 
 const U = (id: string, w = 1600) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
 
-export const MOCK_GALLERY: GalleryItem[] = [
+export type MockGalleryEntry = {
+  title: string;
+  category: string;
+  description: string;
+  afterUrl: string;
+  alt: string;
+  beforeUrl?: string;
+  beforeAlt?: string;
+};
+
+export const MOCK_GALLERY: MockGalleryEntry[] = [
   {
-    id: "m1",
     title: "Kensington Penthouse",
     category: "Residential",
     description: "Full residence detail, post-renovation.",
-    imageUrl: U("photo-1560448204-e02f11c3d0e2", 800),
-    fullUrl: U("photo-1560448204-e02f11c3d0e2"),
+    beforeUrl: U("photo-1512917774080-9991f1c4c750"),
+    beforeAlt: "Living room before the detail clean",
+    afterUrl: U("photo-1560448204-e02f11c3d0e2"),
     alt: "Sunlit minimal living room",
-    width: 800,
-    height: 1000,
   },
   {
-    id: "m2",
     title: "Studio Nord",
     category: "Commercial",
     description: "Workspace reset for a design studio.",
-    imageUrl: U("photo-1497366216548-37526070297c", 800),
-    fullUrl: U("photo-1497366216548-37526070297c"),
+    afterUrl: U("photo-1497366216548-37526070297c"),
     alt: "Bright open-plan office",
-    width: 800,
-    height: 600,
   },
   {
-    id: "m3",
     title: "Marble Restoration",
     category: "Specialized",
     description: "pH-neutral treatment on honed marble.",
-    imageUrl: U("photo-1600585154340-be6161a56a0c", 800),
-    fullUrl: U("photo-1600585154340-be6161a56a0c"),
+    beforeUrl: U("photo-1513694203232-719a280e022f"),
+    beforeAlt: "Marble surface before treatment",
+    afterUrl: U("photo-1600585154340-be6161a56a0c"),
     alt: "Detail of restored marble surface",
-    width: 800,
-    height: 900,
   },
   {
-    id: "m4",
     title: "The Glass House",
     category: "Residential",
     description: "Interior windows and glazing detail.",
-    imageUrl: U("photo-1512917774080-9991f1c4c750", 800),
-    fullUrl: U("photo-1512917774080-9991f1c4c750"),
+    afterUrl: U("photo-1512917774080-9991f1c4c750"),
     alt: "Modern house with floor-to-ceiling glass",
-    width: 800,
-    height: 640,
   },
   {
-    id: "m5",
     title: "Atelier Retail",
     category: "Commercial",
     description: "End-of-fit-out clean for a flagship store.",
-    imageUrl: U("photo-1441986300917-64674bd600d8", 800),
-    fullUrl: U("photo-1441986300917-64674bd600d8"),
+    beforeUrl: U("photo-1497366216548-37526070297c"),
+    beforeAlt: "Retail floor before the fit-out clean",
+    afterUrl: U("photo-1441986300917-64674bd600d8"),
     alt: "Minimal retail interior",
-    width: 800,
-    height: 1000,
   },
   {
-    id: "m6",
     title: "Hearth & Stone",
     category: "Specialized",
     description: "Fireplace and hearth restoration.",
-    imageUrl: U("photo-1513694203232-719a280e022f", 800),
-    fullUrl: U("photo-1513694203232-719a280e022f"),
+    afterUrl: U("photo-1513694203232-719a280e022f"),
     alt: "Restored stone fireplace",
-    width: 800,
-    height: 800,
   },
 ];
 

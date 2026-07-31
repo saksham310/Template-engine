@@ -16,6 +16,7 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const cols = Math.min(Math.max(nav.length, 1), 3);
+  const serviceCount = nav.reduce((total, group) => total + group.items.length, 0);
 
   return (
     <header
@@ -124,25 +125,23 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
               </div>
             ))}
           </div>
-          {/* View All + prominent Request Quote */}
           <div className="border-t border-line bg-bg">
             <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-text/40">
+                {String(serviceCount).padStart(2, "0")} services
+              </span>
               <Link
                 href="/services"
                 onClick={() => setMenuOpen(false)}
-                className="group flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest text-text/60 transition-colors hover:text-text"
+                className="group inline-flex items-center gap-1.5 rounded-full bg-text px-5 py-2.5 text-sm font-semibold text-bg transition-colors duration-200 ease-out hover:bg-accent"
               >
-                View All Services
-                <span className="transition-transform duration-200 ease-out group-hover:translate-x-0.5">
+                View all services
+                <span
+                  aria-hidden="true"
+                  className="transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+                >
                   →
                 </span>
-              </Link>
-              <Link
-                href="/#book"
-                onClick={() => setMenuOpen(false)}
-                className="rounded-sm bg-text px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-text/90"
-              >
-                Request Quote →
               </Link>
             </div>
           </div>

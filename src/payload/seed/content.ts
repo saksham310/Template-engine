@@ -104,14 +104,18 @@ export async function seedContent(payload: Payload): Promise<SeedSummary> {
       limit: 1,
     });
     if (existing.totalDocs > 0) continue;
-    const image = await uploadRemote(payload, g.fullUrl, g.alt);
+    const image = await uploadRemote(payload, g.afterUrl, g.alt);
     if (!image) continue;
+    const beforeImage = g.beforeUrl
+      ? await uploadRemote(payload, g.beforeUrl, g.beforeAlt ?? `${g.title} — before`)
+      : null;
     await payload.create({
       collection: "gallery",
       data: {
         title: g.title,
         category: g.category as "Residential" | "Commercial" | "Specialized",
         description: g.description,
+        beforeImage: beforeImage ?? undefined,
         image,
       },
     });
