@@ -37,7 +37,6 @@ src/payload/
 | Payload field | UI |
 |---|---|
 | `hero.headline` / `subheadline` / `image` | Authority hero |
-| `editorialQuote.quote` / `citation` | testimonial pull-quote |
 | `technicalSpecs[] { label, value }` | Value Bento — Geist Mono specs |
 | `inclusions[] { item }` | 12-point inclusions matrix |
 | `sidebarInclusions[] { feature }` | sticky quote-card bullets |

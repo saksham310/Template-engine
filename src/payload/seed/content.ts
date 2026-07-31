@@ -88,12 +88,6 @@ export async function seedContent(payload: Payload): Promise<SeedSummary> {
           subheadline: `A systematic approach to ${s.title.toLowerCase()}.`,
           imageUrl: s.image,
         },
-        editorialQuote: {
-          quote: `They treated our ${
-            s.category === "Commercial" ? "space" : "home"
-          } the way a gallery treats its collection. The ${s.title.toLowerCase()} was flawless.`,
-          citation: "Marguerite L. · verified client",
-        },
         technicalSpecs: SPECS,
         inclusions: getInclusions(s).map((item) => ({ item })),
         sidebarInclusions: SIDEBAR,

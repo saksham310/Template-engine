@@ -91,19 +91,6 @@ export const Services: CollectionConfig = {
               type: "textarea",
               admin: { description: "Long-form value copy for the Bespoke Difference block." },
             },
-            {
-              name: "editorialQuote",
-              type: "group",
-              label: "Editorial Quote",
-              fields: [
-                { name: "quote", type: "text", required: true },
-                {
-                  name: "citation",
-                  type: "text",
-                  admin: { description: 'Attribution, e.g. "Marguerite L. — Kensington".' },
-                },
-              ],
-            },
           ],
         },
         {

@@ -10,18 +10,16 @@ export type ServiceView = {
   tagline: string;
   marketing: string;
   hero: { headline: string; subheadline: string; imageUrl: string };
-  editorialQuote: { quote: string; citation: string };
+  /** Published rate, verbatim from the editor. Empty = not publicly priced. */
+  price: string;
+  priceUnit: string;
   technicalSpecs: { label: string; value: string }[];
   inclusions: string[];
   sidebarInclusions: string[];
   faqs: { q: string; a: string }[];
-  testimonial: { quote: string; citation: string };
-  macroShot: string;
   seo: { title: string; description: string };
 };
 
-const MACRO_SHOT =
-  "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=1400&q=80";
 const FALLBACK_HERO =
   "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1400&q=80";
 
@@ -50,17 +48,15 @@ function toView(doc: any): ServiceView {
     title,
     category: categoryTitle(doc.category),
     durationLabel: doc.durationLabel ?? "By scope",
-    tagline: doc.tagline ?? doc.editorialQuote?.quote ?? "",
+    tagline: doc.tagline ?? "",
     marketing: doc.marketing ?? "",
     hero: {
       headline: hero.headline ?? title,
       subheadline: hero.subheadline ?? `A systematic approach to ${title.toLowerCase()}.`,
       imageUrl: heroImage(hero),
     },
-    editorialQuote: {
-      quote: doc.editorialQuote?.quote ?? doc.tagline ?? "",
-      citation: doc.editorialQuote?.citation ?? "Verified review",
-    },
+    price: typeof doc.price === "string" ? doc.price.trim() : "",
+    priceUnit: typeof doc.priceUnit === "string" ? doc.priceUnit.trim() : "",
     technicalSpecs: Array.isArray(doc.technicalSpecs)
       ? doc.technicalSpecs.map((s: any) => ({ label: s.label, value: s.value }))
       : [],
@@ -73,11 +69,6 @@ function toView(doc: any): ServiceView {
     faqs: Array.isArray(doc.faq)
       ? doc.faq.map((f: any) => ({ q: f.question, a: f.answer }))
       : [],
-    testimonial: {
-      quote: doc.editorialQuote?.quote ?? doc.tagline ?? "",
-      citation: doc.editorialQuote?.citation ?? "Verified review",
-    },
-    macroShot: MACRO_SHOT,
     seo: {
       title: doc.metaTitle ?? title,
       description: doc.metaDescription ?? doc.tagline ?? "",
@@ -198,7 +189,7 @@ export async function getServiceList(): Promise<ServiceListItem[]> {
     slug: d.slug,
     title: d.title,
     category: categoryTitle(d.category),
-    tagline: d.tagline ?? d.editorialQuote?.quote ?? "",
+    tagline: d.tagline ?? "",
     durationLabel: d.durationLabel ?? "By scope",
     imageUrl: heroImage(d.hero),
     price: typeof d.price === "string" ? d.price.trim() : "",

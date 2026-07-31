@@ -5,6 +5,7 @@ import * as migration_20260730_080656_drop_unused_home_fields from './20260730_0
 import * as migration_20260730_081513_pricing_fields from './20260730_081513_pricing_fields';
 import * as migration_20260730_084632_drop_feature_icons from './20260730_084632_drop_feature_icons';
 import * as migration_20260730_092630_lead_context from './20260730_092630_lead_context';
+import * as migration_20260731_065719_drop_editorial_quote from './20260731_065719_drop_editorial_quote';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260730_092630_lead_context.up,
     down: migration_20260730_092630_lead_context.down,
-    name: '20260730_092630_lead_context'
+    name: '20260730_092630_lead_context',
+  },
+  {
+    up: migration_20260731_065719_drop_editorial_quote.up,
+    down: migration_20260731_065719_drop_editorial_quote.down,
+    name: '20260731_065719_drop_editorial_quote'
   },
 ];
