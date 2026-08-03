@@ -3,10 +3,6 @@
 import { motion, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
 
-/**
- * Motion system — minimal. Quiet fade + small lift, one easeOut curve.
- * No blur, no scale, no long sequences. Transform + opacity only (GPU, no flicker).
- */
 export const EASE = [0.22, 1, 0.36, 1] as const;
 export const DURATION = 0.5;
 
@@ -19,14 +15,10 @@ export const fadeUp: Variants = {
   },
 };
 
-/** Alias kept for callers; identical to fadeUp (no blur anywhere). */
 export const fadeUpPlain = fadeUp;
 
 const willChange = { willChange: "transform, opacity" } as const;
 
-/**
- * Scroll-triggered reveal. Fades + slides up when it enters the viewport, once.
- */
 export function MotionWrapper({
   children,
   className,
@@ -62,10 +54,6 @@ export function MotionWrapper({
   );
 }
 
-/**
- * Stagger container — reveals children sequentially on scroll-in.
- * Pair with <MotionItem> children.
- */
 export function MotionStagger({
   children,
   className,
@@ -91,10 +79,6 @@ export function MotionStagger({
   );
 }
 
-/**
- * Drop-in replacement for a div inside a <MotionStagger>. Inherits the
- * fadeUp variant; the parent controls timing.
- */
 export function MotionItem({
   children,
   className,

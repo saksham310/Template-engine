@@ -11,10 +11,6 @@ type Props = { services: ServiceListItem[] };
 const FIELD =
   "w-full bg-transparent text-sm text-text placeholder:text-text/40 focus:outline-none";
 
-/**
- * Solid glyphs, drawn here rather than pulled from lucide — that set is
- * outline-only, and filling its paths produces blobs.
- */
 const ICON = "h-5 w-5 shrink-0 text-accent/70";
 
 function PinSolid() {
@@ -41,11 +37,6 @@ function DropSolid() {
   );
 }
 
-/**
- * The bar overlapping the hero panel. It does not collect leads itself — it
- * hands what the visitor picked to the real quote form at #book: the service as
- * a selection, location and property type as a seeded message.
- */
 export default function HeroQuoteBar({ services }: Props) {
   const router = useRouter();
   const { propertyTypes } = useSiteSettings();
@@ -129,8 +120,6 @@ export default function HeroQuoteBar({ services }: Props) {
           </span>
         </label>
 
-        {/* The label lives on the button, so the bar is one object rather than a
-            card wearing a tab. */}
         <div className="flex items-center bg-surface p-2">
           <button
             type="submit"

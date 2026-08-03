@@ -1,6 +1,6 @@
 export const SITE_CONFIG = {
   name: "Ossy Cleaning Group",
-  /** Short form for oversized display type, where the full name will not fit. */
+
   wordmark: "Ossy",
   tagline: "Expert Cleaning for Modern Spaces",
   description:
@@ -46,14 +46,8 @@ export const FOOTER_SECTIONS: FooterSection[] = [
   },
 ];
 
-/** The footer's third column. Its links come from the `site` global, not from here. */
 export const FOOTER_SOCIAL_TITLE = "Connect";
 
-/**
- * Home page copy. This is the fallback layer: the `home` global in Payload
- * overrides any of it, and the page falls back here field by field so a blank
- * (or unreachable) CMS still renders a complete page.
- */
 export const HOME_HERO = {
   headline: SITE_CONFIG.tagline,
   body: SITE_CONFIG.description,
@@ -62,16 +56,6 @@ export const HOME_HERO = {
   imageAlt: "Sunlit modern living room with clean minimal interior",
 } as const;
 
-/**
- * The quote bar floating over the hero panel. Its three fields are carried into
- * the real quote form at #book — service as a selection, location and property
- * type as a seeded message — so nothing here is decorative.
- *
- * Labels live in code rather than the `home` global while the hero layout is
- * still being settled; move them into Payload once the design is signed off.
- * `propertyTypes` already moved — it is the fallback for the editable list in
- * the `site` global.
- */
 export const HERO_BAR = {
   locationLabel: "Location",
   locationPlaceholder: "Where do you live",

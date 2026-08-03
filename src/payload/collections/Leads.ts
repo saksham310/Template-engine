@@ -1,9 +1,5 @@
 import type { CollectionConfig } from "payload";
 
-/**
- * LEADS — quotation requests captured from the "Request Quote" form.
- * Public create (from the form); read/update restricted to authenticated admins.
- */
 export const Leads: CollectionConfig = {
   slug: "leads",
   admin: {
@@ -13,7 +9,7 @@ export const Leads: CollectionConfig = {
     hideAPIURL: true,
   },
   access: {
-    create: () => true, // public form submits
+    create: () => true,
     read: ({ req }) => Boolean(req.user),
     update: ({ req }) => Boolean(req.user),
     delete: ({ req }) => Boolean(req.user),

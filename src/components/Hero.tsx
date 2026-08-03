@@ -18,19 +18,8 @@ const fade = (delay: number, duration = DURATION) => ({
   },
 });
 
-/**
- * Arch mask — the crown is a true semicircle (radius = half the width), so the
- * shape stays a proper arch at every breakpoint instead of a rounded rectangle.
- * With a cut-out subject on transparency, drop the mask and use `object-contain`
- * so the figure itself breaks the panel edge.
- */
 const PHOTO_FRAME = "overflow-hidden rounded-t-[9999px]";
 
-/**
- * Panel texture: a surveyor's grid with an oversized brand letterform cropped
- * by the panel edge — architectural rather than decorative, and it fills the
- * space the hero buttons used to occupy.
- */
 function PanelPattern() {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 text-surface">
@@ -43,10 +32,6 @@ function PanelPattern() {
   );
 }
 
-/**
- * Sets the business name in the accent colour where it appears in the intro
- * line, as in the reference. Copy without the name renders unchanged.
- */
 function IntroLine({ body }: { body: string }) {
   const name = SITE_CONFIG.name;
   const at = body.indexOf(name);
@@ -74,9 +59,7 @@ export default function Hero({
         <PanelPattern />
 
         <div className="relative grid gap-10 px-6 pt-14 pb-24 sm:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:gap-6 lg:px-14 lg:pt-24 lg:pb-32">
-          {/* No buttons here — the bar below the panel is the hero's action.
-              Extra bottom padding keeps the text column optically centred
-              against the photo now that the CTA no longer fills the space. */}
+
           <div className="max-w-2xl lg:pb-24">
             <motion.h1
               className="text-4xl font-bold leading-[1.08] tracking-tight text-text sm:text-6xl lg:text-7xl"
@@ -99,8 +82,6 @@ export default function Hero({
             </motion.p>
           </div>
 
-          {/* Anchored to the panel floor so the subject rises out of the bar
-              below rather than sitting in a slot beside the text. */}
           <motion.div
             className={`relative mx-auto aspect-[3/4] w-full max-w-sm self-end lg:-mb-32 lg:mx-0 lg:h-[560px] lg:max-w-none ${PHOTO_FRAME}`}
             initial={{ opacity: 0, y: 24 }}

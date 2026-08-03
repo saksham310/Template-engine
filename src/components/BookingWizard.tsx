@@ -14,10 +14,6 @@ import type { HomeContent } from "@/payload/integration/getHomeContent";
 type Titles = Record<string, string>;
 type Copy = HomeContent["quote"];
 
-/**
- * Home "Request a Quote" section (#book).
- * useSearchParams needs a Suspense boundary during static prerender.
- */
 function RequestQuoteInner({ titles, copy }: { titles: Titles; copy: Copy }) {
   const params = useSearchParams();
   const slug = params.get("service");
@@ -124,7 +120,6 @@ function RequestQuoteInner({ titles, copy }: { titles: Titles; copy: Copy }) {
         </div>
       </section>
 
-      {/* Mobile sticky quote bar — hidden once the form is in view */}
       <div
         className={`fixed inset-x-0 bottom-0 z-40 border-t border-line bg-bg/95 px-5 py-3 backdrop-blur-sm transition-transform duration-300 ease-out sm:hidden ${
           formVisible ? "translate-y-full" : "translate-y-0"

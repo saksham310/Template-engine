@@ -7,7 +7,6 @@ import {
 import ServiceTemplate from "@/components/ServiceTemplate";
 import { SITE_CONFIG } from "@/config/site";
 
-// Prerender known services; render unknown ones on demand.
 export const dynamicParams = true;
 
 export async function generateStaticParams() {

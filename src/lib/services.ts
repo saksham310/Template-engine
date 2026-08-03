@@ -32,7 +32,6 @@ export const TRUST = {
   guarantee: "Re-clean guarantee",
 } as const;
 
-// Appended to every service so inclusion lists stay dense.
 const COMMON_INCLUSIONS = [
   "Fully insured, background-checked specialists",
   "Eco-certified, low-tox product system",

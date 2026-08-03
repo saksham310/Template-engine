@@ -23,8 +23,7 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
       className="sticky top-0 z-50 border-b border-line bg-bg"
       onMouseLeave={() => setMenuOpen(false)}
     >
-      {/* Three columns so the nav is centred on the page, not pushed around by
-          the width of the wordmark or the button. */}
+
       <div className="mx-auto grid max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 px-5 py-4">
         <Link
           href="/"
@@ -45,7 +44,6 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
             </Link>
           ))}
 
-          {/* Services — mega-menu trigger */}
           <button
             type="button"
             aria-expanded={menuOpen}
@@ -75,7 +73,6 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
             Request Quote →
           </Link>
 
-          {/* Mobile trigger */}
           <button
             type="button"
             aria-label="Open menu"
@@ -88,7 +85,6 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
         </div>
       </div>
 
-      {/* Mega-menu panel (desktop) */}
       {menuOpen && nav.length > 0 && (
         <div className="absolute inset-x-0 top-full hidden border-b border-line bg-surface sm:block">
           <div
@@ -148,7 +144,6 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
         </div>
       )}
 
-      {/* Full-screen editorial overlay (mobile) */}
       {mobileOpen && (
         <div className="fixed inset-0 z-[60] flex flex-col bg-bg sm:hidden">
           <div className="flex items-center justify-between border-b border-line px-5 py-4">

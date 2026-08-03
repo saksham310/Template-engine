@@ -31,7 +31,6 @@ type LeadRow = {
   serviceRequested?: { title?: string } | string | null;
 };
 
-/** Counts run as the signed-in user, so a limited role never sees more than it may. */
 async function countDocs(
   payload: Payload,
   collection: "gallery" | "leads" | "media" | "posts" | "services",
@@ -107,7 +106,6 @@ export const Dashboard = async ({ initPageResult }: AdminViewServerProps) => {
   const counts = Object.fromEntries(byStatus) as Record<string, number>;
   const pipelineMax = Math.max(1, ...STATUSES.map((s) => counts[s.value] ?? 0));
 
-
   const actions = [
     {
       icon: Inbox,
@@ -163,7 +161,6 @@ export const Dashboard = async ({ initPageResult }: AdminViewServerProps) => {
       </header>
 
       <div className="ed-bento">
-
 
         <section className="ed-card" aria-labelledby="ed-pipeline">
           <h2 className="ed-card__title" id="ed-pipeline">

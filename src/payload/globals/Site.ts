@@ -6,12 +6,6 @@ import { HERO_BAR, SITE_CONFIG } from "../../config/site";
 const SOCIAL_NOTE =
   "Full profile URL, including https://. Leave empty to hide the link everywhere it appears.";
 
-/**
- * The contact details and quote-form options shared by every page. A blank
- * field falls back to the value bundled in `src/config/site.ts`, so a
- * half-filled global never blanks out the footer — the exception is social
- * links, which are simply hidden when cleared.
- */
 export const Site: GlobalConfig = {
   slug: "site",
   label: "Site Settings",

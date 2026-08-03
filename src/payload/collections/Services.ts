@@ -1,16 +1,9 @@
 import type { CollectionConfig } from "payload";
 import { slugField } from "../fields/slug";
 
-/**
- * SERVICES — drives the editorial Service Detail / Authority page.
- * Fields are organised into admin tabs + groups so editors get a clear,
- * high-end editing surface (Hero, Editorial, Specs, FAQ).
- */
 export const Services: CollectionConfig = {
   slug: "services",
-  // Drag-to-reorder in the list view. That order drives the /services index and
-  // is the fallback order for the home page bento when no featured services are
-  // picked in the Home global. (Payload marks `orderable` experimental.)
+
   orderable: true,
   admin: {
     group: "Content",
@@ -20,7 +13,7 @@ export const Services: CollectionConfig = {
   },
   access: { read: () => true },
   fields: [
-    // ── Top-level identity ──
+
     {
       name: "title",
       type: "text",
@@ -43,7 +36,6 @@ export const Services: CollectionConfig = {
       admin: { position: "sidebar", description: 'On-site estimate, e.g. "2 hrs".' },
     },
 
-    // ── Tabbed content ──
     {
       type: "tabs",
       tabs: [

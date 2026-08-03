@@ -14,7 +14,7 @@ export default async function SiteFooter() {
   const sections = site.socials.length
     ? [...FOOTER_SECTIONS, { title: FOOTER_SOCIAL_TITLE, links: site.socials }]
     : FOOTER_SECTIONS;
-  // Written out in full rather than interpolated so Tailwind sees both classes.
+
   const gridCols =
     sections.length === 3
       ? "lg:grid-cols-[1.6fr_repeat(3,1fr)]"

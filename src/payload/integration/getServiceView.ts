@@ -1,7 +1,6 @@
 import { getPayload } from "payload";
 import config from "@payload-config";
 
-/** Normalized shape the ServiceTemplate consumes (Payload doc → view model). */
 export type ServiceView = {
   slug: string;
   title: string;
@@ -22,7 +21,6 @@ export type ServiceView = {
 const FALLBACK_HERO =
   "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1400&q=80";
 
-/** Category is a relationship: populated → its title; id/blank → "Uncategorized". */
 function categoryTitle(cat: unknown): string {
   if (cat && typeof cat === "object") {
     return (cat as { title?: string }).title ?? "Uncategorized";
@@ -30,7 +28,6 @@ function categoryTitle(cat: unknown): string {
   return typeof cat === "string" && cat ? cat : "Uncategorized";
 }
 
-/** Resolve a hero image: uploaded media url wins, else the imageUrl fallback. */
 function heroImage(hero: Record<string, unknown> | undefined): string {
   const upload = hero?.image as { url?: string } | string | null | undefined;
   if (upload && typeof upload === "object" && upload.url) return upload.url;
@@ -76,7 +73,6 @@ function toView(doc: any): ServiceView {
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-/** One service by slug, adapted for the detail page. Null if not found. */
 export async function getServiceView(slug: string): Promise<ServiceView | null> {
   const payload = await getPayload({ config });
   const { docs } = await payload.find({
@@ -88,7 +84,6 @@ export async function getServiceView(slug: string): Promise<ServiceView | null> 
   return docs[0] ? toView(docs[0]) : null;
 }
 
-/** All slugs — for generateStaticParams. */
 export async function getAllServiceSlugs(): Promise<string[]> {
   const payload = await getPayload({ config });
   const { docs } = await payload.find({
@@ -106,7 +101,6 @@ export type ServiceNavGroup = {
   items: { slug: string; title: string }[];
 };
 
-/** Editor-managed categories, sorted by `order`. */
 export async function getServiceCategories(): Promise<
   { title: string; slug: string; blurb: string }[]
 > {
@@ -126,7 +120,6 @@ export async function getServiceCategories(): Promise<
   /* eslint-enable @typescript-eslint/no-explicit-any */
 }
 
-/** Ordered category titles, with any orphaned service categories appended. */
 async function orderedCategoryTitles(
   services: { category: string }[],
 ): Promise<string[]> {
@@ -138,7 +131,6 @@ async function orderedCategoryTitles(
   return [...ordered, ...Array.from(new Set(extras))];
 }
 
-/** Grouped nav for the header mega-menu. */
 export async function getServiceNav(): Promise<ServiceNavGroup[]> {
   const list = await getServiceList();
   const order = await orderedCategoryTitles(list);
@@ -159,19 +151,14 @@ export type ServiceListItem = {
   tagline: string;
   durationLabel: string;
   imageUrl: string;
-  /** Published rate, verbatim from the editor. Empty = not publicly priced. */
+
   price: string;
   priceUnit: string;
-  /** What the rate covers — the ticked list on the pricing card. */
+
   priceNotes: string[];
   popular: boolean;
 };
 
-/**
- * Lightweight list for the /services index and the home page bento.
- * Sorted by `_order` so the drag order set in the admin list view is the order
- * visitors see.
- */
 export async function getServiceList(): Promise<ServiceListItem[]> {
   const payload = await getPayload({ config });
   const { docs } = await payload.find({
@@ -179,8 +166,7 @@ export async function getServiceList(): Promise<ServiceListItem[]> {
     limit: 1000,
     pagination: false,
     depth: 1,
-    // `_order` is null for services created before drag-ordering existed, so
-    // fall back to creation date for a deterministic order until they're moved.
+
     sort: ["_order", "createdAt"],
   });
   /* eslint-disable @typescript-eslint/no-explicit-any */

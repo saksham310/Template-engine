@@ -4,7 +4,6 @@ import config from "@payload-config";
 import { HOME_ADD_ONS, HOME_FAQS, HOME_FEATURES, HOME_HERO, HOME_SECTIONS } from "@/config/site";
 import type { Home, Media } from "@/payload/payload-types";
 
-/** Normalized shape the home page components consume. */
 export type HomeContent = {
   hero: {
     headline: string;
@@ -15,7 +14,7 @@ export type HomeContent = {
   services: {
     eyebrow: string;
     headline: string;
-    /** Slugs of the services filling the large + small cards, in that order. */
+
     featuredSlugs: string[];
     leadCtaLabel: string;
     addOnsBadge: string;
@@ -53,7 +52,6 @@ export type HomeContent = {
   quote: { eyebrow: string; headline: string; body: string };
 };
 
-/** Blank strings count as "not set" — an editor clearing a field gets the default back. */
 function text(value: string | null | undefined, fallback: string): string {
   return typeof value === "string" && value.trim() ? value : fallback;
 }
@@ -84,7 +82,6 @@ export const HOME_FALLBACK: HomeContent = {
   quote: { ...HOME_SECTIONS.quote },
 };
 
-/** Featured picks arrive as ids (unpopulated) or docs (depth >= 1) — keep the slugs. */
 function featuredSlugs(value: Home["featuredServices"]): string[] {
   if (!Array.isArray(value)) return [];
   return value
@@ -129,8 +126,7 @@ function toContent(doc: Home): HomeContent {
         : f.services.addOns,
     },
     pricing: {
-      // Only an explicit `false` hides it — an unsaved global reads `null`,
-      // which must keep the default-on behaviour.
+
       enabled: doc.pricingEnabled !== false,
       headline: text(doc.pricingHeadline, f.pricing.headline),
       body: text(doc.pricingBody, f.pricing.body),
@@ -166,11 +162,6 @@ function toContent(doc: Home): HomeContent {
   };
 }
 
-/**
- * Home page copy from the `home` global, with the bundled copy in
- * `src/config/site.ts` filling any blank field. A CMS/DB failure logs and
- * returns the bundled copy rather than breaking the page.
- */
 export async function getHomeContent(): Promise<HomeContent> {
   try {
     const payload = await getPayload({ config });

@@ -11,11 +11,6 @@ import {
 
 const PATH_NOTE = "Site path such as /contact, or #book to scroll down this page.";
 
-/**
- * Every word on the public home page. The frontend falls back to the copy
- * bundled in `src/config/site.ts` when a field is blank or the CMS is
- * unreachable, so a half-filled global can never blank out the page.
- */
 export const Home: GlobalConfig = {
   slug: "home",
   label: "Home Page",

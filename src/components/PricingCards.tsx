@@ -9,10 +9,8 @@ import type { HomeContent } from "@/payload/integration/getHomeContent";
 
 const REVEAL = { willChange: "transform, opacity" } as const;
 
-/** Past this, visitors go to the full index rather than reading a wall of cards. */
 const MAX_CARDS = 4;
 
-/** Static column classes so Tailwind sees them at build time. */
 const COLUMNS: Record<number, string> = {
   1: "max-w-sm mx-auto",
   2: "sm:grid-cols-2 max-w-3xl mx-auto",
@@ -40,14 +38,14 @@ export default function PricingCards({
   services: ServiceListItem[];
   content: HomeContent["pricing"];
 }) {
-  // A service with no published price is not a rate — it belongs in the index.
+
   const priced = services.filter((s) => s.price);
   if (!content.enabled || priced.length === 0) return null;
 
   const cards = priced.slice(0, MAX_CARDS);
   const columns = COLUMNS[cards.length] ?? COLUMNS[4];
   const showAll = priced.length > MAX_CARDS;
-  // Only ever one raised card, however many are ticked in the admin.
+
   const popularSlug = cards.find((s) => s.popular)?.slug;
 
   return (
@@ -55,8 +53,7 @@ export default function PricingCards({
       id="pricing"
       className="relative isolate overflow-hidden border-b border-line bg-surface-warm"
     >
-      {/* Soft white spotlight over the warm ground, so the cards sit in light
-          rather than on flat colour. */}
+
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -103,7 +100,7 @@ export default function PricingCards({
               >
                 {isPopular && (
                   <>
-                    {/* Accent cap, inset so it reads as part of the card edge. */}
+
                     <span
                       aria-hidden="true"
                       className="absolute inset-x-8 top-0 h-1 rounded-b-full bg-accent"

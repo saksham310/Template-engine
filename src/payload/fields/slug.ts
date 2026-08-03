@@ -1,13 +1,11 @@
 import type { Field, FieldHook } from "payload";
 
-/** Slugify: "Full Residence Detail" → "full-residence-detail". */
 const format = (val: string): string =>
   val
     .replace(/ /g, "-")
     .replace(/[^\w-]+/g, "")
     .toLowerCase();
 
-/** Auto-fill the slug from `title` when empty; keep it if the editor sets one. */
 const formatSlug =
   (fallback: string): FieldHook =>
   ({ value, data }) => {
@@ -16,10 +14,6 @@ const formatSlug =
     return typeof source === "string" ? format(source) : value;
   };
 
-/**
- * Reusable slug field. Auto-generates from `title`, editable in the sidebar.
- * Usage:  ...slugField()  inside a collection's `fields` array.
- */
 export const slugField = (fieldToUse = "title"): Field => ({
   name: "slug",
   type: "text",

@@ -2,20 +2,14 @@ import { HERO_BAR, SITE_CONFIG } from "./site";
 
 export type SocialLink = { label: string; href: string };
 
-/**
- * Contact details and social profiles, as the frontend consumes them. Editable
- * in the admin under Settings → Contact & Social; this module holds only the
- * shape and the bundled fallback so client components can import it without
- * pulling the Payload runtime into the browser bundle.
- */
 export type SiteSettings = {
   email: string;
   phone: string;
-  /** `tel:` href with the display formatting stripped out. */
+
   telHref: string;
   address: string;
   socials: SocialLink[];
-  /** Options in the property dropdown, on the hero bar and in every quote form. */
+
   propertyTypes: string[];
 };
 

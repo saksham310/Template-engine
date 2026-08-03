@@ -5,11 +5,6 @@ import { SITE_SETTINGS_FALLBACK, type SiteSettings } from "@/config/site-setting
 
 const SiteSettingsContext = createContext<SiteSettings>(SITE_SETTINGS_FALLBACK);
 
-/**
- * Carries the editable contact details to client components. Server components
- * should call `getSiteSettings()` directly instead — this exists only because
- * the booking wizard and FAQ section are interactive and cannot.
- */
 export function SiteSettingsProvider({
   value,
   children,

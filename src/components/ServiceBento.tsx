@@ -17,23 +17,12 @@ type BentoService = {
   imageUrl: string;
 };
 
-/**
- * Cards share a frame but not a layout: each one below is built around a
- * different idea (photo lead, scrimmed tile, list), so the grid reads as composed rather
- * than as one component filled three times.
- */
 const cardBase =
   "group relative isolate overflow-hidden rounded-3xl border border-line " +
   "transition-colors duration-300 ease-out hover:border-line-strong";
 
-/**
- * Stock photography runs hotter and more saturated than this palette. Pulling
- * saturation and contrast back settles the photos into the muted ground rather
- * than letting them shout over the type.
- */
 const PHOTO = "object-cover saturate-[0.75] contrast-[0.92] brightness-[1.02]";
 
-/** One labelling device for the whole section: index number on a hairline. */
 function IndexRule({
   index,
   label,
@@ -54,11 +43,6 @@ function IndexRule({
   );
 }
 
-/**
- * Resolves the two featured card slots: the slugs picked in the Home global
- * first (in that order), then the remaining services in their admin drag order.
- * A pick that no longer exists is skipped rather than leaving a hole.
- */
 function featured(services: BentoService[], slugs: string[]): BentoService[] {
   const picked = slugs
     .map((slug) => services.find((s) => s.slug === slug))
@@ -88,16 +72,12 @@ export default function ServiceBento({
         </p>
       </MotionWrapper>
 
-      {/* Uneven columns — 7/5 rather than 2/1, so the grid isn't a tidy split. */}
       <MotionStagger className="grid grid-cols-1 gap-3 sm:grid-cols-12">
-        {/* ── 01 · Lead ── */}
         <motion.article
           variants={fadeUpPlain}
           style={REVEAL}
           className={`${cardBase} flex flex-col bg-surface sm:col-span-7 sm:row-span-2`}
         >
-          {/* Full bleed — the card's own rounded corners do the clipping, so
-              there is no inner frame to misalign. */}
           <div className="relative min-h-[320px] flex-1 sm:min-h-[400px]">
             <Image
               src={lead.imageUrl}
@@ -107,8 +87,6 @@ export default function ServiceBento({
               className={PHOTO}
               priority
             />
-            {/* A veil in the card's own surface colour, so the photo sits in
-                the palette instead of beside it. */}
             <span aria-hidden="true" className="absolute inset-0 bg-surface/25" />
           </div>
 
@@ -117,7 +95,6 @@ export default function ServiceBento({
             <h3 className="mt-3 text-3xl tracking-tight text-text sm:text-[2.5rem] sm:leading-[1.05]">
               {lead.title}
             </h3>
-            {/* Serif against the geometric sans — the section's one warm voice. */}
             <p className="mt-3 max-w-md font-serif text-[17px] leading-relaxed text-text/65">
               {lead.tagline}
             </p>
@@ -131,7 +108,6 @@ export default function ServiceBento({
           </div>
         </motion.article>
 
-        {/* ── Everything else · a list, not a card of labels ── */}
         <motion.article
           variants={fadeUpPlain}
           style={REVEAL}
@@ -155,7 +131,6 @@ export default function ServiceBento({
           </ul>
         </motion.article>
 
-        {/* ── 02 · Full bleed ── */}
         {second && (
           <motion.article
             variants={fadeUpPlain}
@@ -170,7 +145,6 @@ export default function ServiceBento({
                 sizes="(max-width: 640px) 100vw, 40vw"
                 className={PHOTO}
               />
-              {/* Forest ink rather than pure black — the scrim stays in palette. */}
               <span
                 aria-hidden="true"
                 className="absolute inset-0 bg-gradient-to-t from-text via-text/45 to-transparent"

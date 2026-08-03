@@ -7,7 +7,6 @@ import type { HomeContent } from "@/payload/integration/getHomeContent";
 
 const REVEAL = { willChange: "transform, opacity" } as const;
 
-/** Same solid tick as the rate cards — a checklist, which is what this is. */
 function Tick() {
   return (
     <svg
@@ -35,7 +34,7 @@ export default function WhyUs({
   return (
     <section className="border-b border-line bg-surface">
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 sm:py-24 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
-        {/* A room we actually cleaned does more for trust than any icon set. */}
+
         <MotionWrapper className="relative mx-auto w-full max-w-sm lg:mx-0 lg:max-w-none">
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-t-[9999px] bg-surface-muted">
             <Image

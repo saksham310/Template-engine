@@ -19,16 +19,10 @@ import { Site } from "./src/payload/globals/Site";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-/**
- * S3 media storage. Enabled only when S3_BUCKET is set — otherwise media
- * falls back to local disk (dev). Uploads (originals + generated sizes) go to
- * the bucket under the `media/` prefix; the public URL is written to the DB
- * `url` field so the frontend loads straight from S3/CDN, bypassing Payload.
- */
 const S3_BUCKET = process.env.S3_BUCKET ?? "";
 const S3_REGION = process.env.S3_REGION ?? "us-east-1";
-const S3_ENDPOINT = process.env.S3_ENDPOINT; // set for R2/MinIO/other S3-compatible
-const S3_PUBLIC_URL = process.env.S3_PUBLIC_URL; // CDN or bucket base, no trailing slash
+const S3_ENDPOINT = process.env.S3_ENDPOINT;
+const S3_PUBLIC_URL = process.env.S3_PUBLIC_URL;
 const S3_MEDIA_PREFIX = "media";
 
 const s3PublicBase = (
@@ -41,8 +35,7 @@ const s3Plugin = s3Storage({
   collections: {
     media: {
       prefix: S3_MEDIA_PREFIX,
-      // Serve straight from S3/CDN (skip Payload's proxy route) and persist
-      // the absolute URL to the database.
+
       disablePayloadAccessControl: true,
       generateFileURL: ({ filename, prefix }) => {
         const key = [prefix, filename].filter(Boolean).join("/");
@@ -70,12 +63,12 @@ export default buildConfig({
       titleSuffix: " · Pristine Console",
     },
     components: {
-      // Brand wordmark (login + nav header) and compact mark.
+
       graphics: {
         Logo: "/src/payload/admin/Logo#Logo",
         Icon: "/src/payload/admin/Icon#Icon",
       },
-      // Replace the default collection-list dashboard with the Pristine Console.
+
       views: {
         dashboard: {
           Component: "/src/payload/admin/Dashboard#Dashboard",

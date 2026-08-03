@@ -10,17 +10,6 @@ export type QuoteState =
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/**
- * Server Action — saves a new Lead into the `leads` collection, then triggers a
- * console.log stub in place of a transactional email.
- *
- * Wire to the form with useActionState:
- *   const [state, action] = useActionState(requestQuote, { status: "idle" });
- *   <form action={action}> … <input name="name" /> … </form>
- *
- * `serviceRequested` accepts the Service document id (from a hidden input) so the
- * lead links straight to the service in the admin.
- */
 export async function requestQuote(
   _prev: QuoteState,
   formData: FormData,
@@ -46,7 +35,6 @@ export async function requestQuote(
   try {
     const payload = await getPayload({ config });
 
-    // Resolve the service slug to a document id for the relationship (if seeded).
     let serviceRequested: number | undefined;
     if (serviceSlug && serviceSlug !== "general") {
       const { docs } = await payload.find({
@@ -79,7 +67,6 @@ export async function requestQuote(
       },
     });
 
-    // TODO: replace with a real transactional send (Resend / Postmark / SES).
     console.log(
       `[lead] #${lead.id} · ${name} <${email}> · service=${serviceRequested || "n/a"} · from=${source}`,
     );

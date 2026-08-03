@@ -1,11 +1,6 @@
 import type { CollectionConfig } from "payload";
 import { slugField } from "../fields/slug";
 
-/**
- * CATEGORIES — editor-managed service groupings (Residential, Commercial, …).
- * Replaces the old hard-coded select on Services so admins can add their own.
- * `order` drives the sort in the site nav mega-menu and the /services index.
- */
 export const Categories: CollectionConfig = {
   slug: "categories",
   admin: {

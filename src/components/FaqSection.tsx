@@ -30,8 +30,6 @@ export default function FaqSection({ content }: { content: HomeContent["faq"] })
           </p>
         </MotionWrapper>
 
-        {/* Native <details> — opens without JavaScript and is keyboard- and
-            screen-reader-navigable for free. */}
         <div className="mt-12 overflow-hidden rounded-3xl border border-line bg-surface">
           {content.items.map((faq, i) => (
             <motion.div
@@ -48,7 +46,6 @@ export default function FaqSection({ content }: { content: HomeContent["faq"] })
                     {faq.question}
                   </span>
 
-                  {/* Plus rotates into a minus, and fills once open. */}
                   <span className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line text-text/50 transition-colors duration-300 ease-out group-hover:border-line-strong group-open:border-accent group-open:bg-accent group-open:text-white">
                     <span className="relative block h-3.5 w-3.5 transition-transform duration-300 ease-out group-open:rotate-45">
                       <span className="absolute left-0 top-1/2 h-px w-3.5 -translate-y-1/2 bg-current" />
@@ -65,8 +62,6 @@ export default function FaqSection({ content }: { content: HomeContent["faq"] })
           ))}
         </div>
 
-        {/* Someone who read every answer and still has a question needs a person,
-            not another link. */}
         <div className="mt-5 flex flex-col items-center justify-between gap-4 rounded-3xl border border-line bg-surface-muted px-6 py-5 sm:flex-row sm:px-7">
           <p className="text-center text-[15px] text-text/70 sm:text-left">
             Still not sure? We answer every message ourselves.
