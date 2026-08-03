@@ -86,7 +86,7 @@ export default function SiteFooter() {
         aria-hidden="true"
         className="pointer-events-none relative -mb-[0.22em] select-none whitespace-nowrap text-center font-editorial text-[22vw] leading-none text-bg/[0.07]"
       >
-        {SITE_CONFIG.name}
+        {SITE_CONFIG.wordmark}
       </p>
     </footer>
   );

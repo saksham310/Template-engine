@@ -11,7 +11,7 @@ import { TRUST } from "@/lib/services";
 import { MotionWrapper, MotionStagger, MotionItem } from "@/components/MotionWrapper";
 
 export const metadata: Metadata = {
-  title: "All Services — Éditorial",
+  title: `All Services — ${SITE_CONFIG.name}`,
   description: "The full catalog of residential, commercial, and specialized services.",
 };
 

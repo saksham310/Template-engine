@@ -1,5 +1,7 @@
 export const SITE_CONFIG = {
-  name: "Neatify",
+  name: "Ossy Cleaning Group",
+  /** Short form for oversized display type, where the full name will not fit. */
+  wordmark: "Ossy",
   tagline: "Expert Cleaning for Modern Spaces",
   description:
     "We treat interiors like editorial subjects — trained specialists, archival-grade products, and a standard of finish reserved for the spaces you photograph.",

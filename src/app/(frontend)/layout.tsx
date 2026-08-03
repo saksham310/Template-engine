@@ -4,10 +4,11 @@ import { siteFontVariables } from "@/app/fonts";
 import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { SITE_CONFIG } from "@/config/site";
 import { getServiceNav } from "@/payload/integration/getServiceView";
 
 export const metadata: Metadata = {
-  title: "Neatify",
+  title: SITE_CONFIG.name,
   description: "A premium cleaning service platform.",
 };
 

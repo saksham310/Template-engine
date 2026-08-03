@@ -5,6 +5,7 @@ import {
   getAllServiceSlugs,
 } from "@/payload/integration/getServiceView";
 import ServiceTemplate from "@/components/ServiceTemplate";
+import { SITE_CONFIG } from "@/config/site";
 
 // Prerender known services; render unknown ones on demand.
 export const dynamicParams = true;
@@ -27,7 +28,7 @@ export async function generateMetadata({
   const service = await getServiceView(slug);
   if (!service) return { title: "Service not found" };
   return {
-    title: `${service.seo.title} — Éditorial`,
+    title: `${service.seo.title} — ${SITE_CONFIG.name}`,
     description: service.seo.description,
   };
 }

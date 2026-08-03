@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { getPostList, type PostCard } from "@/payload/integration/getPosts";
+import { SITE_CONFIG } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Journal — Éditorial",
-  description: "Field notes, method, and craft from the Editorial desk.",
+  title: `Journal — ${SITE_CONFIG.name}`,
+  description: `Field notes, method, and craft from the ${SITE_CONFIG.wordmark} desk.`,
 };
 
 function fmtDate(iso: string | null): string {
@@ -25,7 +26,9 @@ export default async function BlogIndex() {
     <div className="mx-auto max-w-7xl px-5 py-28">
       <header className="max-w-2xl">
         <p className="editorial-label text-xs tracking-widest text-text/50">The Journal</p>
-        <h1 className="mt-2 text-6xl font-bold leading-[0.9] tracking-tighter">Editorial</h1>
+        <h1 className="mt-2 text-6xl font-bold leading-[0.9] tracking-tighter">
+          {SITE_CONFIG.wordmark}
+        </h1>
         <p className="mt-5 max-w-md font-serif text-lg text-text/60">
           Notes on method, material, and the discipline of finishing well.
         </p>

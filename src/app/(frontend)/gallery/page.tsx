@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import GalleryGrid from "@/components/GalleryGrid";
 import { getGalleryItems, getGalleryCategories } from "@/payload/integration/getGallery";
+import { SITE_CONFIG } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Gallery — Éditorial",
+  title: `Gallery — ${SITE_CONFIG.name}`,
   description: "A curated portfolio of residential, commercial, and specialized work.",
 };
 

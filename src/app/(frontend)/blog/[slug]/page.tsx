@@ -9,6 +9,7 @@ import {
   getRelatedPosts,
   type PostCard,
 } from "@/payload/integration/getPosts";
+import { SITE_CONFIG } from "@/config/site";
 
 export const dynamicParams = true;
 
@@ -30,7 +31,7 @@ export async function generateMetadata({
   const post = await getPostBySlug(slug);
   if (!post) return { title: "Article not found" };
   return {
-    title: `${post.title} — Éditorial`,
+    title: `${post.title} — ${SITE_CONFIG.name}`,
     description: post.excerpt,
   };
 }
