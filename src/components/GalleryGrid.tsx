@@ -9,7 +9,7 @@ import type { GalleryItem, GalleryPhoto } from "@/payload/integration/getGallery
 const REVEAL = { willChange: "transform, opacity" } as const;
 
 const CHIP =
-  "absolute left-3 top-3 rounded-full px-2.5 py-1 font-mono text-[9px] uppercase tracking-widest";
+  "absolute left-3 top-3 rounded-2xl px-2.5 py-1 font-mono text-[9px] uppercase tracking-widest";
 
 function Frame({
   photo,
@@ -56,7 +56,7 @@ export default function GalleryGrid({
               type="button"
               onClick={() => setActive(f)}
               aria-pressed={on}
-              className={`rounded-full px-5 py-2.5 font-mono text-[10px] uppercase tracking-widest transition-colors duration-200 ease-out ${
+              className={`rounded-2xl px-5 py-2.5 font-mono text-[10px] uppercase tracking-widest transition-colors duration-200 ease-out ${
                 on
                   ? "bg-text text-bg"
                   : "border border-line-strong text-text/60 hover:bg-text hover:text-bg"

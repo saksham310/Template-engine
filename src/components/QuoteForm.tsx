@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { requestQuote, type QuoteState } from "@/payload/integration/requestQuote";
-import { HERO_BAR } from "@/config/site";
+import { useSiteSettings } from "@/components/SiteSettingsProvider";
 import { EASE } from "./MotionWrapper";
 
 const SLIDE = {
@@ -38,6 +38,7 @@ export default function QuoteForm({ context }: Props) {
     { status: "idle" },
   );
   const pathname = usePathname();
+  const { propertyTypes } = useSiteSettings();
 
   const knownService = context.serviceSlug !== "general" && context.serviceTitle;
 
@@ -69,7 +70,7 @@ export default function QuoteForm({ context }: Props) {
       <input type="hidden" name="sourcePath" value={pathname} />
 
       {knownService && (
-        <p className="flex flex-wrap items-center gap-2 rounded-full border border-line bg-surface-muted px-4 py-2.5 text-sm text-text/70">
+        <p className="flex flex-wrap items-center gap-2 rounded-2xl border border-line bg-surface-muted px-4 py-2.5 text-sm text-text/70">
           <span className="font-mono text-[10px] uppercase tracking-widest text-text/45">
             Quoting
           </span>
@@ -126,7 +127,7 @@ export default function QuoteForm({ context }: Props) {
           className={FIELD}
         >
           <option value="">Select a property type</option>
-          {HERO_BAR.propertyTypes.map((type) => (
+          {propertyTypes.map((type) => (
             <option key={type} value={type}>
               {type}
             </option>
@@ -157,7 +158,7 @@ export default function QuoteForm({ context }: Props) {
       <button
         type="submit"
         disabled={isPending}
-        className="mt-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-text px-6 py-3.5 text-sm font-semibold text-bg transition-colors duration-200 ease-out hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-1 inline-flex items-center justify-center gap-1.5 rounded-2xl bg-text px-6 py-3.5 text-sm font-semibold text-bg transition-colors duration-200 ease-out hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isPending ? (
           <>

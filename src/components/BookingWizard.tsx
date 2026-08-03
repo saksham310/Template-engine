@@ -108,7 +108,7 @@ function RequestQuoteInner({ titles, copy }: { titles: Titles; copy: Copy }) {
 
             <a
               href={site.telHref}
-              className="mt-7 inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-2.5 font-mono text-xs font-bold tabular-nums text-text transition-colors duration-200 ease-out hover:bg-text hover:text-bg"
+              className="mt-7 inline-flex items-center gap-2 rounded-2xl border border-line-strong px-5 py-2.5 font-mono text-xs font-bold tabular-nums text-text transition-colors duration-200 ease-out hover:bg-text hover:text-bg"
             >
               <Phone className="h-3.5 w-3.5" strokeWidth={2.5} />
               {site.phone}
@@ -132,7 +132,7 @@ function RequestQuoteInner({ titles, copy }: { titles: Titles; copy: Copy }) {
       >
         <a
           href="#book"
-          className="flex w-full items-center justify-center rounded-full bg-text px-6 py-3.5 text-base font-semibold text-bg transition-colors hover:bg-accent"
+          className="flex w-full items-center justify-center rounded-2xl bg-text px-6 py-3.5 text-base font-semibold text-bg transition-colors hover:bg-accent"
         >
           Request a Quote →
         </a>

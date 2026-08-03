@@ -46,7 +46,7 @@ export default function WhyUs({
               className="object-cover"
             />
           </div>
-          <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full border border-line bg-surface px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-text/55">
+          <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-2xl border border-line bg-surface px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-text/55">
             {String(content.items.length).padStart(2, "0")} standards, every visit
           </span>
         </MotionWrapper>

@@ -67,8 +67,10 @@ export const HOME_HERO = {
  * the real quote form at #book — service as a selection, location and property
  * type as a seeded message — so nothing here is decorative.
  *
- * Lives in code rather than the `home` global while the hero layout is still
- * being settled; move it into Payload once the design is signed off.
+ * Labels live in code rather than the `home` global while the hero layout is
+ * still being settled; move them into Payload once the design is signed off.
+ * `propertyTypes` already moved — it is the fallback for the editable list in
+ * the `site` global.
  */
 export const HERO_BAR = {
   locationLabel: "Location",

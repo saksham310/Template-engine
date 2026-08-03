@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { HERO_BAR } from "@/config/site";
+import { useSiteSettings } from "@/components/SiteSettingsProvider";
 import type { ServiceListItem } from "@/payload/integration/getServiceView";
 
 type Props = { services: ServiceListItem[] };
@@ -47,6 +48,7 @@ function DropSolid() {
  */
 export default function HeroQuoteBar({ services }: Props) {
   const router = useRouter();
+  const { propertyTypes } = useSiteSettings();
   const [location, setLocation] = useState("");
   const [property, setProperty] = useState("");
   const [service, setService] = useState("");
@@ -66,7 +68,7 @@ export default function HeroQuoteBar({ services }: Props) {
       onSubmit={handleSubmit}
       className="relative z-10 mx-auto -mt-12 w-full max-w-5xl px-4 sm:-mt-14 sm:px-5"
     >
-      <div className="flex flex-col gap-px overflow-hidden rounded-3xl border border-line bg-line sm:flex-row sm:items-stretch sm:rounded-full">
+      <div className="flex flex-col gap-px overflow-hidden rounded-2xl border border-line bg-line sm:flex-row sm:items-stretch">
         <label className="flex flex-1 items-center gap-3 bg-surface py-3.5 pl-7 pr-5">
           <PinSolid />
           <span className="min-w-0 flex-1">
@@ -96,7 +98,7 @@ export default function HeroQuoteBar({ services }: Props) {
               className={`${FIELD} ${property ? "" : "text-text/40"}`}
             >
               <option value="">{HERO_BAR.propertyPlaceholder}</option>
-              {HERO_BAR.propertyTypes.map((type) => (
+              {propertyTypes.map((type) => (
                 <option key={type} value={type}>
                   {type}
                 </option>
@@ -132,7 +134,7 @@ export default function HeroQuoteBar({ services }: Props) {
         <div className="flex items-center bg-surface p-2">
           <button
             type="submit"
-            className="w-full  bg-text px-8 py-4 text-sm font-semibold text-bg transition-colors duration-200 ease-out hover:bg-accent sm:h-full sm:rounded-full sm:py-0"
+            className="w-full  bg-text px-8 py-4 text-sm font-semibold text-bg transition-colors duration-200 ease-out hover:bg-accent sm:h-full sm:rounded-2xl sm:py-0"
           >
             {HERO_BAR.submitLabel}
           </button>

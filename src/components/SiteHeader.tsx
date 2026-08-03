@@ -133,7 +133,7 @@ export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {
               <Link
                 href="/services"
                 onClick={() => setMenuOpen(false)}
-                className="group inline-flex items-center gap-1.5 rounded-full bg-text px-5 py-2.5 text-sm font-semibold text-bg transition-colors duration-200 ease-out hover:bg-accent"
+                className="group inline-flex items-center gap-1.5 rounded-2xl bg-text px-5 py-2.5 text-sm font-semibold text-bg transition-colors duration-200 ease-out hover:bg-accent"
               >
                 View all services
                 <span

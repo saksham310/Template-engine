@@ -31,6 +31,14 @@ function socials(doc: Site): SocialLink[] {
     .map((s) => ({ label: s.label, href: (s.href as string).trim() }));
 }
 
+/** An emptied list falls back to the bundled set — a blank dropdown is worse than a stale one. */
+function propertyTypes(doc: Site, fallback: string[]): string[] {
+  const labels = (doc.propertyTypes ?? [])
+    .map((row) => row.label?.trim())
+    .filter((label): label is string => Boolean(label));
+  return labels.length ? labels : fallback;
+}
+
 function toSettings(doc: Site): SiteSettings {
   const f = SITE_SETTINGS_FALLBACK;
   const phone = text(doc.phone, f.phone);
@@ -41,6 +49,7 @@ function toSettings(doc: Site): SiteSettings {
     telHref: telHref(phone),
     address: text(doc.address, f.address),
     socials: socials(doc),
+    propertyTypes: propertyTypes(doc, f.propertyTypes),
   };
 }
 

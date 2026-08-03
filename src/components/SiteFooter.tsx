@@ -5,7 +5,7 @@ import { Grain } from "./patterns";
 import CurrentYear from "./CurrentYear";
 
 const CONTACT_PILL =
-  "inline-flex items-center rounded-full border border-bg/20 px-4 py-2 font-mono text-xs " +
+  "inline-flex items-center rounded-2xl border border-bg/20 px-4 py-2 font-mono text-xs " +
   "tabular-nums text-bg/80 transition-colors duration-200 ease-out hover:bg-bg hover:text-text";
 
 export default async function SiteFooter() {

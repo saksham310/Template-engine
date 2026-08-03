@@ -74,13 +74,13 @@ export default function FaqSection({ content }: { content: HomeContent["faq"] })
           <div className="flex shrink-0 flex-wrap items-center justify-center gap-3">
             <a
               href={site.telHref}
-              className="rounded-full border border-line-strong px-5 py-2.5 font-mono text-xs font-bold tabular-nums text-text transition-colors duration-200 ease-out hover:bg-text hover:text-bg"
+              className="rounded-2xl border border-line-strong px-5 py-2.5 font-mono text-xs font-bold tabular-nums text-text transition-colors duration-200 ease-out hover:bg-text hover:text-bg"
             >
               {site.phone}
             </a>
             <Link
               href={content.ctaHref}
-              className="inline-flex items-center gap-1.5 rounded-full bg-text px-5 py-2.5 text-sm font-semibold text-bg transition-colors duration-200 ease-out hover:bg-accent"
+              className="inline-flex items-center gap-1.5 rounded-2xl bg-text px-5 py-2.5 text-sm font-semibold text-bg transition-colors duration-200 ease-out hover:bg-accent"
             >
               {content.ctaLabel}
               <span aria-hidden="true">→</span>

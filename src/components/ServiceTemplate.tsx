@@ -9,11 +9,11 @@ import QuoteForm from "./QuoteForm";
 import type { ServiceView } from "@/payload/integration/getServiceView";
 
 const PILL_SOLID =
-  "inline-flex items-center gap-1.5 rounded-full bg-text px-6 py-3 text-sm font-semibold " +
+  "inline-flex items-center gap-1.5 rounded-2xl bg-text px-6 py-3 text-sm font-semibold " +
   "text-bg transition-colors duration-200 ease-out hover:bg-accent";
 
 const PILL_OUTLINE =
-  "inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-3 " +
+  "inline-flex items-center gap-2 rounded-2xl border border-line-strong px-5 py-3 " +
   "font-mono text-xs font-bold tabular-nums text-text transition-colors duration-200 " +
   "ease-out hover:bg-text hover:text-bg";
 

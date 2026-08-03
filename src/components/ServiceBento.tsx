@@ -128,7 +128,7 @@ export default function ServiceBento({
             </p>
             <Link
               href={`/services/${lead.slug}`}
-              className="mt-6 inline-flex w-fit items-center gap-1.5 rounded-full bg-text px-6 py-2.5 text-sm font-semibold text-bg transition-colors duration-200 ease-out hover:bg-accent"
+              className="mt-6 inline-flex w-fit items-center gap-1.5 rounded-2xl bg-text px-6 py-2.5 text-sm font-semibold text-bg transition-colors duration-200 ease-out hover:bg-accent"
             >
               {heading.leadCtaLabel}
               <span aria-hidden="true">→</span>

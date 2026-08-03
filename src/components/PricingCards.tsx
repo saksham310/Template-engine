@@ -78,7 +78,7 @@ export default function PricingCards({
           </p>
           <Link
             href={content.ctaHref}
-            className="mt-6 inline-flex items-center rounded-full bg-text px-7 py-3.5 text-sm font-semibold text-bg transition-colors duration-200 ease-out hover:bg-accent"
+            className="mt-6 inline-flex items-center rounded-2xl bg-text px-7 py-3.5 text-sm font-semibold text-bg transition-colors duration-200 ease-out hover:bg-accent"
           >
             {content.ctaLabel}
           </Link>
@@ -108,7 +108,7 @@ export default function PricingCards({
                       aria-hidden="true"
                       className="absolute inset-x-8 top-0 h-1 rounded-b-full bg-accent"
                     />
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full border border-accent/30 bg-surface px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-accent">
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-2xl border border-accent/30 bg-surface px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-accent">
                       {content.popularLabel}
                     </span>
                   </>
@@ -176,7 +176,7 @@ export default function PricingCards({
           <div className="mt-10 text-center">
             <Link
               href={content.viewAllHref}
-              className="inline-flex items-center gap-2 rounded-full border border-line-strong px-6 py-3 text-sm font-semibold text-text transition-colors duration-200 ease-out hover:bg-text hover:text-bg"
+              className="inline-flex items-center gap-2 rounded-2xl border border-line-strong px-6 py-3 text-sm font-semibold text-text transition-colors duration-200 ease-out hover:bg-text hover:text-bg"
             >
               {content.viewAllLabel}
               <span aria-hidden="true">→</span>

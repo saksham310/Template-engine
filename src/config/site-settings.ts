@@ -1,4 +1,4 @@
-import { SITE_CONFIG } from "./site";
+import { HERO_BAR, SITE_CONFIG } from "./site";
 
 export type SocialLink = { label: string; href: string };
 
@@ -15,6 +15,8 @@ export type SiteSettings = {
   telHref: string;
   address: string;
   socials: SocialLink[];
+  /** Options in the property dropdown, on the hero bar and in every quote form. */
+  propertyTypes: string[];
 };
 
 export function telHref(phone: string): string {
@@ -31,4 +33,5 @@ export const SITE_SETTINGS_FALLBACK: SiteSettings = {
     { label: "Facebook", href: SITE_CONFIG.socials.facebook },
     { label: "LinkedIn", href: SITE_CONFIG.socials.linkedin },
   ],
+  propertyTypes: [...HERO_BAR.propertyTypes],
 };
