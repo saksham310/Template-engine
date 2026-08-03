@@ -26,6 +26,13 @@ const cardBase =
   "group relative isolate overflow-hidden rounded-3xl border border-line " +
   "transition-colors duration-300 ease-out hover:border-line-strong";
 
+/**
+ * Stock photography runs hotter and more saturated than this palette. Pulling
+ * saturation and contrast back settles the photos into the muted ground rather
+ * than letting them shout over the type.
+ */
+const PHOTO = "object-cover saturate-[0.75] contrast-[0.92] brightness-[1.02]";
+
 /** One labelling device for the whole section: index number on a hairline. */
 function IndexRule({
   index,
@@ -97,9 +104,12 @@ export default function ServiceBento({
               alt={`${lead.title} — recent work`}
               fill
               sizes="(max-width: 640px) 100vw, 58vw"
-              className="object-cover"
+              className={PHOTO}
               priority
             />
+            {/* A veil in the card's own surface colour, so the photo sits in
+                the palette instead of beside it. */}
+            <span aria-hidden="true" className="absolute inset-0 bg-surface/25" />
           </div>
 
           <div className="bg-surface-muted px-8 pb-8 pt-6">
@@ -158,7 +168,7 @@ export default function ServiceBento({
                 alt={`${second.title} — recent work`}
                 fill
                 sizes="(max-width: 640px) 100vw, 40vw"
-                className="object-cover"
+                className={PHOTO}
               />
               {/* Forest ink rather than pure black — the scrim stays in palette. */}
               <span
