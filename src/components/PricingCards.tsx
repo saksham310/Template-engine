@@ -138,7 +138,7 @@ export default function PricingCards({
 
                 <Link
                   href={`/?service=${service.slug}#book`}
-                  className={`mt-6 flex items-center justify-center gap-1.5 rounded-full px-5 py-3 text-sm font-semibold transition-colors duration-200 ease-out ${
+                  className={`mt-6 flex items-center justify-center gap-1.5 rounded-2xl px-5 py-4 text-xs font-semibold transition-colors duration-200 ease-out ${
                     isPopular
                       ? "bg-text text-bg hover:bg-accent"
                       : "border border-line-strong text-text hover:bg-text hover:text-bg"

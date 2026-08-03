@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { MotionWrapper, fadeUpPlain } from "./MotionWrapper";
-import { SITE_CONFIG } from "@/config/site";
+import { useSiteSettings } from "@/components/SiteSettingsProvider";
 import type { HomeContent } from "@/payload/integration/getHomeContent";
 
 const REVEAL = { willChange: "transform, opacity" } as const;
 
 export default function FaqSection({ content }: { content: HomeContent["faq"] }) {
+  const site = useSiteSettings();
   if (content.items.length === 0) return null;
 
   return (
@@ -72,10 +73,10 @@ export default function FaqSection({ content }: { content: HomeContent["faq"] })
           </p>
           <div className="flex shrink-0 flex-wrap items-center justify-center gap-3">
             <a
-              href={`tel:${SITE_CONFIG.phone.replace(/[^+\d]/g, "")}`}
+              href={site.telHref}
               className="rounded-full border border-line-strong px-5 py-2.5 font-mono text-xs font-bold tabular-nums text-text transition-colors duration-200 ease-out hover:bg-text hover:text-bg"
             >
-              {SITE_CONFIG.phone}
+              {site.phone}
             </a>
             <Link
               href={content.ctaHref}

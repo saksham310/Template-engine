@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Phone } from "lucide-react";
 import { TRUST } from "@/lib/services";
-import { SITE_CONFIG } from "@/config/site";
+import { useSiteSettings } from "@/components/SiteSettingsProvider";
 import { EASE } from "./MotionWrapper";
 import { Grain } from "./patterns";
 import QuoteForm, { type QuoteContext } from "./QuoteForm";
@@ -48,6 +48,8 @@ function RequestQuoteInner({ titles, copy }: { titles: Titles; copy: Copy }) {
     io.observe(el);
     return () => io.disconnect();
   }, []);
+
+  const site = useSiteSettings();
 
   const assurances = [
     `Reply within ${TRUST.responseTime}`,
@@ -105,11 +107,11 @@ function RequestQuoteInner({ titles, copy }: { titles: Titles; copy: Copy }) {
             </ul>
 
             <a
-              href={`tel:${SITE_CONFIG.phone.replace(/[^+\d]/g, "")}`}
+              href={site.telHref}
               className="mt-7 inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-2.5 font-mono text-xs font-bold tabular-nums text-text transition-colors duration-200 ease-out hover:bg-text hover:text-bg"
             >
               <Phone className="h-3.5 w-3.5" strokeWidth={2.5} />
-              {SITE_CONFIG.phone}
+              {site.phone}
             </a>
           </div>
 

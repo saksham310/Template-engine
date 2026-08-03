@@ -2,13 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Phone } from "lucide-react";
 import { TRUST } from "@/lib/services";
-import { SITE_CONFIG } from "@/config/site";
+import { getSiteSettings } from "@/payload/integration/getSiteSettings";
 import { Grain } from "./patterns";
 import { MotionWrapper } from "./MotionWrapper";
 import QuoteForm from "./QuoteForm";
 import type { ServiceView } from "@/payload/integration/getServiceView";
-
-const TEL = `tel:${SITE_CONFIG.phone.replace(/[^+\d]/g, "")}`;
 
 const PILL_SOLID =
   "inline-flex items-center gap-1.5 rounded-full bg-text px-6 py-3 text-sm font-semibold " +
@@ -42,7 +40,8 @@ function IndexRule({ index, label }: { index: string; label: string }) {
   );
 }
 
-export default function ServiceTemplate({ service }: { service: ServiceView }) {
+export default async function ServiceTemplate({ service }: { service: ServiceView }) {
+  const site = await getSiteSettings();
   const { hero, inclusions, technicalSpecs, sidebarInclusions, faqs } = service;
   const priced = Boolean(service.price);
 
@@ -105,9 +104,9 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
                 Request a quote
                 <span aria-hidden="true">→</span>
               </a>
-              <a href={TEL} className={PILL_OUTLINE}>
+              <a href={site.telHref} className={PILL_OUTLINE}>
                 <Phone className="h-3.5 w-3.5" strokeWidth={2.5} />
-                {SITE_CONFIG.phone}
+                {site.phone}
               </a>
             </div>
           </div>
@@ -205,9 +204,9 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
               <h2 className="mt-4 text-2xl leading-[1.15] tracking-tight text-text sm:text-3xl">
                 Answered before you ask
               </h2>
-              <a href={TEL} className={`${PILL_OUTLINE} mt-6`}>
+              <a href={site.telHref} className={`${PILL_OUTLINE} mt-6`}>
                 <Phone className="h-3.5 w-3.5" strokeWidth={2.5} />
-                {SITE_CONFIG.phone}
+                {site.phone}
               </a>
             </MotionWrapper>
 
@@ -286,9 +285,9 @@ export default function ServiceTemplate({ service }: { service: ServiceView }) {
               </div>
             )}
 
-            <a href={TEL} className={`${PILL_OUTLINE} mt-7`}>
+            <a href={site.telHref} className={`${PILL_OUTLINE} mt-7`}>
               <Phone className="h-3.5 w-3.5" strokeWidth={2.5} />
-              {SITE_CONFIG.phone}
+              {site.phone}
             </a>
           </MotionWrapper>
 

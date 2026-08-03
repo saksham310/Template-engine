@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { SITE_CONFIG, FOOTER_SECTIONS } from "@/config/site";
+import { SITE_CONFIG, FOOTER_SECTIONS, FOOTER_SOCIAL_TITLE } from "@/config/site";
+import { getSiteSettings } from "@/payload/integration/getSiteSettings";
 import { Grain } from "./patterns";
 import CurrentYear from "./CurrentYear";
 
@@ -7,15 +8,24 @@ const CONTACT_PILL =
   "inline-flex items-center rounded-full border border-bg/20 px-4 py-2 font-mono text-xs " +
   "tabular-nums text-bg/80 transition-colors duration-200 ease-out hover:bg-bg hover:text-text";
 
-export default function SiteFooter() {
+export default async function SiteFooter() {
   const year = new Date().getFullYear();
+  const site = await getSiteSettings();
+  const sections = site.socials.length
+    ? [...FOOTER_SECTIONS, { title: FOOTER_SOCIAL_TITLE, links: site.socials }]
+    : FOOTER_SECTIONS;
+  // Written out in full rather than interpolated so Tailwind sees both classes.
+  const gridCols =
+    sections.length === 3
+      ? "lg:grid-cols-[1.6fr_repeat(3,1fr)]"
+      : "lg:grid-cols-[1.6fr_repeat(2,1fr)]";
 
   return (
     <footer className="relative isolate overflow-hidden bg-text text-bg">
       <Grain opacity={0.2} />
 
       <div className="relative mx-auto max-w-7xl px-5 pt-16 pb-8">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_repeat(3,1fr)] lg:gap-12">
+        <div className={`grid gap-10 sm:grid-cols-2 lg:gap-12 ${gridCols}`}>
           <div>
             <p className="font-mono text-sm font-semibold uppercase tracking-widest">
               {SITE_CONFIG.name}
@@ -26,23 +36,20 @@ export default function SiteFooter() {
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2">
-              <a href={`mailto:${SITE_CONFIG.email}`} className={CONTACT_PILL}>
-                {SITE_CONFIG.email}
+              <a href={`mailto:${site.email}`} className={CONTACT_PILL}>
+                {site.email}
               </a>
-              <a
-                href={`tel:${SITE_CONFIG.phone.replace(/[^\d+]/g, "")}`}
-                className={`${CONTACT_PILL} font-bold`}
-              >
-                {SITE_CONFIG.phone}
+              <a href={site.telHref} className={`${CONTACT_PILL} font-bold`}>
+                {site.phone}
               </a>
             </div>
 
             <p className="mt-4 max-w-[26ch] font-mono text-[11px] leading-5 text-bg/35">
-              {SITE_CONFIG.address}
+              {site.address}
             </p>
           </div>
 
-          {FOOTER_SECTIONS.map((section) => (
+          {sections.map((section) => (
             <div key={section.title}>
               <p className="font-mono text-[10px] uppercase tracking-widest text-bg/35">
                 {section.title}

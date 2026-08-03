@@ -4,6 +4,8 @@ import { siteFontVariables } from "@/app/fonts";
 import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { SiteSettingsProvider } from "@/components/SiteSettingsProvider";
+import { getSiteSettings } from "@/payload/integration/getSiteSettings";
 import { SITE_CONFIG } from "@/config/site";
 import { getServiceNav } from "@/payload/integration/getServiceView";
 
@@ -17,7 +19,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const nav = await getServiceNav();
+  const [nav, site] = await Promise.all([getServiceNav(), getSiteSettings()]);
   return (
     <html
       lang="en"
@@ -25,9 +27,11 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col overflow-x-hidden bg-bg text-text">
         <MotionConfig reducedMotion="user">
-          <SiteHeader nav={nav} />
-          <main className="w-full max-w-full flex-1">{children}</main>
-          <SiteFooter />
+          <SiteSettingsProvider value={site}>
+            <SiteHeader nav={nav} />
+            <main className="w-full max-w-full flex-1">{children}</main>
+            <SiteFooter />
+          </SiteSettingsProvider>
         </MotionConfig>
       </body>
     </html>

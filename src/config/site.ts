@@ -44,15 +44,10 @@ export const FOOTER_SECTIONS: FooterSection[] = [
       { label: "Contact", href: "/contact" },
     ],
   },
-  {
-    title: "Connect",
-    links: [
-      { label: "Instagram", href: SITE_CONFIG.socials.instagram },
-      { label: "Facebook", href: SITE_CONFIG.socials.facebook },
-      { label: "LinkedIn", href: SITE_CONFIG.socials.linkedin },
-    ],
-  },
 ];
+
+/** The footer's third column. Its links come from the `site` global, not from here. */
+export const FOOTER_SOCIAL_TITLE = "Connect";
 
 /**
  * Home page copy. This is the fallback layer: the `home` global in Payload

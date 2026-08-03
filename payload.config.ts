@@ -15,6 +15,7 @@ import { Gallery } from "./src/payload/collections/Gallery";
 import { Posts } from "./src/payload/collections/Posts";
 import { Leads } from "./src/payload/collections/Leads";
 import { Home } from "./src/payload/globals/Home";
+import { Site } from "./src/payload/globals/Site";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -84,7 +85,7 @@ export default buildConfig({
   },
   editor: lexicalEditor(),
   collections: [Users, Media, Categories, Services, Gallery, Posts, Leads],
-  globals: [Home],
+  globals: [Home, Site],
   endpoints: [
     {
       path: "/seed-samples",

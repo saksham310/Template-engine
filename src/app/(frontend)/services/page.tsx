@@ -7,6 +7,7 @@ import {
   getServiceCategories,
 } from "@/payload/integration/getServiceView";
 import { SITE_CONFIG } from "@/config/site";
+import { getSiteSettings } from "@/payload/integration/getSiteSettings";
 import { TRUST } from "@/lib/services";
 import { MotionWrapper, MotionStagger, MotionItem } from "@/components/MotionWrapper";
 
@@ -16,9 +17,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ServicesIndex() {
-  const [services, cats] = await Promise.all([
+  const [services, cats, site] = await Promise.all([
     getServiceList(),
     getServiceCategories(),
+    getSiteSettings(),
   ]);
 
   const ordered = cats.map((c) => c.title);
@@ -48,10 +50,10 @@ export default async function ServicesIndex() {
             message — usually within {TRUST.responseTime}.
           </p>
           <a
-            href={`tel:${SITE_CONFIG.phone.replace(/[^+\d]/g, "")}`}
+            href={site.telHref}
             className="mt-5 inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-3 font-mono text-xs font-bold tabular-nums text-text transition-colors duration-200 ease-out hover:bg-text hover:text-bg"
           >
-            {SITE_CONFIG.phone}
+            {site.phone}
           </a>
         </MotionWrapper>
       </header>
