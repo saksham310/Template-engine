@@ -18,15 +18,8 @@ type BentoService = {
 };
 
 /**
- * The section's one shape idea, used once. A radius this large clamps to half
- * the shorter side, so the crown stays a true semicircle at every breakpoint —
- * a fixed rem value drifts into a rounded rectangle when wide.
- */
-const ARCH = "rounded-t-[9999px]";
-
-/**
  * Cards share a frame but not a layout: each one below is built around a
- * different idea (arch, full-bleed, list), so the grid reads as composed rather
+ * different idea (photo lead, scrimmed tile, list), so the grid reads as composed rather
  * than as one component filled three times.
  */
 const cardBase =
@@ -90,31 +83,23 @@ export default function ServiceBento({
 
       {/* Uneven columns — 7/5 rather than 2/1, so the grid isn't a tidy split. */}
       <MotionStagger className="grid grid-cols-1 gap-3 sm:grid-cols-12">
-        {/* ── 01 · Arch ── */}
+        {/* ── 01 · Lead ── */}
         <motion.article
           variants={fadeUpPlain}
           style={REVEAL}
           className={`${cardBase} flex flex-col bg-surface sm:col-span-7 sm:row-span-2`}
         >
-          <div className="relative flex-1 overflow-hidden p-4 pb-0">
+          {/* Full bleed — the card's own rounded corners do the clipping, so
+              there is no inner frame to misalign. */}
+          <div className="relative min-h-[320px] flex-1 sm:min-h-[400px]">
             <Image
               src={lead.imageUrl}
-              alt=""
-              aria-hidden="true"
+              alt={`${lead.title} — recent work`}
               fill
               sizes="(max-width: 640px) 100vw, 58vw"
-              className="scale-125 object-cover opacity-35 blur-2xl"
+              className="object-cover"
+              priority
             />
-            <div className={`relative aspect-[4/5] w-full overflow-hidden sm:aspect-[16/9] ${ARCH}`}>
-              <Image
-                src={lead.imageUrl}
-                alt={`${lead.title} — recent work`}
-                fill
-                sizes="(max-width: 640px) 100vw, 58vw"
-                className="object-cover"
-                priority
-              />
-            </div>
           </div>
 
           <div className="bg-surface-muted px-8 pb-8 pt-6">
@@ -134,6 +119,30 @@ export default function ServiceBento({
               <span aria-hidden="true">→</span>
             </Link>
           </div>
+        </motion.article>
+
+        {/* ── Everything else · a list, not a card of labels ── */}
+        <motion.article
+          variants={fadeUpPlain}
+          style={REVEAL}
+          className={`${cardBase} bg-surface px-7 pb-7 pt-6 text-text sm:col-span-5`}
+        >
+          <IndexRule index="+" label={heading.addOnsBadge} />
+          <h3 className="mt-3 text-2xl tracking-tight">{heading.addOnsTitle}</h3>
+
+          <ul className="mt-5">
+            {heading.addOns.map((addOn) => (
+              <li
+                key={addOn.label}
+                className="flex items-baseline justify-between gap-4 border-t border-line py-2.5 last:pb-0"
+              >
+                <span className="text-sm text-text/80">{addOn.label}</span>
+                <span className="font-mono text-xs tabular-nums text-text/45">
+                  {addOn.meta}
+                </span>
+              </li>
+            ))}
+          </ul>
         </motion.article>
 
         {/* ── 02 · Full bleed ── */}
@@ -168,30 +177,6 @@ export default function ServiceBento({
             </Link>
           </motion.article>
         )}
-
-        {/* ── Everything else · a list, not a card of labels ── */}
-        <motion.article
-          variants={fadeUpPlain}
-          style={REVEAL}
-          className={`${cardBase} bg-surface px-7 pb-7 pt-6 text-text sm:col-span-5`}
-        >
-          <IndexRule index="+" label={heading.addOnsBadge} />
-          <h3 className="mt-3 text-2xl tracking-tight">{heading.addOnsTitle}</h3>
-
-          <ul className="mt-5">
-            {heading.addOns.map((addOn) => (
-              <li
-                key={addOn.label}
-                className="flex items-baseline justify-between gap-4 border-t border-line py-2.5 last:pb-0"
-              >
-                <span className="text-sm text-text/80">{addOn.label}</span>
-                <span className="font-mono text-xs tabular-nums text-text/45">
-                  {addOn.meta}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </motion.article>
       </MotionStagger>
     </section>
   );
