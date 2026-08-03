@@ -7,9 +7,9 @@ import type { ServiceNavGroup } from "@/payload/integration/getServiceView";
 import { SITE_CONFIG, NAV_LINKS } from "@/config/site";
 
 const CATEGORY_BLURB: Record<string, string> = {
-  Residential: "Homes, apartments, and private residences.",
-  Commercial: "Studios, retail, and workspaces.",
-  Specialized: "Post-build, restoration, and targeted care.",
+  Residential: "Regular house cleaning and seasonal deep cleans.",
+  Commercial: "Offices, studios, and retail floors.",
+  Specialized: "Bond cleans and one-off handovers.",
 };
 
 export default function SiteHeader({ nav }: { nav: ServiceNavGroup[] }) {

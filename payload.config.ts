@@ -1,7 +1,7 @@
 import path from "path";
 import { fileURLToPath } from "url";
 import { buildConfig } from "payload";
-import { sqliteAdapter } from "@payloadcms/db-sqlite";
+import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { s3Storage } from "@payloadcms/storage-s3";
 import sharp from "sharp";
@@ -114,10 +114,9 @@ export default buildConfig({
   ],
   plugins: [s3Plugin],
   secret: process.env.PAYLOAD_SECRET || "dev-secret-change-in-production",
-  db: sqliteAdapter({
-    client: {
-      url: process.env.DATABASE_URI || "file:./payload.db",
-      authToken: process.env.DATABASE_AUTH_TOKEN,
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.DATABASE_URI,
     },
     push: process.env.NODE_ENV !== "production",
     migrationDir: path.resolve(dirname, "src/migrations"),

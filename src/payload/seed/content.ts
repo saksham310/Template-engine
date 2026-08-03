@@ -3,9 +3,9 @@ import { SERVICES, getInclusions, getFaqs } from "@/lib/services";
 import { MOCK_GALLERY, MOCK_POSTS } from "@/config/mock-data";
 
 const CATEGORY_SEED = [
-  { title: "Residential", order: 1, blurb: "Homes, apartments, and private residences." },
-  { title: "Commercial", order: 2, blurb: "Offices, retail, and workspaces." },
-  { title: "Specialized", order: 3, blurb: "Precision treatments for demanding surfaces." },
+  { title: "Residential", order: 1, blurb: "Regular house cleaning and seasonal deep cleans." },
+  { title: "Commercial", order: 2, blurb: "Offices, studios, and retail floors." },
+  { title: "Specialized", order: 3, blurb: "Bond cleans and one-off handovers." },
 ];
 
 const SPECS = [
